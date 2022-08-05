@@ -24,4 +24,8 @@ class ChannelController extends Controller {
     
     return view('channels.show', compact('channel'));
   }
+  
+  public function iptv(){
+  
+  }
 }

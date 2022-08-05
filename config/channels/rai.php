@@ -43,6 +43,16 @@ return [
     "groupTitle" => ChannelGroup::RAI,
     "dvbNum"     => 21
   ],
+  [
+    "id"         => "rai_movie",
+    "code"       => "mdqkg2x",
+    "name"       => "Rai Movie",
+    "tvgLogo"    => "229",
+    "tvgName"    => "",
+    "tvgId"      => "",
+    "groupTitle" => ChannelGroup::RAI,
+    "dvbNum"     => 24
+  ],
   // da quì in giù non vanno
   /*  [
       "id"      => "rai5",
@@ -54,16 +64,6 @@ return [
       "groupTitle" => ChannelGroup::RAI,
       "dvbNum"=> 23
     ],*/
-  [
-    "id"         => "raiMovie",
-    "code"       => "mdqkg2x",
-    "name"       => "Rai Movie",
-    "tvgLogo"    => "229",
-    "tvgName"    => "",
-    "tvgId"      => "",
-    "groupTitle" => ChannelGroup::RAI,
-    "dvbNum"     => 24
-  ],
   /*[
     "id"      => "raiPremium",
     "code"    => "746992",

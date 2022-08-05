@@ -18,6 +18,3 @@ class RaiController extends Controller {
   }
   
 }
-
-
-// TODO:: provare a fare tutto con il server originale della rai. forse così si riesce a bypassare il blocco geo.

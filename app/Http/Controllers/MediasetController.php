@@ -20,9 +20,15 @@ class MediasetController extends Controller {
   
   public function stream($channel) {
     // Download m3u8 file
-    $link   = $this->getChannelStreamLink($channel) . "/index.m3u8";
-    $result = Http::get($link);
+    $link = $this->getChannelStreamLink($channel) . "/index.m3u8";
     
+    // se faccio il download lato server, ho il problema della geolocalizzazione
+    // faccio solo il redirect al link
+    return redirect($link);
+    
+    $result = Http::get($link);
+
+//    dd($link);
     if ($result->ok()) {
       // la risposta contiene una cosa del genere.
       $data = $result->body();
@@ -39,6 +45,7 @@ class MediasetController extends Controller {
     }
     
     Log::error($result->reason());
+    
     return abort(Response::HTTP_BAD_REQUEST);
   }
   
@@ -60,8 +67,9 @@ class MediasetController extends Controller {
       
       return response($finalContent)->header("Content-Type", "application/vnd.apple.mpegurl");
     }
-  
+    
     Log::error($result->reason());
+    
     return abort(Response::HTTP_BAD_REQUEST);
   }
   
@@ -75,8 +83,9 @@ class MediasetController extends Controller {
       
       return response($data)->header("Content-Type", "video/MP2T");
     }
-  
+    
     Log::error($result->reason());
+    
     return abort(Response::HTTP_BAD_REQUEST);
   }
   

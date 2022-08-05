@@ -43,8 +43,9 @@ class ChannelController extends Controller {
     $content  = ['#EXTM3U'];
     
     $sorted->each(function ($channel) use (&$content) {
-      $tvgId      = $channel['tvgId'] ?? $channel['id'] ?? 'EPG N/A';
-      $tvgName    = $channel["tvgName"] ?? $channel["name"] ?? '';
+      $tvgId   = $channel['tvgId'] ?: $channel['id'] ?: 'EPG N/A';
+      $tvgName = $channel["tvgName"] ?: $channel["name"] ?: '';
+      
       $extChannel = ["#EXTINF:{$channel['dvbNum']}",
         "tvg-id=\"$tvgId\"",
         "tvg-name=\"$tvgName\"",

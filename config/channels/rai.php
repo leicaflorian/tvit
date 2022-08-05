@@ -1,61 +1,78 @@
 <?php
 
+use App\Enums\ChannelGroup;
+
 return [
   [
-    "id"      => "rai1",
-    "code"    => "0yqrzvy5g4n",
-    "name"    => "Rai 1",
-    "tvgLogo" => "217",
-    "tvgName" => "",
-    "tvgId"   => "",
+    "id"         => "rai1",
+    "code"       => "0yqrzvy5g4n",
+    "name"       => "Rai 1",
+    "tvgLogo"    => "217",
+    "tvgName"    => "",
+    "tvgId"      => "",
+    "groupTitle" => ChannelGroup::RAI,
+    "dvbNum"     => 1
   ],
   [
-    "id"      => "rai2",
-    "code"    => "308718",
-    "name"    => "Rai 2",
-    "tvgLogo" => "218",
-    "tvgName" => "",
-    "tvgId"   => "",
+    "id"         => "rai2",
+    "code"       => "dm1kvdu546zv66i",
+    "name"       => "Rai 2",
+    "tvgLogo"    => "218",
+    "tvgName"    => "",
+    "tvgId"      => "",
+    "groupTitle" => ChannelGroup::RAI,
+    "dvbNum"     => 2
   ],
   [
-    "id"      => "rai3",
-    "code"    => "308709",
-    "name"    => "Rai 3",
-    "tvgLogo" => "219",
-    "tvgName" => "",
-    "tvgId"   => "",
+    "id"         => "rai3",
+    "code"       => "36hncm",
+    "name"       => "Rai 3",
+    "tvgLogo"    => "219",
+    "tvgName"    => "",
+    "tvgId"      => "",
+    "groupTitle" => ChannelGroup::RAI,
+    "dvbNum"     => 3
   ],
   [
-    "id"      => "rai4",
-    "code"    => "746966",
-    "name"    => "Rai 4",
-    "tvgLogo" => "220",
-    "tvgName" => "",
-    "tvgId"   => "",
+    "id"         => "rai4",
+    "code"       => "xno7b",
+    "name"       => "Rai 4",
+    "tvgLogo"    => "220",
+    "tvgName"    => "",
+    "tvgId"      => "",
+    "groupTitle" => ChannelGroup::RAI,
+    "dvbNum"     => 21
   ],
+  // da quì in giù non vanno
+  /*  [
+      "id"      => "rai5",
+      "code"    => "395276",
+      "name"    => "Rai 5",
+      "tvgLogo" => "221",
+      "tvgName" => "",
+      "tvgId"   => "",
+      "groupTitle" => ChannelGroup::RAI,
+      "dvbNum"=> 23
+    ],*/
   [
-    "id"      => "rai5",
-    "code"    => "395276",
-    "name"    => "Rai 5",
-    "tvgLogo" => "221",
-    "tvgName" => "",
-    "tvgId"   => "",
+    "id"         => "raiMovie",
+    "code"       => "mdqkg2x",
+    "name"       => "Rai Movie",
+    "tvgLogo"    => "229",
+    "tvgName"    => "",
+    "tvgId"      => "",
+    "groupTitle" => ChannelGroup::RAI,
+    "dvbNum"     => 24
   ],
-  [
-    "id"      => "raiMovie",
-    "code"    => "747002",
-    "name"    => "Rai Movie",
-    "tvgLogo" => "229",
-    "tvgName" => "",
-    "tvgId"   => "",
-  ],
-  [
+  /*[
     "id"      => "raiPremium",
     "code"    => "746992",
     "name"    => "Rai Premium",
     "tvgLogo" => "225",
     "tvgName" => "",
     "tvgId"   => "",
+  "groupTitle" => ChannelGroup::RAI,
+  "dvbNum"=> 25
   ],
   [
     "id"      => "raiGulp",
@@ -64,6 +81,8 @@ return [
     "tvgLogo" => "228",
     "tvgName" => "",
     "tvgId"   => "",
+  "groupTitle" => ChannelGroup::RAI,
+  "dvbNum"=> 42
   ],
   [
     "id"      => "raiYoyo",
@@ -72,6 +91,8 @@ return [
     "tvgLogo" => "227",
     "tvgName" => "",
     "tvgId"   => "",
+  "groupTitle" => ChannelGroup::RAI,
+  "dvbNum"=>43
   ],
   [
     "id"      => "raiNews24",
@@ -80,6 +101,8 @@ return [
     "tvgLogo" => "222",
     "tvgName" => "",
     "tvgId"   => "",
+  "groupTitle" => ChannelGroup::RAI,
+  "dvbNum"=> 48
   ],
   [
     "id"      => "raiStoria",
@@ -88,14 +111,18 @@ return [
     "tvgLogo" => "226",
     "tvgName" => "",
     "tvgId"   => "",
+  "groupTitle" => ChannelGroup::RAI,
+  "dvbNum"=> 54
   ],
   [
     "id"      => "raiSport",
     "code"    => "358071",
     "name"    => "Rai Sport",
-    "tvgLogo" => "224",
+    "tvgLogo" => "146",
     "tvgName" => "",
     "tvgId"   => "",
+  "groupTitle" => ChannelGroup::RAI,
+  "dvbNum"=>
   ],
   [
     "id"      => "raiSportPiuHd",
@@ -104,6 +131,8 @@ return [
     "tvgLogo" => "223",
     "tvgName" => "",
     "tvgId"   => "",
+  "groupTitle" => ChannelGroup::RAI,
+  "dvbNum"=> 58
   ],
   [
     "id"      => "raiScuola",
@@ -112,6 +141,8 @@ return [
     "tvgLogo" => "230",
     "tvgName" => "",
     "tvgId"   => "",
+  "groupTitle" => ChannelGroup::RAI,
+  "dvbNum"=> 57
   ],
   [
     "id"      => "raiRadio2",
@@ -120,5 +151,7 @@ return [
     "tvgLogo" => "https://upload.wikimedia.org/wikipedia/commons/b/bd/Rai_Radio_2_logo_%282010%29.svg",
     "tvgName" => "",
     "tvgId"   => "",
-  ]
+  "groupTitle" => ChannelGroup::RAI,
+  "dvbNum"=> 9999
+  ]*/
 ];

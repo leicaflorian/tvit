@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
 
 class MediasetController extends Controller {
   use \App\Traits\ChannelController;
@@ -34,9 +36,10 @@ class MediasetController extends Controller {
       }, $data);
       
       return response($finalContent)->header("Content-Type", "application/vnd.apple.mpegurl");
-    } else {
-      dump($link, $result);
     }
+    
+    Log::error($result->reason());
+    return abort(Response::HTTP_BAD_REQUEST);
   }
   
   public function streamPlaylist($channel, $stream) {
@@ -57,6 +60,9 @@ class MediasetController extends Controller {
       
       return response($finalContent)->header("Content-Type", "application/vnd.apple.mpegurl");
     }
+  
+    Log::error($result->reason());
+    return abort(Response::HTTP_BAD_REQUEST);
   }
   
   public function ts($channel, $stream, $page) {
@@ -69,6 +75,9 @@ class MediasetController extends Controller {
       
       return response($data)->header("Content-Type", "video/MP2T");
     }
+  
+    Log::error($result->reason());
+    return abort(Response::HTTP_BAD_REQUEST);
   }
   
   

@@ -179,7 +179,7 @@ return [
     "code"          => "B6",
     "name"          => "Mediaset Cine 34",
     "tvgLogo"       => "574",
-    "tvgName"       => "Cine34",
+    "tvgName"       => "Mediaset Cine 34",
     "tvgId"         => "",
     "mpd"           => true,
     "useGenericUrl" => true,

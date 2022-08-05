@@ -50,7 +50,7 @@ return [
   [
     "id"         => "20",
     "code"       => "LB",
-    "name"       => "20 Mediaset",
+    "name"       => "Mediaset 20",
     "tvgLogo"    => "443",
     "tvgName"    => "",
     "tvgId"      => 7,
@@ -61,7 +61,7 @@ return [
   [
     "id"         => "la5",
     "code"       => "KA",
-    "name"       => "La5 ",
+    "name"       => "La 5",
     "tvgLogo"    => "190",
     "tvgName"    => "",
     "tvgId"      => "",
@@ -146,7 +146,7 @@ return [
     "code"       => "KF",
     "name"       => "TgCome 24",
     "tvgLogo"    => "197",
-    "tvgName"    => "",
+    "tvgName"    => "Tgcom24",
     "tvgId"      => "",
     "mpd"        => true,
     "groupTitle" => ChannelGroup::MEDIASET,
@@ -177,7 +177,7 @@ return [
   [
     "id"            => "c34",
     "code"          => "B6",
-    "name"          => "Cine 34",
+    "name"          => "Mediaset Cine 34",
     "tvgLogo"       => "574",
     "tvgName"       => "Cine34",
     "tvgId"         => "",

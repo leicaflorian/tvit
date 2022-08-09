@@ -29,13 +29,14 @@ class ScrapChannelsContent implements ShouldQueue {
    */
   public function handle() {
     $channels = Channel::all();
-//    $channels = Channel::where("id", 59)->get();
     
     dump("Starting to scrap " . $channels->count() . " channels");
     
     foreach ($channels as $key => $channel) {
-      dump("Scrapping channel " . $channel->name . " " . $key + 1 . "/" . $channels->count());
-      ScrapSingleChannel::dispatch($channel);
+      $i = $key + 1;
+      dump("- Dispatching channel scrapping {$channel->name} ({$i}/{$channels->count()})");
+      
+      ScrapSingleChannel::dispatch($channel)->onQueue("scrap-channels");
     }
   }
 }

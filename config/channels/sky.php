@@ -6,7 +6,7 @@ return [
   [
     "id"         => "tv8",
     "code"       => "7w0aucb18nmy",
-    "name"       => "TV 8",
+    "name"       => "TV8",
     "tvgLogo"    => "237",
     "tvgName"    => "",
     "tvgId"      => "",

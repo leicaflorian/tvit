@@ -14,11 +14,14 @@ return new class extends Migration {
     Schema::create('channels', function (Blueprint $table) {
       $table->id();
       $table->string('name');
-      $table->string('page_url');
-      $table->integer('channel_number');
+      $table->string('tvg_name');
+      $table->string('tvg_slug')->unique()->index();
+      $table->string('tvg_code');
+      $table->string('iptv_code');
       $table->string('logo_url_color');
       $table->string('logo_url_light');
-      $table->string('type');
+      $table->integer('dtt_num');
+      $table->string('group');
       $table->timestamps();
     });
   }

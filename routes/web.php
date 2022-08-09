@@ -22,17 +22,18 @@ Route::name("channels.")
   ->prefix("channels")
   ->group(function () {
     Route::get('/', [\App\Http\Controllers\ChannelController::class, 'index'])->name('index');
-    Route::get('/iptv', [\App\Http\Controllers\ChannelController::class, 'iptv'])->name('iptv');
-    Route::get('/jsonList', [\App\Http\Controllers\ChannelController::class, 'jsonList'])->name('jsonList');
-    Route::get('/list.m3u8', [\App\Http\Controllers\ChannelController::class, 'list'])->name('list');
+//    Route::get('/iptv', [\App\Http\Controllers\ChannelController::class, 'iptv'])->name('iptv');
+    Route::get('/json-list', [\App\Http\Controllers\ChannelController::class, 'jsonList'])->name('jsonList');
+    Route::get('/m3u8-list', [\App\Http\Controllers\ChannelController::class, 'm3u8List'])->name('m3u8List');
+    Route::get('/epg-list', [\App\Http\Controllers\ChannelController::class, 'epgList'])->name('epgList');
     Route::get('/{channel}', [\App\Http\Controllers\ChannelController::class, 'show'])->name('show');
   });
 
 
-Route::get("/test.m3u8", [TestController::class, "index"])->name("tests.index");
+/*Route::get("/test.m3u8", [TestController::class, "index"])->name("tests.index");
 Route::get("/m3u8/test/{stream}/{list}", [TestController::class, "show"])->name("tests.show");
 Route::get("/m3u8/test/ts/{stream}/{any}", [TestController::class, "ts"])
-  ->where('any', '.*')->name("tests.ts");
+  ->where('any', '.*')->name("tests.ts");*/
 
 Route::name("mediaset.")
   ->prefix("mediaset")

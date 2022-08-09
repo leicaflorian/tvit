@@ -11,17 +11,20 @@ return new class extends Migration {
    * @return void
    */
   public function up() {
+    Schema::dropIfExists('programs');
+    
     Schema::create('programs', function (Blueprint $table) {
       $table->id();
-      $table->foreignId("channel_id")->constrained();
+      
+      $table->string('channel_tvg_slug');
+      $table->foreign('channel_tvg_slug')->references('tvg_slug')->on('channels');
+      
       $table->timestamp("start");
       $table->timestamp("end");
       $table->string("title");
       $table->longText("description")->nullable();
       $table->string("category")->nullable();
       $table->string("link")->nullable();
-      $table->string("thumbnail")->nullable();
-      $table->boolean("prima_tv")->nullable();
       $table->timestamps();
     });
   }

@@ -31,11 +31,11 @@ class RaiPlayController extends Controller {
           "any"     => ""
         ]) . "/", $m3u8Data);
       
-      $pattern = "/^[0-9a-z].*/m";
+      $pattern  = "/^[0-9a-z].*/m";
       $m3u8Data = preg_replace_callback($pattern, function ($match) use ($channel) {
         return route("raiplay.chunk", ["channel" => $channel, "any" => $match[0]]);
       }, $m3u8Data);
-  
+      
       return response($m3u8Data)->header("Content-Type", "application/vnd.apple.mpegurl");
     }
   }
@@ -47,10 +47,10 @@ class RaiPlayController extends Controller {
     
     if ($result->ok()) {
       $data = $result->body();
-      
+
 //      return response($data)->header("Content-Type", "video/MP2T");
     }
-  }
+//  }
   
   }
 }

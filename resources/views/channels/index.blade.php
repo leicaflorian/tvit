@@ -1,46 +1,49 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+@extends("layouts.app")
 
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body>
-<div class="container">
+@section("page_content")
+  <div class="container">
+    <h1 class="mb-3">Lista Canali</h1>
 
-  <h1>Lista Canali</h1>
-
-  <div class="card">
-    <table class="table">
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Logo</th>
-        <th>Nome</th>
-        <th>Numero</th>
-        <th>Categoria</th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
-      @foreach($channels as $channel)
+    <div class="card">
+      <table class="table">
+        <thead>
         <tr>
-          <td>{{ $channel->id }}</td>
-          <td><img class="img-thumbnail" style="width: 80px" src="{{$channel->logo_url_color}}"></td>
-          <td>{{ $channel->name }}</td>
-          <td>{{ $channel->channel_number }}</td>
-          <td>{{ $channel->type }}</td>
-          <td><a href="{{ route('channels.show', $channel->id)  }}">Vedi programmi</a></td>
+          <th></th>
+          <th>Nome</th>
+          <th>Numero DTT</th>
+          <th>Gruppo</th>
+          <th></th>
         </tr>
-      @endforeach
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+        @foreach($channels as $channel)
+          <tr>
+            <td class="text-center"><img class="" style="width: 80px" src="{{$channel->logo_url_light}}"></td>
+            <td>
+              <h5 class="mb-0">{{ $channel->name }}</h5>
+              <div class="channel-programs">
+                <small class="channel-program-now">
+                  <strong>{{$channel->nowOnAir["start"]->format("H:i")}}</strong> - {{$channel->nowOnAir["title"]}}
+                </small>
+
+                @if($channel->nextOnAir)
+                  <small class="channel-program-next">
+                    <strong>{{$channel->nextOnAir["start"]->format("H:i")}}</strong> - {{$channel->nextOnAir["title"]}}
+                  </small>
+                @endif
+              </div>
+
+            </td>
+            <td>{{ $channel->dtt_num }}</td>
+            <td>{{ Str::title($channel->group) }}</td>
+            <td>
+              <a class="btn btn-link" href="{{ route('channels.show', $channel->tvg_slug)  }}">Vedi tutti i programmi</a>
+            </td>
+          </tr>
+        @endforeach
+        </tbody>
+      </table>
+    </div>
   </div>
 
-</div>
-</body>
-</html>
+@endsection

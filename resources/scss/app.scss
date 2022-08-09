@@ -1,0 +1,26 @@
+@import "bootstrap/dist/css/bootstrap.css";
+
+.channel-programs {
+  position: relative;
+  padding-left: 50px;
+
+  small {
+    display: block;
+  }
+
+  .channel-program-now {
+
+    &:before {
+      content: "";
+      background-image: url("http://localhost:8082/assets/live.gif");
+      width: 40px;
+      height: 20px;
+      background-size: contain;
+      background-position: center;
+      display: inline-block;
+      background-repeat: no-repeat;
+      position: absolute;
+      left: 0;
+    }
+  }
+}

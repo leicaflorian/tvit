@@ -15,9 +15,9 @@ return [
   ], [
     "id"         => "dmax",
     "code"       => "8ebh62",
-    "name"       => "DMax",
+    "name"       => "DMAX",
     "tvgLogo"    => "256",
-    "tvgName"    => "DMAX HD",
+    "tvgName"    => "",
     "tvgId"      => "",
     "groupTitle" => ChannelGroup::DISCOVERY,
     "dvbNum"     => 52

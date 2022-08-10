@@ -67,7 +67,7 @@ class EpgController extends Controller {
       $programs->each(function (Program $program) use (&$xml, $channel) {
         $programXml   = ['<programme start="' . $program->start->format("YmdHis") . '" stop="' . $program->end->format("YmdHis") . '" channel="' . $channel->tvg_name . '">'];
         $programXml[] = '<title lang="it">' . $this->escapeString($program->title) . '</title>';
-        $programXml[] = '<desc lang="it">' . $this->escapeString($program->description) . '</desc>';
+        $programXml[] = '<desc lang="it">' . ($program->description ? $this->escapeString($program->description) : "-") . '</desc>';
         $programXml[] = '<category lang="it">' . $this->escapeString($program->category) . '</category>';
         
         $xml[] = implode("", $programXml) . '</programme>';

@@ -25,11 +25,11 @@ Route::name("channels.")
     Route::get('/{channel}', [\App\Http\Controllers\ChannelController::class, 'show'])->name('show');
   });
 
-Route::get('/iptv/m3u-list', [\App\Http\Controllers\IptvController::class, 'm3uList']);
-Route::get('/iptv/json-list', [\App\Http\Controllers\IptvController::class, 'jsonList']);
+Route::get('/iptv/list.m3u', [\App\Http\Controllers\IptvController::class, 'm3uList']);
+Route::get('/iptv/list.json', [\App\Http\Controllers\IptvController::class, 'jsonList']);
 
-Route::get('/epg/xml-list', [\App\Http\Controllers\EpgController::class, 'xmlList']);
-Route::get('/epg/json-list', [\App\Http\Controllers\EpgController::class, 'jsonList']);
+Route::get('/epg/list.xml', [\App\Http\Controllers\EpgController::class, 'xmlList']);
+Route::get('/epg/list.json', [\App\Http\Controllers\EpgController::class, 'jsonList']);
 
 Route::name("mediaset.")
   ->prefix("mediaset")

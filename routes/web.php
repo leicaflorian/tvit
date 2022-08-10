@@ -15,25 +15,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-  return view('welcome');
+  return redirect()->route('channels.index');
 });
 
 Route::name("channels.")
   ->prefix("channels")
   ->group(function () {
     Route::get('/', [\App\Http\Controllers\ChannelController::class, 'index'])->name('index');
-//    Route::get('/iptv', [\App\Http\Controllers\ChannelController::class, 'iptv'])->name('iptv');
-    Route::get('/json-list', [\App\Http\Controllers\ChannelController::class, 'jsonList'])->name('jsonList');
-    Route::get('/m3u8-list', [\App\Http\Controllers\ChannelController::class, 'm3u8List'])->name('m3u8List');
-    Route::get('/epg-list', [\App\Http\Controllers\ChannelController::class, 'epgList'])->name('epgList');
     Route::get('/{channel}', [\App\Http\Controllers\ChannelController::class, 'show'])->name('show');
   });
 
+Route::get('/iptv/m3u-list', [\App\Http\Controllers\IptvController::class, 'm3uList']);
+Route::get('/iptv/json-list', [\App\Http\Controllers\IptvController::class, 'jsonList']);
 
-/*Route::get("/test.m3u8", [TestController::class, "index"])->name("tests.index");
-Route::get("/m3u8/test/{stream}/{list}", [TestController::class, "show"])->name("tests.show");
-Route::get("/m3u8/test/ts/{stream}/{any}", [TestController::class, "ts"])
-  ->where('any', '.*')->name("tests.ts");*/
+Route::get('/epg/xml-list', [\App\Http\Controllers\EpgController::class, 'xmlList']);
+Route::get('/epg/json-list', [\App\Http\Controllers\EpgController::class, 'jsonList']);
 
 Route::name("mediaset.")
   ->prefix("mediaset")

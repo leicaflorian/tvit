@@ -10,17 +10,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
- * @property int        $id
- * @property string     $channel_tvg_slug
- * @property string     $start
- * @property string     $end
- * @property string     $title
- * @property string     $description
- * @property string     $category
- * @property string     $link
- * @property string     cover_img
- * @property-read  int  $duration
- * @property-read  bool $onAir
+ * @property int         $id
+ * @property string      $channel_tvg_slug
+ * @property string      $start
+ * @property-read string $startTz
+ * @property string      $end
+ * @property-read string $endTz
+ * @property string      $title
+ * @property string      $description
+ * @property string      $category
+ * @property string      $link
+ * @property string      cover_img
+ * @property-read  int   $duration
+ * @property-read  bool  $onAir
  *
  * @mixin Builder
  */
@@ -39,28 +41,40 @@ class Program extends Model {
   ];
   
   protected $casts = [
-    'start' => 'datetime:Y-m-d H:i:s',
-    'end'   => 'datetime:Y-m-d H:i:s',
+    'start'   => 'datetime:Y-m-d H:i:s',
+    'startTz' => 'datetime:Y-m-d H:i:s',
+    'end'     => 'datetime:Y-m-d H:i:s',
+    'endTz'   => 'datetime:Y-m-d H:i:s',
   ];
   
   protected function start(): Attribute {
     return Attribute::make(
-      get: fn($value) => Carbon::parse($value)->setTimezone("Europe/Rome"),
       set: fn($value) => Carbon::parse($value)->setTimezone("utc")
     );
   }
   
   protected function end(): Attribute {
     return Attribute::make(
-      get: fn($value) => Carbon::parse($value)->setTimezone("Europe/Rome"),
       set: fn($value) => Carbon::parse($value)->setTimezone("utc")
+    );
+  }
+  
+  protected function startTz(): Attribute {
+    return Attribute::make(
+      get: fn($value) => Carbon::parse($this->start)->setTimezone("Europe/Rome"),
+    );
+  }
+  
+  protected function endTz(): Attribute {
+    return Attribute::make(
+      get: fn($value) => Carbon::parse($this->end)->setTimezone("Europe/Rome"),
     );
   }
   
   
   protected function cover_img(): Attribute {
     return Attribute::make(
-      get: fn($value) => str_starts_with($value, "/") ? "https://www.superguidatv.it{$value}" : $value,
+      get: fn($value) => $value ? (str_starts_with($value, "/") ? "https://www.superguidatv.it{$value}" : $value) : null,
     );
   }
   

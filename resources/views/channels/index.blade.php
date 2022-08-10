@@ -24,13 +24,13 @@
               <div class="channel-programs">
                 @if($channel->nowOnAir)
                   <small class="channel-program-now">
-                    <strong>{{$channel->nowOnAir["start"]->format("H:i")}}</strong> - {{$channel->nowOnAir["title"]}}
+                    <strong>{{$channel->nowOnAir["startTz"]->format("H:i")}}</strong> - {{$channel->nowOnAir["title"]}}
                   </small>
                 @endif
 
                 @if($channel->nextOnAir)
                   <small class="channel-program-next">
-                    <strong>{{$channel->nextOnAir["start"]->format("H:i")}}</strong> - {{$channel->nextOnAir["title"]}}
+                    <strong>{{$channel->nextOnAir["startTz"]->format("H:i")}}</strong> - {{$channel->nextOnAir["title"]}}
                   </small>
                 @endif
               </div>

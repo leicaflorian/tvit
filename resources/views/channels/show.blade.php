@@ -19,8 +19,8 @@
         <tbody>
         @foreach($channel->programs as $program)
           <tr>
-            <td>{{ $program->start->format("H:i") }}</td>
-            <td>{{ $program->end->format("H:i") }}</td>
+            <td>{{ $program->startTz->format("H:i") }}</td>
+            <td>{{ $program->endTz->format("H:i") }}</td>
             <td>{{ $program->duration }}'</td>
             <td>
               @if($program->onAir)

@@ -70,7 +70,7 @@ class Channel extends Model {
           return null;
         }
         
-        return $this->programs()->where("start", $onAir->end->setTimezone("utc"))->first();
+        return $this->programs()->where("start", $onAir->end)->first();
       },
     );
   }
@@ -79,8 +79,7 @@ class Channel extends Model {
   /**
    * @return HasMany
    */
-  public
-  function programs(): HasMany {
+  public function programs(): HasMany {
     return $this->hasMany(Program::class, 'channel_tvg_slug', 'tvg_slug');
   }
 }

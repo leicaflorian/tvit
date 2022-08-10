@@ -22,9 +22,11 @@
             <td>
               <h5 class="mb-0">{{ $channel->name }}</h5>
               <div class="channel-programs">
-                <small class="channel-program-now">
-                  <strong>{{$channel->nowOnAir["start"]->format("H:i")}}</strong> - {{$channel->nowOnAir["title"]}}
-                </small>
+                @if($channel->nowOnAir)
+                  <small class="channel-program-now">
+                    <strong>{{$channel->nowOnAir["start"]->format("H:i")}}</strong> - {{$channel->nowOnAir["title"]}}
+                  </small>
+                @endif
 
                 @if($channel->nextOnAir)
                   <small class="channel-program-next">
@@ -37,7 +39,8 @@
             <td>{{ $channel->dtt_num }}</td>
             <td>{{ Str::title($channel->group) }}</td>
             <td>
-              <a class="btn btn-link" href="{{ route('channels.show', $channel->tvg_slug)  }}">Vedi tutti i programmi</a>
+              <a class="btn btn-link" href="{{ route('channels.show', $channel->tvg_slug)  }}">Vedi tutti i
+                programmi</a>
             </td>
           </tr>
         @endforeach

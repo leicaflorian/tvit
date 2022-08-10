@@ -60,14 +60,15 @@ class Channel extends Model {
   }
   
   protected function nextOnAir(): Attribute {
-    
-    
     return Attribute::make(
       get: function ($value) {
         /**
          * @var Program $onAir
          */
         $onAir = $this->nowOnAir;
+        if ( !$onAir) {
+          return null;
+        }
         
         return $this->programs()->where("start", $onAir->end->setTimezone("utc"))->first();
       },

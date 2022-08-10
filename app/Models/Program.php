@@ -18,7 +18,7 @@ use Illuminate\Support\Carbon;
  * @property string     $description
  * @property string     $category
  * @property string     $link
- * @property string     $thumbnail
+ * @property string     cover_img
  * @property-read  int  $duration
  * @property-read  bool $onAir
  *
@@ -35,18 +35,25 @@ class Program extends Model {
     "description",
     "category",
     "link",
-    "thumbnail",
+    "cover_img",
+  ];
+  
+  protected $casts = [
+    'start' => 'datetime:Y-m-d H:i:s',
+    'end' => 'datetime:Y-m-d H:i:s',
   ];
   
   protected function start(): Attribute {
     return Attribute::make(
       get: fn($value) => Carbon::parse($value)->setTimezone("Europe/Rome"),
+      set: fn($value) => Carbon::parse($value)->setTimezone("utc")
     );
   }
   
   protected function end(): Attribute {
     return Attribute::make(
       get: fn($value) => Carbon::parse($value)->setTimezone("Europe/Rome"),
+      set: fn($value) => Carbon::parse($value)->setTimezone("utc")
     );
   }
   

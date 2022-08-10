@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Channel;
 use App\Models\Program;
+use App\Jobs\ScrapProgramDetail;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Bus\Queueable;
@@ -12,8 +13,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
 use PHPHtmlParser\Dom;
 use PHPHtmlParser\Exceptions\ChildNotFoundException;
 use PHPHtmlParser\Exceptions\CircularException;
@@ -22,7 +21,6 @@ use PHPHtmlParser\Exceptions\LogicalException;
 use PHPHtmlParser\Exceptions\NotLoadedException;
 use PHPHtmlParser\Exceptions\StrictException;
 use Psr\Http\Client\ClientExceptionInterface;
-use function MongoDB\BSON\toJSON;
 
 class ScrapSingleChannel implements ShouldQueue {
   use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -51,9 +49,10 @@ class ScrapSingleChannel implements ShouldQueue {
    * @return void
    */
   public function handle(): void {
-    $dom = new Dom;
+    $dom = new Dom();
     
     // programmi di oggi
+    dump("Starting programs from " . $this->channel->name . " channel");
     
     try {
       $dom->loadFromUrl($this->channel->rawGuideLink);
@@ -78,14 +77,14 @@ class ScrapSingleChannel implements ShouldQueue {
           $link = $timelineEntry->find(".sgtvSpLink");
           
           if ($link->count() === 0) {
-            $link = "";
+            $link = null;
           } else {
-            $link = str_replace(["sgtv_window_location_href", "(", ")", "'"], "", $link->getAttribute("onclick"));
+            $link = str_replace(["sgtv_window_location_href", "(", ")", "'", ";"], "", $link->getAttribute("onclick"));
           }
         } elseif ($link->count() >= 1) {
           $link = $link->getAttribute("href");
         } else {
-          $link = "";
+          $link = null;
         }
         
         preg_match_all("/(\w.*) (\(.*\))/", $categoryString, $match);
@@ -107,30 +106,35 @@ class ScrapSingleChannel implements ShouldQueue {
         
         $newProgram = new Program([
           "channel_tvg_slug" => $this->channel->tvg_slug,
-          "start"            => $startTime->setTimezone("utc")->toDateTime(), // Set TZ to UTC for the DB
-          "end"              => $endTime->setTimezone("utc")->toDateTime(), // Set TZ to UTC for the DB
+          "start"            => $startTime,
+          "end"              => $endTime,
           "title"            => $title,
-          // "description" => $descriptionEl->count() ? $descriptionEl->innerText : '',
           "category"         => $category,
           "link"             => $link,
-          // "thumbnail"   => $thumbnailEl->count() ? $thumbnailEl[0]->getAttribute("src") : '',
         ]);
         
         //        dump($newProgram->toArray());
         
         try {
-          Program::updateOrCreate([
-            'start'            => $newProgram->start,
-            'end'              => $newProgram->end,
+          $res = Program::updateOrCreate([
+            'start'            => $newProgram->start->setTimezone("utc"),
+            'end'              => $newProgram->end->setTimezone("utc"),
             'channel_tvg_slug' => $this->channel->tvg_slug,
           ], $newProgram->toArray());
+          
+          if ($newProgram->link) {
+            // if there is a link, scrap the program detail
+            ScrapProgramDetail::dispatch($res)->onQueue("scrap-program-detail")->delay(now()->addSeconds(rand(1, 100)));
+          }
         } catch (Exception $e) {
           dump($e->getMessage());
+          throw $e;
         }
       }
       
     } catch (ChildNotFoundException|CircularException|ContentLengthException|LogicalException|StrictException|ClientExceptionInterface|NotLoadedException $e) {
       dump($e);
+      throw $e;
     }
   }
 }

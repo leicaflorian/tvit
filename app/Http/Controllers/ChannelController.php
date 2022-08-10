@@ -88,41 +88,75 @@ class ChannelController extends Controller {
     ]);
   }
   
+  /* public function epgList() {
+     // TODO:: devo generare la lista xml durante i cron degli scraper e poi la mettere in cache
+     // prechè troppo pesante e ci mette troppo a rispondere.
+     // Devo anche recuperare le informazioni per ogni singolo programma
+     
+     // https://cesbo.com/en/latest/utils/xmltv-format
+     
+     $xml = new \SimpleXMLElement("<tv/>");
+     $xml->addAttribute("date", now()->format("Ymd"));
+     
+     $channels = Channel::orderBy('dtt_num')->get();
+     
+     $channels->each(function (Channel $channel) use (&$xml) {
+       $channelXml = $xml->addChild("channel");
+       $channelXml->addAttribute("id", $channel->tvg_name);
+       $channelXml->addChild("display-name", $channel->name)->addAttribute("lang", "it");
+       $channelXml->addChild("icon")->addAttribute("src", $this->escapeString($channel->logo_url_color));
+       $channelXml->addChild("url", $this->escapeString($channel->m3u8Link));
+     });
+     
+     $channels->each(function (Channel $channel) use (&$xml) {
+       $programs = $channel->programs()->where("start", ">=", today())->get();
+       
+       $programs->each(function (Program $program) use (&$xml, $channel) {
+         $programXml = $xml->addChild("programme");
+         $programXml->addAttribute("start", $program->start->format("YmdHis"));
+         $programXml->addAttribute("stop", $program->end->format("YmdHis"));
+         $programXml->addAttribute("channel", $channel->tvg_name);
+         $programXml->addChild("title", $this->escapeString($program->title))->addAttribute("lang", "it");
+         $programXml->addChild("desc", $this->escapeString($program->description))->addAttribute("lang", "it");
+         $programXml->addChild("category", $this->escapeString($program->category))->addAttribute("lang", "it");
+       });
+     });
+     
+     return response($xml->asXML(), 200, [
+       'Content-Type' => 'application/xml'
+     ]);
+   }*/
+  
   public function epgList() {
-    // TODO:: devo generare la lista xml durante i cron degli scraper e poi la mettere in cache
-    // prechè troppo pesante e ci mette troppo a rispondere.
-    // Devo anche recuperare le informazioni per ogni singolo programma
-    
     // https://cesbo.com/en/latest/utils/xmltv-format
     
-    $xml = new \SimpleXMLElement("<tv/>");
-    $xml->addAttribute("date", now()->format("Ymd"));
+    $xml = ['<tv date="' . now()->format("Ymd") . '">'];
     
     $channels = Channel::orderBy('dtt_num')->get();
     
     $channels->each(function (Channel $channel) use (&$xml) {
-      $channelXml = $xml->addChild("channel");
-      $channelXml->addAttribute("id", $channel->tvg_name);
-      $channelXml->addChild("display-name", $channel->name)->addAttribute("lang", "it");
-      $channelXml->addChild("icon")->addAttribute("src", $this->escapeString($channel->logo_url_color));
-      $channelXml->addChild("url", $this->escapeString($channel->m3u8Link));
+      $channelXml   = ['<channel id="' . $channel->tvg_name . '">'];
+      $channelXml[] = '<display-name lang="it">' . $channel->name . '</display-name>';
+      $channelXml[] = '<icon src="' . $this->escapeString($channel->logo_url_color) . '"/>';
+      $channelXml[] = '<url>' . $this->escapeString($channel->m3u8Link) . '</url>';
+      
+      $xml[] = implode("", $channelXml) . '</channel>';
     });
     
     $channels->each(function (Channel $channel) use (&$xml) {
       $programs = $channel->programs()->where("start", ">=", today())->get();
       
       $programs->each(function (Program $program) use (&$xml, $channel) {
-        $programXml = $xml->addChild("programme");
-        $programXml->addAttribute("start", $program->start->format("YmdHis"));
-        $programXml->addAttribute("stop", $program->end->format("YmdHis"));
-        $programXml->addAttribute("channel", $channel->tvg_name);
-        $programXml->addChild("title", $this->escapeString($program->title))->addAttribute("lang", "it");
-        $programXml->addChild("desc", $this->escapeString($program->description))->addAttribute("lang", "it");
-        $programXml->addChild("category", $this->escapeString($program->category))->addAttribute("lang", "it");
+        $programXml   = ['<programme start="' . $program->start->format("YmdHis") . '" stop="' . $program->end->format("YmdHis") . '" channel="' . $channel->tvg_name . '">'];
+        $programXml[] = '<title lang="it">' . $this->escapeString($program->title) . '</title>';
+        $programXml[] = '<desc lang="it">' . $this->escapeString($program->description) . '</desc>';
+        $programXml[] = '<category lang="it">' . $this->escapeString($program->category) . '</category>';
+        
+        $xml[] = implode("", $programXml) . '</programme>';
       });
     });
     
-    return response($xml->asXML(), 200, [
+    return response(implode("", $xml) . "</tv>", 200, [
       'Content-Type' => 'application/xml'
     ]);
   }

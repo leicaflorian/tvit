@@ -36,7 +36,7 @@ class ScrapChannelsContent implements ShouldQueue {
       $i = $key + 1;
       dump("- Dispatching channel scrapping {$channel->name} ({$i}/{$channels->count()})");
       
-      ScrapSingleChannel::dispatch($channel)->onQueue("scrap-channels");
+      ScrapSingleChannel::dispatch($channel)->onQueue("scrap-channels")->delay(now()->addSeconds(rand(1, 10)));
     }
   }
 }

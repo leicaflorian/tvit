@@ -27,7 +27,13 @@
                 <img src="{{asset("assets/live.gif")}}" alt="" style="width: 80px">
               @endif
             </td>
-            <td>{{ $program->title }}</td>
+            <td>
+              <strong>{{ $program->title }}</strong>
+              <div class="d-flex align-items-start">
+                <img src="{{ $program->cover_img  }}" alt="" style="width: 60px;" class="me-2">
+                <small class="d-block">{{$program->description}}</small>
+              </div>
+            </td>
             <td>{{ $program->category }}</td>
           </tr>
         @endforeach

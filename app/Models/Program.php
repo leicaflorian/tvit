@@ -40,7 +40,7 @@ class Program extends Model {
   
   protected $casts = [
     'start' => 'datetime:Y-m-d H:i:s',
-    'end' => 'datetime:Y-m-d H:i:s',
+    'end'   => 'datetime:Y-m-d H:i:s',
   ];
   
   protected function start(): Attribute {
@@ -54,6 +54,13 @@ class Program extends Model {
     return Attribute::make(
       get: fn($value) => Carbon::parse($value)->setTimezone("Europe/Rome"),
       set: fn($value) => Carbon::parse($value)->setTimezone("utc")
+    );
+  }
+  
+  
+  protected function cover_img(): Attribute {
+    return Attribute::make(
+      get: fn($value) => str_starts_with($value, "/") ? "https://www.superguidatv.it{$value}" : $value,
     );
   }
   

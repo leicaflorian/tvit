@@ -48,7 +48,7 @@ class EpgController extends Controller {
   public function xmlList() {
     // https://cesbo.com/en/latest/utils/xmltv-format
     
-    $xml = ['<tv date="' . now()->format("Ymd") . '">'];
+    $xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<tv date="' . now()->format("Ymd") . '">'];
     
     $channels = Channel::orderBy('dtt_num')->get();
     

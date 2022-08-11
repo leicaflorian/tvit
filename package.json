@@ -19,7 +19,6 @@
         "@vitejs/plugin-vue": "^3.0.1",
         "bootstrap": "^5.2.0",
         "dashjs": "^4.4.1",
-        "dayjs": "^1.11.4",
         "hls.js": "^1.2.0",
         "pinia": "^2.0.18",
         "sass": "^1.54.3",

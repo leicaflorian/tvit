@@ -13,8 +13,6 @@ InertiaProgress.init()
 
 const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
 
-// console.log(pages)
-
 const pinia = createPinia()
 
 createInertiaApp({

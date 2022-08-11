@@ -1,10 +1,3 @@
-import * as dayjs from 'dayjs'
-import * as utc from 'dayjs/plugin/utc'
-import * as timezone from 'dayjs/plugin/timezone'
-
-dayjs.extend(utc)
-dayjs.extend(timezone)
-
 export function formatTime (date: string, setTimezone = true) {
   const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone
   const format = 'HH:mm'
@@ -12,8 +5,8 @@ export function formatTime (date: string, setTimezone = true) {
   if (setTimezone) {
     const tzDate = date.endsWith('Z') ? date : date + 'Z'
     
-    return dayjs(tzDate).tz(userTz).format(format)
+    return Intl.DateTimeFormat('it', { timeStyle: 'short' }).format(new Date(tzDate))
   }
   
-  return dayjs(date).format('HH:mm')
+  return Intl.DateTimeFormat('it', { timeStyle: 'short', timeZone: 'utc' }).format(new Date(date))
 }

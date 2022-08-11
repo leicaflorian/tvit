@@ -31,3 +31,8 @@ Link JSON: [`https://tvit.leicaflorianrobert.dev/epg/list.json`](https://tvit.le
 > ❗️ Attention
 >
 > All programs times are in UTC format.
+
+# How to use
+If you're using a dedicated software, you have to configure the m3uList and the epgList.
+
+If you're using a browser, just visit [https://tvit.leicaflorianrobert.dev/channels](https://tvit.leicaflorianrobert.dev/channels)

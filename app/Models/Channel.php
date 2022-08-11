@@ -40,6 +40,14 @@ class Channel extends Model {
     'group',
   ];
   
+  /**
+   * The accessors to append to the model's array form.
+   * Must be in snake_case
+   *
+   * @var array
+   */
+  protected $appends = ['m3u8_link', 'raw_guide_link', 'now_on_air', 'next_on_air'];
+  
   
   protected function m3u8Link(): Attribute {
     return Attribute::make(

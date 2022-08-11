@@ -1,4 +1,6 @@
-@import "bootstrap/dist/css/bootstrap.css";
+@import url("https://cdn.jsdelivr.net/npm/@mdi/font@6.9.96/css/materialdesignicons.min.css");
+@import "partials/variables";
+@import "bootstrap/scss/bootstrap";
 
 .channel-programs {
   position: relative;
@@ -23,4 +25,9 @@
       left: 0;
     }
   }
+}
+
+.btn {
+  display: flex;
+  align-items: center;
 }

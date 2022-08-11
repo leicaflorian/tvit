@@ -47,6 +47,15 @@ class Program extends Model {
     'endTz'   => 'datetime:Y-m-d H:i:s',
   ];
   
+  /**
+   * The accessors to append to the model's array form.
+   * Must be in snake_case
+   *
+   * @var array
+   */
+  protected $appends = ['start_tz', 'end_tz', 'duration', 'on_air'];
+  
+ /*
   protected function start(): Attribute {
     return Attribute::make(
       set: fn($value) => Carbon::parse($value)->setTimezone("utc")
@@ -57,11 +66,13 @@ class Program extends Model {
     return Attribute::make(
       set: fn($value) => Carbon::parse($value)->setTimezone("utc")
     );
-  }
+  }*/
   
   protected function startTz(): Attribute {
     return Attribute::make(
-      get: fn($value) => Carbon::parse($this->start)->setTimezone("Europe/Rome"),
+      get: function ($value) {
+        return Carbon::parse($this->start)->setTimezone("Europe/Rome");
+      },
     );
   }
   
@@ -72,7 +83,7 @@ class Program extends Model {
   }
   
   
-  protected function cover_img(): Attribute {
+  protected function coverImg(): Attribute {
     return Attribute::make(
       get: fn($value) => $value ? (str_starts_with($value, "/") ? "https://www.superguidatv.it{$value}" : $value) : null,
     );

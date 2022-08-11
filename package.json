@@ -9,10 +9,21 @@
         "laravel-vite-plugin": "^0.5.0",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
-        "vite": "^3.0.0"
+        "vite": "^3.0.0",
+        "vue-loader": "^17.0.0"
     },
     "dependencies": {
+        "@inertiajs/inertia": "^0.11.0",
+        "@inertiajs/inertia-vue3": "^0.6.0",
+        "@inertiajs/progress": "^0.2.7",
+        "@vitejs/plugin-vue": "^3.0.1",
         "bootstrap": "^5.2.0",
-        "sass": "^1.54.3"
+        "dashjs": "^4.4.1",
+        "dayjs": "^1.11.4",
+        "hls.js": "^1.2.0",
+        "pinia": "^2.0.18",
+        "sass": "^1.54.3",
+        "vite-plugin-require": "^1.0.1",
+        "vue": "^3.2.36"
     }
 }

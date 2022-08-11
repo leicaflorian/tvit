@@ -16,7 +16,9 @@ class Kernel extends ConsoleKernel {
    */
   protected function schedule(Schedule $schedule) {
     // $schedule->command('inspire')->hourly();
-    $schedule->call(new ScrapChannelsContent())->daily();
+    $schedule->call(function () {
+      new ScrapChannelsContent();
+    })->daily();
   }
   
   /**

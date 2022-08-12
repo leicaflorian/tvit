@@ -19,6 +19,7 @@ class ScrapChannelsContent implements ShouldQueue {
    * @return void
    */
   public function __construct() {
+    dump("Dispatching ScrapChannelsContent job");
     //
   }
   

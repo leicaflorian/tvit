@@ -30,7 +30,7 @@ class ScrapChannelsContent implements ShouldQueue {
    *
    * @return void
    */
-  public function handle() {
+  public function handle(): void {
     $channels = Channel::all();
     
     Log::info("Starting to scrap " . $channels->count() . " channels");

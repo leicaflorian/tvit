@@ -32,6 +32,7 @@ class ScrapChannelsContent implements ShouldQueue {
     
     dump("Starting to scrap " . $channels->count() . " channels");
     
+    return;
     foreach ($channels as $key => $channel) {
       $i = $key + 1;
       dump("- Dispatching channel scrapping {$channel->name} ({$i}/{$channels->count()})");

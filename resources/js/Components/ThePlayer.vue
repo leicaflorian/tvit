@@ -150,7 +150,7 @@ export default {
 
 <style scoped lang="scss">
 .the-player {
-  background-color: var(--bs-primary);
+  background-color: var(--bs-secondary);
   height: 60px;
   overflow: hidden;
   display: flex;
@@ -176,6 +176,10 @@ export default {
   .the-player-header {
     display: flex;
     justify-content: space-between;
+
+    .tvg-logo {
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
+    }
   }
 
   .the-player-body {
@@ -194,7 +198,7 @@ export default {
       width: 60px;
       object-fit: contain;
       margin-right: 1rem;
-      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35));
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
     }
   }
 }

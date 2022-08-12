@@ -11,7 +11,6 @@
   }
 
   .channel-program-now {
-
     &:before {
       content: "";
       background-image: url("http://localhost:8082/assets/live.gif");
@@ -30,4 +29,6 @@
 .btn {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
+

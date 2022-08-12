@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class ScrapChannelsContent implements ShouldQueue {
   use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -19,6 +20,7 @@ class ScrapChannelsContent implements ShouldQueue {
    * @return void
    */
   public function __construct() {
+    Log::info("Dispatching ScrapChannelsContent job");
     dump("Dispatching ScrapChannelsContent job");
     //
   }

@@ -15,7 +15,7 @@ trait ChannelController {
   
   private function getChannelData($channel): Channel {
     if (isset($this->localMap)) {
-      $config = array_filter($this->localMap, fn($el) => $el["id"] === $channel);
+      $config = [...array_filter($this->localMap, fn($el) => $el["id"] === $channel)];
       
       if (count($config) > 0) {
         $config = new Channel($config[0]);

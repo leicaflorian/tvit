@@ -1,5 +1,6 @@
 <?php
 
+use Adrianorosa\GeoLocation\GeoLocation;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
   return redirect()->route('channels.index');
+});
+
+Route::get("myip", function (){
+  $userIp = request()->ip();
+  $details = GeoLocation::lookup($userIp);
+  
+  dump($userIp, $details);
 });
 
 Route::name("channels.")
@@ -49,9 +57,9 @@ Route::name("rai.")
       ->where('any', '.*')->name("ts");
   });
 
-/*Route::get("/raiplay/{channel}/stream.m3u8", [\App\Http\Controllers\RaiPlayController::class, "stream"])->name("raiplay.stream");
+Route::get("/raiplay/{channel}/stream.m3u8", [\App\Http\Controllers\RaiPlayController::class, "stream"])->name("raiplay.stream");
 Route::get("/raiplay/{channel}/chunks/{any?}", [\App\Http\Controllers\RaiPlayController::class, "chunks"])
-  ->where('any', '.*')->name("raiplay.chunk");*/
+  ->where('any', '.*')->name("raiplay.chunk");
 
 Route::name("sky.")
   ->prefix("sky")

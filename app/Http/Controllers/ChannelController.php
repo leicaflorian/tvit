@@ -39,8 +39,10 @@ class ChannelController extends Controller {
       abort(404);
     }
     
-    $channel->load('programs')->where("start", ">=", today())
-      ->where("end", "<=", now()->addHours(24));
+    $channel->load(['programs' => function ($query) {
+      $query->where("start", ">=", today())
+        ->where("end", "<=", now()->addHours(24));
+    }]);
     
     return Inertia::render('Channels/Show', [
       'channel' => $channel,

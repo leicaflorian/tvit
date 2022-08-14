@@ -14,7 +14,15 @@ trait ChannelController {
   }
   
   private function getChannelData($channel): Channel {
-    $config = Channel::where("tvg_slug", $channel)->first();
+    if (isset($this->localMap)) {
+      $config = array_filter($this->localMap, fn($el) => $el["id"] === $channel);
+      
+      if (count($config) > 0) {
+        $config = new Channel($config[0]);
+      }
+    } else {
+      $config = Channel::where("tvg_slug", $channel)->first();
+    }
     
     if ( !$config) {
       abort(404);

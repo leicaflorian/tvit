@@ -14,51 +14,26 @@ class RaiPlayController extends Controller {
       "id"         => "rai-1",
       "iptv_code"  => "2606803",
       "name"       => "Rai 1",
-      "tvgLogo"    => "217",
-      "tvgName"    => "",
-      "tvgId"      => "",
-      "groupTitle" => ChannelGroup::RAI,
-      "dvbNum"     => 1
     ],
     [
-      "id"         => "rai2",
-      "iptv_code"  => "dm1kvdu546zv66i",
+      "id"         => "rai-2",
+      "iptv_code"  => "308718",
       "name"       => "Rai 2",
-      "tvgLogo"    => "218",
-      "tvgName"    => "",
-      "tvgId"      => "",
-      "groupTitle" => ChannelGroup::RAI,
-      "dvbNum"     => 2
     ],
     [
-      "id"         => "rai3",
-      "iptv_code"  => "36hncm",
+      "id"         => "rai-3",
+      "iptv_code"  => "308709",
       "name"       => "Rai 3",
-      "tvgLogo"    => "219",
-      "tvgName"    => "",
-      "tvgId"      => "",
-      "groupTitle" => ChannelGroup::RAI,
-      "dvbNum"     => 3
     ],
     [
-      "id"         => "rai4",
-      "iptv_code"  => "xno7b",
+      "id"         => "rai-4",
+      "iptv_code"  => "746966",
       "name"       => "Rai 4",
-      "tvgLogo"    => "220",
-      "tvgName"    => "",
-      "tvgId"      => "",
-      "groupTitle" => ChannelGroup::RAI,
-      "dvbNum"     => 21
     ],
     [
-      "id"         => "rai_movie",
-      "iptv_code"  => "mdqkg2x",
+      "id"         => "rai-movie",
+      "iptv_code"  => "747002",
       "name"       => "Rai Movie",
-      "tvgLogo"    => "229",
-      "tvgName"    => "",
-      "tvgId"      => "",
-      "groupTitle" => ChannelGroup::RAI,
-      "dvbNum"     => 24
     ],
   ];
   

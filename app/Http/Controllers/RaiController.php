@@ -25,10 +25,11 @@ class RaiController extends Controller {
     
     $browser = $agent->browser();
     
-    Log::info("Browser: $browser");
-    Log::info("Ip: {$details->getCountryCode()}");
+//    Log::info("Browser: $browser");
+//    Log::info("Ip: {$details->getCountryCode()}");
     
-    if ($details->getCountryCode() !== "IT" && $browser) {
+    // show hd stream if from italy and NOT a browser
+    if ($details->getCountryCode() === "IT" && !$browser) {
       return redirect()->action([RaiPlayController::class, 'stream'], ["channel" => $channel]);
     }
     

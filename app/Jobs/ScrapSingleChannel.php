@@ -106,8 +106,8 @@ class ScrapSingleChannel implements ShouldQueue {
         
         $newProgram = new Program([
           "channel_tvg_slug" => $this->channel->tvg_slug,
-          "start"            => $startTime,
-          "end"              => $endTime,
+          "start"            => $startTime->setTimezone("utc"),
+          "end"              => $endTime->setTimezone("utc"),
           "title"            => $title,
           "category"         => $category,
           "link"             => $link,
@@ -117,8 +117,8 @@ class ScrapSingleChannel implements ShouldQueue {
         
         try {
           $res = Program::updateOrCreate([
-            'start'            => $newProgram->start->setTimezone("utc"),
-            'end'              => $newProgram->end->setTimezone("utc"),
+            'start'            => $newProgram->start,
+            'end'              => $newProgram->end,
             'channel_tvg_slug' => $this->channel->tvg_slug,
           ], $newProgram->toArray());
           

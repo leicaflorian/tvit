@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Log;
 
 
 /**
@@ -63,7 +65,12 @@ class Channel extends Model {
   
   protected function nowOnAir(): Attribute {
     return Attribute::make(
-      get: fn() => $this->programs()->where("start", "<=", now())->where("end", ">=", now())->first(),
+      get: function () {
+        $now = Carbon::now();
+        
+        return $this->programs()->where("start", "<=", $now)
+          ->where("end", ">=", $now)->first();
+      }
     );
   }
   

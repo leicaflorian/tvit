@@ -16,10 +16,10 @@ class Kernel extends ConsoleKernel {
    */
   protected function schedule(Schedule $schedule) {
 //    $schedule->command('inspire')->everyMinute();
-    $schedule->job(new ScrapChannelsContent(), "default")
+    /*$schedule->job(new ScrapChannelsContent(), "default")
       ->daily()
       ->timezone('Europe/Rome')
-      ->environments(['production']);
+      ->environments(['production']);*/
   }
   
   /**

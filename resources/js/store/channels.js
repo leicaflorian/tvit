@@ -4,7 +4,11 @@ export const useChannelsStore = defineStore('channels', {
   state: () => ({
     list: [],
     filterGroup: '',
-    channelPlaying: null
+    channelPlaying: null,
+    activeChannel: null,
+    highlightedChannel: null,
+    // use index to get highlighted channel as a getter
+    highlightedChannelIndex: null,
   }),
   getters: {
     groups (state) {
@@ -45,6 +49,25 @@ export const useChannelsStore = defineStore('channels', {
     },
     setChannelPlaying (channel) {
       this.channelPlaying = channel
+    },
+    setActiveChannel (channel) {
+      this.activeChannel = channel
+    },
+    setHighlightedChannel (increment, channel = null) {
+      const currentIndex = this.list.findIndex((item) => item.id === this.highlightedChannel.id)
+      
+      if(channel) {
+        this.highlightedChannel = channel
+        return
+      }
+      
+      if (currentIndex === 0 && increment === -1) {
+        this.highlightedChannel = this.list[this.list.length - 1]
+      } else if (currentIndex === this.list.length - 1 && increment === 1) {
+        this.highlightedChannel = this.list[0]
+      } else {
+        this.highlightedChannel = this.list[currentIndex + increment]
+      }
     }
   }
 })

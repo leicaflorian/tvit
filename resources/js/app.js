@@ -8,6 +8,9 @@ import { InertiaProgress } from '@inertiajs/progress'
 import { createPinia } from 'pinia'
 
 import Layout from './Pages/Layout.vue'
+import { useKeysHandler } from './composables/keysHandler'
+
+import 'bootstrap'
 
 InertiaProgress.init()
 
@@ -26,7 +29,12 @@ createInertiaApp({
     return page
   },
   setup ({ el, App, props, plugin }) {
-    createApp({ render: () => h(App, props) })
+    createApp({
+      render: () => h(App, props),
+      beforeMount () {
+        useKeysHandler()
+      }
+    })
       .use(plugin)
       .use(pinia)
       .mount(el)

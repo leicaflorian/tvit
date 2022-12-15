@@ -2,19 +2,24 @@
   <div class="the-player" :class="{'expanded': expanded}"
        v-show="channelPlaying">
     <div class="the-player-header modal-header" v-if="expanded">
-      <div class="d-flex align-items-center ms-1">
-        <img :src="channelPlaying && channelPlaying.logo_url_color" alt="" class="tvg-logo" style="height: 40px">
+      <div class="d-flex align-items-center ms-1 overflow-hidden">
+        <img :src="channelPlaying && channelPlaying.logo_url_color" alt="" class="tvg-logo d-none d-md-block"
+             style="height: 40px">
 
-        <div class="ms-2">
+        <div class="ms-2 w-100 overflow-hidden">
           <h5 class="modal-title" id="exampleModalToggleLabel">
             {{ channelPlaying && channelPlaying.name }}
-            <small class="mb-0">({{ channelPlaying && channelPlaying.group }})</small>
+            <small class="mb-0 d-none d-md-inline-block">({{ channelPlaying && channelPlaying.group }})</small>
           </h5>
 
-          <span class="mb-0" v-if="channelPlaying && channelPlaying.now_on_air">
-            <strong>{{ formatTime(channelPlaying.now_on_air.start_tz) }}</strong> -
-            <strong>{{ formatTime(channelPlaying.now_on_air.end_tz) }}</strong>
-            - {{ channelPlaying.now_on_air.title }}
+          <span class="mb-0 overflow-hidden w-100" v-if="channelPlaying && channelPlaying.now_on_air">
+            <div class="d-none d-md-inline-block">
+              <strong>{{ formatTime(channelPlaying.now_on_air.start_tz) }}</strong> -
+              <strong>{{ formatTime(channelPlaying.now_on_air.end_tz) }}</strong>
+            - </div>
+            <div class="text-truncate d-block">
+            {{ channelPlaying.now_on_air.title }}
+            </div>
           </span>
         </div>
       </div>
@@ -32,17 +37,20 @@
     <div class="the-player-body">
       <video ref="videoEl" src="" :controls="expanded" @click="!expanded ? (expanded = true) : null"></video>
 
-      <div class="d-flex align-items-center flex-fill px-3" v-if="!expanded">
-        <img :src="channelPlaying && channelPlaying.logo_url_color" alt="" class="tvg-logo">
+      <div class="d-flex align-items-center flex-fill px-3 overflow-hidden" v-if="!expanded">
+        <img :src="channelPlaying && channelPlaying.logo_url_color" alt="" class="tvg-logo d-none d-md-block">
 
-        <div class="flex-fill">
-          <h5 class="mb-0">{{ channelPlaying && channelPlaying.name }} <small
-              class="mb-0">({{ channelPlaying && channelPlaying.group }})</small></h5>
-          <span class="mb-0" v-if="channelPlaying && channelPlaying.now_on_air">
-            <strong>{{ formatTime(channelPlaying.now_on_air.start_tz) }}</strong> -
-            <strong>{{ formatTime(channelPlaying.now_on_air.end_tz) }}</strong>
-            - {{ channelPlaying.now_on_air.title }}
-          </span>
+        <div class="flex-fill overflow-hidden">
+          <h5 class="mb-0">{{ channelPlaying && channelPlaying.name }}
+            <small class="mb-0 d-none d-md-inline-block">({{ channelPlaying && channelPlaying.group }})</small>
+          </h5>
+          <div class="mb-0 w-100 overflow-hidden" v-if="channelPlaying && channelPlaying.now_on_air">
+            <span class="d-none d-md-inline-block">
+              <strong>{{ formatTime(channelPlaying.now_on_air.start_tz) }}</strong> -
+              <strong>{{ formatTime(channelPlaying.now_on_air.end_tz) }}</strong>
+            - </span>
+            <span class="text-truncate d-block">{{ channelPlaying.now_on_air.title }}</span>
+          </div>
         </div>
 
         <div class="d-flex">
@@ -149,18 +157,35 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '../../scss/partials/bsMixins';
+
 .the-player {
-  background-color: var(--bs-secondary);
+  background-color: var(--bs-dark);
   height: 60px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  position: sticky;
+  position: absolute;
   bottom: 0;
+  left: 0;
+  width: 100%;
   z-index: 99;
+  box-shadow: 0 -20px 20px 5px rgba(var(--bs-dark-rgb), 1);
+  transition: height .3s;
 
   &.expanded {
     height: 100vh;
+
+    .the-player-header {
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+      height: 100px;
+      background-color: rgb(0, 0, 0);
+      background: linear-gradient(0deg, rgba(var(--bs-dark-rgb), 0) 0%, rgba(var(--bs-dark-rgb), 1) 100%);
+      z-index: 99;
+    }
 
     .the-player-body {
       flex: 1;
@@ -205,5 +230,12 @@ export default {
 
 .text-white {
   stroke: #fff !important;
+}
+
+
+@include media-breakpoint-down("md") {
+
+  .the-player-header {
+  }
 }
 </style>

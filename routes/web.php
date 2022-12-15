@@ -30,7 +30,6 @@ Route::name("channels.")
   ->prefix("channels")
   ->group(function () {
     Route::get('/', [\App\Http\Controllers\ChannelController::class, 'index'])->name('index');
-    Route::get('/{channel}', [\App\Http\Controllers\ChannelController::class, 'show'])->name('show');
   });
 
 Route::get('/iptv/list.m3u', [\App\Http\Controllers\IptvController::class, 'm3uList']);

@@ -22,6 +22,7 @@
         "hls.js": "^1.2.0",
         "pinia": "^2.0.18",
         "sass": "^1.54.3",
+        "scroll-js": "^3.5.2",
         "vite-plugin-require": "^1.0.1",
         "vue": "^3.2.36"
     }

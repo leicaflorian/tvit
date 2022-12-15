@@ -36,3 +36,11 @@ Link JSON: [`https://tvit.leicaflorianrobert.dev/epg/list.json`](https://tvit.le
 If you're using a dedicated software, you have to configure the m3uList and the epgList.
 
 If you're using a browser, just visit [https://tvit.leicaflorianrobert.dev/channels](https://tvit.leicaflorianrobert.dev/channels)
+
+
+# UI idea
+
+https://www.domestika.org/it/projects/293989-smart-tv-ui-ux
+https://dribbble.com/shots/20043473-IPTV-Live-TV-s-Page
+https://cdn.dribbble.com/users/1472775/screenshots/5978437/media/126437c33d857249089942c869be65b1.jpg?compress=1&resize=1200x900&vertical=top
+https://cdn.dribbble.com/users/954552/screenshots/4618265/media/92c156345449eddcf79cb935b4056231.png

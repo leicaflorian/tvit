@@ -1,6 +1,9 @@
 @import url("https://cdn.jsdelivr.net/npm/@mdi/font@6.9.96/css/materialdesignicons.min.css");
+
 @import "partials/variables";
 @import "bootstrap/scss/bootstrap";
+@import "partials/cssVariables";
+@import "partials/transitions";
 
 .channel-programs {
   position: relative;
@@ -32,3 +35,15 @@
   justify-content: center;
 }
 
+
+#app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bs-dark);
+
+  main {
+    flex: 1;
+    overflow: hidden;
+  }
+}

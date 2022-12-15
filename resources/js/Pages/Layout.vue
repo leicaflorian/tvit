@@ -1,7 +1,7 @@
 <template>
   <TheNavbar></TheNavbar>
 
-  <main class="my-3">
+  <main :class="{'playing': channelsStore.channelPlaying}">
     <slot/>
   </main>
 
@@ -12,6 +12,8 @@
 import { Link } from '@inertiajs/inertia-vue3'
 import ThePlayer from '../Components/ThePlayer.vue'
 import TheNavbar from '../Components/TheNavbar.vue'
+import { useChannelsStore } from '../store/channels'
+import { onBeforeMount } from 'vue'
 
 export default {
   components: {
@@ -19,6 +21,25 @@ export default {
     ThePlayer,
     TheNavbar
   },
-  props: () => this.$attrs
+  props: () => this.$attrs,
+  setup (props) {
+    const channelsStore = useChannelsStore()
+
+    return {
+      channelsStore
+    }
+  }
 }
 </script>
+
+<style scoped lang="scss">
+main {
+  transition: margin-bottom .3s;
+}
+
+
+.playing {
+  margin-bottom: 60px;
+}
+
+</style>

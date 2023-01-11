@@ -30,15 +30,28 @@ Link JSON: [`https://tvit.leicaflorianrobert.dev/epg/list.json`](https://tvit.le
 
 > ❗️ Attention
 >
-> All programs times are in UTC format.
+> All program times are in UTC format.
 
 # How to use
 If you're using a dedicated software, you have to configure the m3uList and the epgList.
 
 If you're using a browser, just visit [https://tvit.leicaflorianrobert.dev/channels](https://tvit.leicaflorianrobert.dev/channels)
 
+# How to run locally
+### Requirements
+- php >= 8.1
+- composer
+- docker
 
-# UI idea
+### Steps
+- run `composer install`
+- run `./vendor/bin/sail up -d`
+- run `cp .env.example .env`
+- run `./vendor/bin/sail artisan key:generate`
+- run `./vendor/bin/sail artisan db:seed`
+- the app should be reachable on http://localhost:8082
+
+# UI ideas
 
 https://www.domestika.org/it/projects/293989-smart-tv-ui-ux
 https://dribbble.com/shots/20043473-IPTV-Live-TV-s-Page

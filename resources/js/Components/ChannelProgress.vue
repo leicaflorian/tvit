@@ -23,8 +23,8 @@ export default defineComponent({
     channel: Object as PropType<Channel>
   },
   setup (props) {
-    const startAt = computed(() => new Date(props.channel?.now_on_air.start_tz))
-    const endAt = computed(() => new Date(props.channel?.now_on_air.end_tz))
+    const startAt = computed(() => new Date(props.channel?.now_on_air?.start_tz))
+    const endAt = computed(() => new Date(props.channel?.now_on_air?.end_tz))
     const percent = computed(() => {
       const now = new Date()
       const total = endAt.value.getTime() - startAt.value.getTime()

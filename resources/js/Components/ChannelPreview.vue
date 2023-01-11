@@ -9,9 +9,9 @@
 
       </div>
 
-      <h2 class="mb-md-4">{{ channel.now_on_air.title }}</h2>
+      <h2 class="mb-md-4">{{ channel.now_on_air?.title }}</h2>
 
-      <p class="lead text-light mb-md-5">{{ channel.now_on_air.description }}</p>
+      <p class="lead text-light mb-md-5">{{ channel.now_on_air?.description }}</p>
 
       <ChannelProgress :channel="channel" class="mb-md-3"/>
 
@@ -35,7 +35,7 @@ export default defineComponent({
     const channelsStore = useChannelsStore()
 
     const channel: ComputedRef<Channel> = computed(() => channelsStore.highlightedChannel)
-    const bgImage = computed(() => channel.value?.now_on_air.cover_img ?? '/assets/video-placeholder.jpeg')
+    const bgImage = computed(() => channel.value?.now_on_air?.cover_img ?? '/assets/video-placeholder.jpeg')
 
     return {
       channel,

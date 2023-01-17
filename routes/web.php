@@ -19,8 +19,8 @@ Route::get('/', function () {
   return redirect()->route('channels.index');
 });
 
-Route::get("myip", function (){
-  $userIp = request()->ip();
+Route::get("myip", function () {
+  $userIp  = request()->ip();
   $details = GeoLocation::lookup($userIp);
   
   dump($userIp, $details);
@@ -74,4 +74,17 @@ Route::name("discovery.")
     Route::get("/{channel}/stream.m3u8", [\App\Http\Controllers\DiscoveryController::class, "stream"])->name("stream");
     Route::get("/{channel}/{any}", [\App\Http\Controllers\DiscoveryController::class, "ts"])
       ->where('any', '.*')->name("ts");
+  });
+
+Route::name("protv.")
+  ->prefix("protv")
+  ->group(function () {
+    Route::get("/{channel}/stream.m3u8", [\App\Http\Controllers\ProTvController::class, "stream"]);
+    Route::get("/{channel}/chunk", [\App\Http\Controllers\ProTvController::class, "chunk"]);
+  });
+
+Route::name("antena.")
+  ->prefix("antena")
+  ->group(function () {
+    Route::get("/{channel}/stream.m3u8", [\App\Http\Controllers\AntenaController::class, "stream"]);
   });

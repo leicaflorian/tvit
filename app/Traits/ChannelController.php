@@ -40,6 +40,6 @@ trait ChannelController {
   }
   
   private function getChannelCode($channel): string {
-    return strtolower($this->getChannelData($channel)["iptv_code"]);
+    return $this->getChannelData($channel)["iptv_code"];
   }
 }

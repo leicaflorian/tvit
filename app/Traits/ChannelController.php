@@ -9,8 +9,8 @@ trait ChannelController {
   
   private abstract function channelName(): string;
   
-  private function getChannelStreamLink($channel): string {
-    return str_replace("#channel", $this->getChannelCode($channel), $this->baseUrl());
+  private function getChannelStreamLink($channel, $toLowercase = true): string {
+    return str_replace("#channel", $this->getChannelCode($channel, $toLowercase), $this->baseUrl());
   }
   
   private function getChannelData($channel): Channel {
@@ -39,7 +39,13 @@ trait ChannelController {
     return $config;
   }
   
-  private function getChannelCode($channel): string {
-    return $this->getChannelData($channel)["iptv_code"];
+  private function getChannelCode($channel, $toLowerCase = true): string {
+    $str = $this->getChannelData($channel)["iptv_code"];
+    
+    if ($toLowerCase) {
+      $str = strtolower($str);
+    }
+    
+    return $str;
   }
 }

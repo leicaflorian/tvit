@@ -18,7 +18,7 @@ class AntenaController extends Controller {
   }
   
   public function stream($channel) {
-    $link = $this->getChannelStreamLink($channel);
+    $link = $this->getChannelStreamLink($channel, false);
     
     return response()->redirectTo($link);
   }

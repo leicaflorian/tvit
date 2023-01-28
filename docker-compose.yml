@@ -1,7 +1,9 @@
 # For more information: https://laravel.com/docs/sail
 version: '3'
+name: tvit
 services:
     laravel.test:
+        container_name: "tvit"
         build:
             context: ./vendor/laravel/sail/runtimes/8.1
             dockerfile: Dockerfile

@@ -26,20 +26,15 @@ class ChannelGroupSeeder extends Seeder {
     foreach ($groups as $group) {
       $slug = str_replace(" ", "", strtolower($group["title"]));
       
-      $existing = ChannelGroup::where("slug", $slug)->first();
-      
       $data = [
-        "name"     => $group,
+        "name"     => $group["title"],
         "slug"     => strval($slug),
         "scrapper" => $group["scrapper"],
       ];
       
-      if ($existing) {
-        $existing->update($data);
-        $existing->save();
-      } else {
-        ChannelGroup::create($data);
-      }
+      ChannelGroup::updateOrCreate([
+        "slug" => $slug
+      ], $data);
     }
   }
 }

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder {
     $this->call([
       ChannelsSeeder::class,
       ExtraChannelsSeeder::class,
+      PlutoTvSeeder::class
     ]);
   }
 }

@@ -6,6 +6,7 @@ use App\Classes\ChannelsConfigCollection;
 use App\Classes\ChannelsListCollection;
 use App\Classes\ChannelsNumberCollection;
 use App\Models\Channel;
+use App\Models\ChannelGroup;
 use Illuminate\Database\Seeder;
 use PHPHtmlParser\Dom;
 use PHPHtmlParser\Exceptions\ChildNotFoundException;
@@ -155,6 +156,7 @@ class ChannelsSeeder extends Seeder {
         'logo_url_light' => $this->getLogoUrl($channelData, 'light'),
         'dtt_num'        => $channelConfig["dvbNum"],
         'group'          => $channelConfig["groupTitle"],
+        'group_id'       => ChannelGroup::where("slug", $channelConfig["groupTitle"])->first()->id
       ];
       
       $finalList->push(Channel::updateOrCreate([

@@ -25,7 +25,7 @@ class ChannelController extends Controller {
       $query->where("start", ">=", today())
         ->where("end", "<=", now()->addHours(24));
     }]);
-    
+  
     return response()->json($channel);
 //    return view('channels.show', compact('channel'));
   }

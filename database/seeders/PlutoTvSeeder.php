@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Channel;
+use App\Models\ChannelGroup;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -68,6 +69,8 @@ class PlutoTvSeeder extends Seeder {
       ["#" => 910, "title" => "Naturescape – Pluto TV", "link" => "https://service-stitcher.clusters.pluto.tv/v1/stitch/embed/hls/channel/610a9ebe8c2ac2000734776e/master.m3u8?deviceId=channel&deviceModel=web&deviceVersion=1.0&appVersion=1.0&deviceType=rokuChannel&deviceMake=rokuChannel&deviceDNT=1&advertisingId=channel&embedPartner=rokuChannel&appName=rokuchannel&is_lat=1&bmodel=bm1&content=channel&platform=web&tags=ROKU_CONTENT_TAGS&coppa=false&content_type=livefeed&rdid=channel&genre=ROKU_ADS_CONTENT_GENRE&content_rating=ROKU_ADS_CONTENT_RATING&studio_id=viacom&channel_id=channel", "logo" => "https://i.imgur.com/CGB6qiV.png"]
     ];
     
+    // all channels https://service-channels.clusters.pluto.tv/v2/guide/channels?channelIds=&offset=0&limit=1000&sort=number%3Aasc
+    
     foreach ($channelsList as $channel) {
       $slug = Str::slug($channel["title"]);
       
@@ -81,6 +84,7 @@ class PlutoTvSeeder extends Seeder {
         'logo_url_light' => $channel['logo'],
         'dtt_num'        => $channel['#'],
         'group'          => "plutotv",
+        'group_id'       => ChannelGroup::where("slug", "plutotv")->first()->id,
       ];
       
       Channel::updateOrCreate([

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Log;
 
@@ -96,5 +97,9 @@ class Channel extends Model {
    */
   public function programs(): HasMany {
     return $this->hasMany(Program::class, 'channel_tvg_slug', 'tvg_slug');
+  }
+  
+  public function channelGroup(): BelongsTo {
+    return $this->belongsTo(ChannelGroup::class, "group_id");
   }
 }

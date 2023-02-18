@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder {
     //     'email' => 'test@example.com',
     // ]);
     $this->call([
+      ChannelGroupSeeder::class,
       ChannelsSeeder::class,
       ExtraChannelsSeeder::class,
       PlutoTvSeeder::class

@@ -164,6 +164,6 @@ class ChannelsSeeder extends Seeder {
       ], $newChannel));
     }
     
-    dump($finalList->toArray());
+//    dump($finalList->toArray());
   }
 }

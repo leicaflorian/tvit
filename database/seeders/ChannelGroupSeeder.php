@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ChannelGroup;
 use Illuminate\Database\Seeder;
 
 class ChannelGroupSeeder extends Seeder {
@@ -25,15 +26,17 @@ class ChannelGroupSeeder extends Seeder {
     foreach ($groups as $group) {
       $slug = str_replace(" ", "", strtolower($group["title"]));
       
+      dump($slug);
+      
       $newGroup = [
         "name"     => $group,
         "slug"     => $slug,
         "scrapper" => $group["scrapper"],
       ];
       
-      \App\Models\ChannelGroup::updateOrCreate([
+      ChannelGroup::updateOrCreate([
         "slug" => $slug
-      ], $newGroup);;
+      ], $newGroup);
     }
   }
 }

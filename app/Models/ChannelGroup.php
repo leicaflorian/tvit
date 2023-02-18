@@ -13,6 +13,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class ChannelGroup extends Model {
   use HasFactory;
   
+  protected $fillable = [
+    "name",
+    "slug",
+    "scrapper",
+  ];
+  
   public function channels(): HasMany {
     return $this->hasMany(Channel::class, "group_id");
   }

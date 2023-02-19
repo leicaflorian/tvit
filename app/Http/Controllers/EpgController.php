@@ -53,8 +53,8 @@ class EpgController extends Controller {
     $channels = Channel::orderBy('dtt_num')->get();
     
     $channels->each(function (Channel $channel) use (&$xml) {
-      $channelXml   = ['<channel id="' . $channel->tvg_name . '">'];
-      $channelXml[] = '<display-name lang="it">' . $channel->name . '</display-name>';
+      $channelXml   = ['<channel id="' . $this->escapeString($channel->tvg_name) . '">'];
+      $channelXml[] = '<display-name lang="it">' . $this->escapeString($channel->name) . '</display-name>';
       $channelXml[] = '<icon src="' . $this->escapeString($channel->logo_url_color) . '"/>';
       $channelXml[] = '<url>' . $this->escapeString($channel->m3u8Link) . '</url>';
       
@@ -65,7 +65,7 @@ class EpgController extends Controller {
       $programs = $channel->programs()->where("start", ">=", today())->get();
       
       $programs->each(function (Program $program) use (&$xml, $channel) {
-        $programXml   = ['<programme start="' . $program->start->format("YmdHis") . '" stop="' . $program->end->format("YmdHis") . '" channel="' . $channel->tvg_name . '">'];
+        $programXml   = ['<programme start="' . $program->start->format("YmdHis") . '" stop="' . $program->end->format("YmdHis") . '" channel="' . $this->escapeString($channel->tvg_name) . '">'];
         $programXml[] = '<title lang="it">' . $this->escapeString($program->title) . '</title>';
         $programXml[] = '<desc lang="it">' . ($program->description ? $this->escapeString($program->description) : "-") . '</desc>';
         $programXml[] = '<category lang="it">' . $this->escapeString($program->category) . '</category>';
@@ -74,7 +74,7 @@ class EpgController extends Controller {
       });
     });
     
-    return response(implode("", $xml) . "</tv>", 200, [
+    return response(implode("\n", $xml) . "</tv>\n", 200, [
       'Content-Type' => 'application/xml'
     ]);
   }

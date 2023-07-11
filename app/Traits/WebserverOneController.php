@@ -8,10 +8,11 @@ use Illuminate\Support\Str;
 use PHPHtmlParser\Dom;
 use PHPHtmlParser\Options;
 use Symfony\Component\HttpFoundation\Response;
+use function Psy\debug;
 
 trait WebserverOneController {
   private function baseUrl(): string {
-    return "https://warnforlese.net/embed/#channel";
+    return "https://y0r90gl9c89ljx.opposepresent.net/embed/#channel";
   }
   
   private function decryptFnE($c, $a) {
@@ -63,6 +64,7 @@ trait WebserverOneController {
   }
   
   private function getListUrl($link) {
+    
     $result = Http::withHeaders([
       "Referer" => "https://webserver.one/Embed/Rai_2_Online.php"
     ])->get($link);
@@ -85,6 +87,7 @@ trait WebserverOneController {
         if (Str::contains($content, "eval")) {
           preg_match("/return p.*\.split/", $content, $m);
           $content = str_replace(["return p}(", ".split"], "", $m[0]);
+          
           
           $preg_match      = preg_match("/('.*'),(\d{2,}),(\d{2,}),('.*)/", $content, $m);
           $decryptedString = $this->decrypt(
@@ -117,9 +120,14 @@ trait WebserverOneController {
     $link    = $this->getChannelStreamLink($channel);
     $listUrl = $this->getListUrl($link);
     
+    Log::debug($link);
+    Log::debug($listUrl);
+    
     $result = Http::withHeaders([
-      "Referer" => "https://warnforlese.net/"
+      "Referer" => "https://y0r90gl9c89ljx.opposepresent.net/"
     ])->get($listUrl);
+    
+    Log::debug($result->body());
     
     // si sostituisce l'ultima parte dell'url con il ts
     if ($result->ok()) {
@@ -136,16 +144,17 @@ trait WebserverOneController {
       return response($finalContent)->header("Content-Type", "application/vnd.apple.mpegurl");
     }
     
+    Log::error($result->status());
     Log::error($result->reason());
     
     return abort(Response::HTTP_BAD_REQUEST);
   }
   
   public function ts($channel, $page) {
-    $link = "https://yatn9ng5b2d6a9e4.cdnexpress37.net:8443/hls/$page";
+    $link = "https://sk4snlj0w3wp1g.cdnexpress63.net:8443/hls/$page";
     
     $result = Http::withHeaders([
-      "Referer" => "https://warnforlese.net/"
+      "Referer" => "https://y0r90gl9c89ljx.opposepresent.net/"
     ])->get($link);
     
     if ($result->ok()) {

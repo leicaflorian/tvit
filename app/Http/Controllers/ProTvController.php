@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Log;
 class ProTvController extends Controller {
   use \App\Traits\ChannelController;
   
+  private $url = "https://tvonline123.com/hls/protvhd.m3u8";
+  private $tsUrl = "https://tvonline123.com/hls/";
+  private $referer = "https://tvonline123.com/tvlive/any.html";
+  
   private function baseUrl(): string {
     // other channels https://github.com/iptv-org/iptv/issues
     // https://rundle.deta.dev/hls/LIVE$ProTV.ro/6.m3u8/Level(19012010)?start=LIVE&end=END
@@ -20,35 +24,26 @@ class ProTvController extends Controller {
   }
   
   public function stream($channel) {
-    // Download m3u8 file
-    $link = $this->getChannelStreamLink($channel) . ".m3u8";
+//    https://www.cool-etv.net/ch/protv.htm#!
     
-    $result = Http::get($link);
+    $response = Http::withHeaders([
+      "Referer" => $this->referer,
+      "Origin" => $this->referer,
+    ])->get($this->url);
     
-    if ($result->ok()) {
-      // la risposta contiene una cosa del genere.
-      $data = $result->body();
-      
-      return response($data)->header("Content-Type", "application/vnd.apple.mpegurl");
-    } else {
-      return response("Can't read channel data", 503);
-    }
+    $list = $this->parseTsUrls($response->body(), "protv/" . $channel);
+    
+    return response($list)->header(
+      "Content-Type", "application/vnd.apple.mpegurl"
+    );
   }
   
-  public function chunk($channel){
-    $query = request()->getQueryString();
-    $link = str_replace("#channel", "chunk?" . $query, $this->baseUrl());
+  public function ts($channel, $url) {
+    $response = Http::withHeaders([
+      "Referer" => $this->referer,
+      "Origin" => $this->referer,
+    ])->get($this->tsUrl . $url);
     
-    $result = Http::get(urldecode($link));
-    
-    if ($result->ok()) {
-      // la risposta contiene una cosa del genere.
-      $data = $result->body();
-      
-      return response($data)->header("Content-Type", "application/javascript");
-    } else {
-      dump($result);
-//      return response("Can't read channel chunk", 503);
-    }
+    return response($response->body());
   }
 }

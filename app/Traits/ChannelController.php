@@ -48,4 +48,15 @@ trait ChannelController {
     
     return $str;
   }
+  
+  private function parseTsUrls($tsList, $url = "test", $urlParts = []): string {
+    $pattern      = "/^[^#].*/m";
+    $finalContent = preg_replace_callback($pattern, function ($match) use ($url, $urlParts) {
+      $tsString = str_replace("\r", "", $match[0]);
+      
+      return url($url, [...$urlParts]) . "/" . $tsString;
+    }, $tsList);
+    
+    return $finalContent;
+  }
 }

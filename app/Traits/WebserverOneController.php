@@ -11,8 +11,12 @@ use Symfony\Component\HttpFoundation\Response;
 use function Psy\debug;
 
 trait WebserverOneController {
+  private $referer = "https://y0r90gl9c89ljx.opposepresent.net/";
+  
   private function baseUrl(): string {
-    return "https://y0r90gl9c89ljx.opposepresent.net/embed/#channel";
+//    return "https://y0r90gl9c89ljx.opposepresent.net/embed/#channel";
+    return "https://jlev8mvvawek39.opposepresent.net/embed/#channel";
+    
   }
   
   private function decryptFnE($c, $a) {
@@ -128,6 +132,7 @@ trait WebserverOneController {
     ])->get($listUrl);
     
     Log::debug($result->body());
+    
     
     // si sostituisce l'ultima parte dell'url con il ts
     if ($result->ok()) {

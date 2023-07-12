@@ -16,6 +16,7 @@ class ProTvController extends Controller {
   private function baseUrl(): string {
     // other channels https://github.com/iptv-org/iptv/issues
     // https://rundle.deta.dev/hls/LIVE$ProTV.ro/6.m3u8/Level(19012010)?start=LIVE&end=END
+//    https://tvonline123.com/tvlive/?url=protv-hd&s=204
     return "https://hlsrundle-stream-iptv.gq/api/hls/#channel";
   }
   

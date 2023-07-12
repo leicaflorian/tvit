@@ -80,13 +80,16 @@ Route::name("protv.")
   ->prefix("protv")
   ->group(function () {
     Route::get("/{channel}/stream.m3u8", [\App\Http\Controllers\ProTvController::class, "stream"]);
-    Route::get("/{channel}/chunk", [\App\Http\Controllers\ProTvController::class, "chunk"]);
+    Route::get("/{channel}/{any}", [\App\Http\Controllers\ProTvController::class, "ts"])
+      ->where('any', '.*')->name("ts");
   });
 
 Route::name("antena.")
   ->prefix("antena")
   ->group(function () {
     Route::get("/{channel}/stream.m3u8", [\App\Http\Controllers\AntenaController::class, "stream"]);
+    Route::get("/{channel}/{any}", [\App\Http\Controllers\AntenaController::class, "ts"])
+      ->where('any', '.*')->name("ts");
   });
 
 Route::name("la7.")

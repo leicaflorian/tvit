@@ -14,15 +14,26 @@ use Illuminate\Support\Facades\Log;
 class ScrapChannelsContent implements ShouldQueue {
   use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
   
+  private string $group;
+  
   /**
    * Create a new job instance.
    *
    * @return void
    */
-  public function __construct() {
-    Log::info("Dispatching ScrapChannelsContent job");
-    dump("Dispatching ScrapChannelsContent job");
-    //
+  public function __construct($group = null) {
+    $msg = "Dispatching ScrapChannelsContent job";
+    
+    if ($group) {
+      $msg .= " for group {$group}";
+    }
+    
+    Log::info($msg);
+    dump($msg);
+    
+    if ($group) {
+      $this->group = $group;
+    }
   }
   
   /**
@@ -31,8 +42,11 @@ class ScrapChannelsContent implements ShouldQueue {
    * @return void
    */
   public function handle(): void {
-    $channels = Channel::all();
-//    $channels = Channel::where("group_id", 8)->get();
+    if ($this->group) {
+      $channels = Channel::where("group", $this->group)->get();
+    } else {
+      $channels = Channel::all();
+    }
     
     Log::info("Starting to scrap " . $channels->count() . " channels");
     

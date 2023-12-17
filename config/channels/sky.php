@@ -5,7 +5,7 @@ use App\Enums\ChannelGroup;
 return [
   [
     "id"         => "tv8",
-    "code"       => "11223/tv8web",
+    "code"       => "7",
     "name"       => "TV8",
     "tvgLogo"    => "237",
     "tvgName"    => "",
@@ -14,7 +14,7 @@ return [
     "dvbNum"     => 8
   ], [
     "id"         => "cielo",
-    "code"       => "11219/cieloweb",
+    "code"       => "1",
     "name"       => "Cielo",
     "tvgLogo"    => "239",
     "tvgName"    => "",

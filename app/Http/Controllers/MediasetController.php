@@ -11,7 +11,8 @@ class MediasetController extends Controller {
   use \App\Traits\ChannelController;
   
   private function baseUrl(): string {
-    return "https://live2.msf.cdn.mediaset.net/content/hls_h0_clr_vos/live/channel(#channel)";
+//    return "https://live2.msf.cdn.mediaset.net/content/hls_h0_clr_vos/live/channel(#channel)";
+    return "https://live02-col.msf.cdn.mediaset.net/live/ch-#channel/#channel-clr.isml/index_hr.m3u8";
   }
   
   private function channelName(): string {
@@ -20,7 +21,7 @@ class MediasetController extends Controller {
   
   public function stream($channel) {
     // Download m3u8 file
-    $link = $this->getChannelStreamLink($channel) . "/index.m3u8";
+    $link = $this->getChannelStreamLink($channel);
     
     // se faccio il download lato server, ho il problema della geolocalizzazione
     // faccio solo il redirect al link

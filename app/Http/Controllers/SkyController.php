@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Traits\WebserverOneController;
 use \App\Traits\ChannelController;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -24,13 +25,21 @@ class SkyController extends Controller {
   public function stream($channel) {
     $link = $this->getChannelStreamLink($channel, false);
     
-    $result = Http::get($link);
+    $client = new Client([
+      "proxy" => [
+        'https' => 'http://35l1IZBDuKp0Lbek:buXDFrlivy7ljTWo_country-it@geo.iproyal.com:12321',
+      ],
+      'verify' => false
+    ]);
+    $result = $client->get($link);
     
-    if ($result->ok()) {
+    if ($result->getStatusCode() == Response::HTTP_OK) {
       // la risposta contiene una cosa del genere.
-      $data = $result->json();
+      $streamingLink = json_decode($result->getBody()->getContents(), true)["streaming_url"];
       
-      return redirect($data["streaming_url"]);
+//      $data = $client->get($streamingLink);
+      
+      return redirect($streamingLink);
     }
     
     Log::error($result->reason());

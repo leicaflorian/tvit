@@ -29,7 +29,6 @@ class ScrapChannelsContent implements ShouldQueue {
     }
     
     Log::info($msg);
-    dump($msg);
     
     if ($group) {
       $this->group = $group;
@@ -42,7 +41,8 @@ class ScrapChannelsContent implements ShouldQueue {
    * @return void
    */
   public function handle(): void {
-    if ($this->group) {
+    
+    if (property_exists($this, "group") && !empty($this->group)) {
       $channels = Channel::where("group", $this->group)->get();
     } else {
       $channels = Channel::all();

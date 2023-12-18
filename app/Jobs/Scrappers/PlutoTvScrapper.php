@@ -2,12 +2,14 @@
 
 namespace App\Jobs\Scrappers;
 
+use App\Classes\ProxiedHttp;
 use App\Models\Channel;
 use App\Models\Program;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class PlutoTvScrapper {
+  
   public static function scrap(Channel $channel) {
     dump('Scraping PlutoTv');
     
@@ -22,13 +24,9 @@ class PlutoTvScrapper {
   
   private static function getBearerToken() {
     $url = "https://boot.pluto.tv/v4/start?appName=web&appVersion=6.10.1-60e2ed8f33981a7b47e30eca5e56d8fb33dce90e&deviceVersion=110.0.0&deviceModel=web&deviceMake=chrome&deviceType=web&clientID=74efc5af-6985-4b9f-a710-1e4db5028634&clientModelNumber=1.0.0&channelSlug=pluto-tv-horror-it&serverSideAds=true&constraints=&drmCapabilities=widevine%3AL3&clientTime=2023-02-18T21%3A15%3A39.317Z";
-    $res = Http::get($url);
+    $res = ProxiedHttp::get("it", $url);
     
-    if ($res->ok()) {
-      $res = $res->json();
-      
-      return $res['sessionToken'];
-    }
+    return $res['sessionToken'];
   }
   
   private static function getPrograms($bearer, Channel $channel) {
@@ -46,15 +44,13 @@ class PlutoTvScrapper {
 //      dump($startFormatted);
       
       $link = "https://service-channels.clusters.pluto.tv/v2/guide/timelines?start=$startFormatted&channelIds=$channel->iptv_code&duration=240";
-      $res  = Http::withToken($bearer)->get($link);
+      $res = ProxiedHttp::get("it", $link, [
+        "headers" => [
+          "Authorization" => "Bearer " . $bearer
+        ]
+      ]);
       
-      if ($res->ok()) {
-        $res = $res->json();
-        
-        $programs = array_merge($programs, $res['data'][0]['timelines']);
-      } else {
-        dump($res->json());
-      }
+      $programs = array_merge($programs, $res['data'][0]['timelines']);
       
       $minutesToAdd += 240;
     } while ($start->isBefore($startOfDay->clone()->addDay()));

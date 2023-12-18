@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\ProxiedHttp;
 use App\Traits\WebserverOneController;
 use \App\Traits\ChannelController;
 use GuzzleHttp\Client;
@@ -25,7 +26,17 @@ class SkyController extends Controller {
   public function stream($channel) {
     $link = $this->getChannelStreamLink($channel, false);
     
-    $client = new Client([
+    try {
+      $data = ProxiedHttp::get("it", $link);
+      
+      return redirect($data["streaming_url"]);
+    } catch (\Exception $e) {
+      Log::error($e->getMessage());
+      
+      return abort(Response::HTTP_BAD_REQUEST);
+    }
+    
+    /*$client = new Client([
       "proxy" => [
         'https' => 'http://35l1IZBDuKp0Lbek:buXDFrlivy7ljTWo_country-it@geo.iproyal.com:12321',
       ],
@@ -37,13 +48,7 @@ class SkyController extends Controller {
       // la risposta contiene una cosa del genere.
       $streamingLink = json_decode($result->getBody()->getContents(), true)["streaming_url"];
       
-//      $data = $client->get($streamingLink);
-      
       return redirect($streamingLink);
-    }
-    
-    Log::error($result->reason());
-    
-    return abort(Response::HTTP_BAD_REQUEST);
+    }*/
   }
 }

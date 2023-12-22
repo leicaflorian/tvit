@@ -3,6 +3,7 @@
 namespace App\Classes;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class ProxiedHttp {
@@ -26,6 +27,8 @@ class ProxiedHttp {
   
   function call($url, $method, $options) {
     $resp = $this->client->request($method, $url, $options);
+    
+    Log::info("ProxiedHttp: " . $resp->getStatusCode() . " " . $url);
     
     $body = $resp->getBody()->getContents();
     

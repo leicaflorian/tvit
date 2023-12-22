@@ -2,26 +2,13 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Scrappers\SuperGuidaTvScrapper;
 use App\Models\Channel;
-use App\Models\Program;
-use App\Jobs\ScrapProgramDetail;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use PHPHtmlParser\Dom;
-use PHPHtmlParser\Exceptions\ChildNotFoundException;
-use PHPHtmlParser\Exceptions\CircularException;
-use PHPHtmlParser\Exceptions\ContentLengthException;
-use PHPHtmlParser\Exceptions\LogicalException;
-use PHPHtmlParser\Exceptions\NotLoadedException;
-use PHPHtmlParser\Exceptions\StrictException;
-use Psr\Http\Client\ClientExceptionInterface;
 
 class ScrapSingleChannel implements ShouldQueue {
   use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -37,8 +24,8 @@ class ScrapSingleChannel implements ShouldQueue {
    * @return void
    */
   public function __construct($channel=null) {
-    $this->channel = $channel;
-//    $this->channel = Channel::find(79);
+//    $this->channel = $channel;
+    $this->channel = Channel::find(1);
   }
   
   public function scrapPrograms(string $day) {

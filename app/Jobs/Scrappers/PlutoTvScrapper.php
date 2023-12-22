@@ -6,7 +6,6 @@ use App\Classes\ProxiedHttp;
 use App\Models\Channel;
 use App\Models\Program;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Http;
 
 class PlutoTvScrapper {
   

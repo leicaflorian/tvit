@@ -7,12 +7,15 @@ use Illuminate\Support\Str;
 
 class ProxiedHttp {
   private array $availableProxies = [
-    "it" => "http://35l1IZBDuKp0Lbek:buXDFrlivy7ljTWo_country-it@geo.iproyal.com:12321",
+    "it" => "",
     "ro" => ""
   ];
   private Client $client;
   
   function __construct(string $country) {
+    $this->availableProxies["it"] = env("PROXY_IT");
+    $this->availableProxies["ro"] = env("PROXY_ro");
+    
     $this->client = new Client([
       "proxy"  => [
         'https' => $this->availableProxies[$country],

@@ -36,19 +36,5 @@ class SkyController extends Controller {
       return abort(Response::HTTP_BAD_REQUEST);
     }
     
-    /*$client = new Client([
-      "proxy" => [
-        'https' => 'http://35l1IZBDuKp0Lbek:buXDFrlivy7ljTWo_country-it@geo.iproyal.com:12321',
-      ],
-      'verify' => false
-    ]);
-    $result = $client->get($link);
-    
-    if ($result->getStatusCode() == Response::HTTP_OK) {
-      // la risposta contiene una cosa del genere.
-      $streamingLink = json_decode($result->getBody()->getContents(), true)["streaming_url"];
-      
-      return redirect($streamingLink);
-    }*/
   }
 }

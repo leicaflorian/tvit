@@ -29,8 +29,8 @@ class ScrapProgramDetail implements ShouldQueue {
    * @return void
    */
   public function __construct(Program $program = null) {
-//    $this->program = $program;
-    $this->program = Program::find(5108);
+    $this->program = $program;
+//    $this->program = Program::find(5108);
   }
   
   /**

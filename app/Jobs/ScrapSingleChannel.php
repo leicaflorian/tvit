@@ -24,8 +24,8 @@ class ScrapSingleChannel implements ShouldQueue {
    * @return void
    */
   public function __construct($channel=null) {
-//    $this->channel = $channel;
-    $this->channel = Channel::find(1);
+    $this->channel = $channel;
+//    $this->channel = Channel::find(31);
   }
   
   public function scrapPrograms(string $day) {

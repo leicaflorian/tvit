@@ -61,7 +61,6 @@ export default defineComponent({
     async function onShowing () {
       const resp = await axios.get('/api/channels/' + props.channel.tvg_slug)
 
-      debugger
       programs.value = resp.data.programs
 
       nextTick(() => {

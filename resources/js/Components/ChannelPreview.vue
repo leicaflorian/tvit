@@ -6,7 +6,6 @@
 
         Ora in onda
         <ProgramsOffCanvas :channel="channel"/>
-
       </div>
 
       <h2 class="mb-md-4">{{ channel.now_on_air?.title }}</h2>

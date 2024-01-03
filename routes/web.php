@@ -2,6 +2,7 @@
 
 use Adrianorosa\GeoLocation\GeoLocation;
 use App\Http\Controllers\TestController;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -80,8 +81,7 @@ Route::name("protv.")
   ->prefix("protv")
   ->group(function () {
     Route::get("/{channel}/stream.m3u8", [\App\Http\Controllers\ProTvController::class, "stream"]);
-    Route::get("/{channel}/{any}", [\App\Http\Controllers\ProTvController::class, "ts"])
-      ->where('any', '.*')->name("ts");
+    Route::get("/{channel}/part", [\App\Http\Controllers\ProTvController::class, "part"]);
   });
 
 Route::name("antena.")

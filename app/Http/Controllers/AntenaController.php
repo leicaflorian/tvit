@@ -18,6 +18,9 @@ class AntenaController extends Controller {
 //    https://github.com/iptv-org/iptv/issues
 //    https://iptv-org.github.io/iptv/countries/ro.m3u // lista
     return "https://rundle.deta.dev/hls/LIVE\$#channel/6.m3u8/Level(19012010)?start=LIVE&end=END";
+    
+    // comedy play: https://stream1.antenaplay.ro/live/ComedyPlay/playlist.m3u8
+    // Antena Monden: https://stream1.antenaplay.ro/live/AntenaMonden/playlist.m3u8
   }
   
   private function channelName(): string {
@@ -25,6 +28,12 @@ class AntenaController extends Controller {
   }
   
   public function stream($channel) {
+    if ($channel === "comedy-play") {
+      return redirect("https://stream1.antenaplay.ro/live/ComedyPlay/playlist.m3u8");
+    } elseif ($channel === "antena-monden") {
+      return redirect("https://stream1.antenaplay.ro/live/AntenaMonden/playlist.m3u8");
+    }
+    
     $response = Http::withHeaders([
       "Referer" => $this->referer
     ])->get($this->url);

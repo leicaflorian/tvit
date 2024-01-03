@@ -35,11 +35,35 @@ class ExtraChannelsSeeder extends Seeder {
         'iptv_code'      => "Antena1",
         'logo_url_color' => "https://assets.antenaplay.ro/2022/10/20/6fiwx2Ydv5JBEsCShluH.png",
         'logo_url_light' => "https://assets.antenaplay.ro/2022/10/20/6fiwx2Ydv5JBEsCShluH.png",
-        'dtt_num'        => 99,
+        'dtt_num'        => 100,
         'group'          => "antena",
         'group_id'       => ChannelGroup::where("slug", "antena")->first()->id,
       ],
       [
+        'name'           => "Comedy Play",
+        'tvg_slug'       => "comedy-play",
+        'tvg_name'       => "comedy-play",
+        'tvg_code'       => 0,
+        'iptv_code'      => "comedy-play",
+        'logo_url_color' => "https://assets.antenaplay.ro/2023/04/13/AUZDYJFeAKhziBVlUWTK.png",
+        'logo_url_light' => "https://assets.antenaplay.ro/2023/04/13/AUZDYJFeAKhziBVlUWTK.png",
+        'dtt_num'        => 101,
+        'group'          => "antena",
+        'group_id'       => ChannelGroup::where("slug", "antena")->first()->id,
+      ],
+      [
+        'name'           => "Antena Monden",
+        'tvg_slug'       => "antena-monden",
+        'tvg_name'       => "antena-monden",
+        'tvg_code'       => 0,
+        'iptv_code'      => "antena-monden",
+        'logo_url_color' => "https://assets.antenaplay.ro/2023/04/13/MrwirFrMppGIcWVNzlGK.png",
+        'logo_url_light' => "https://assets.antenaplay.ro/2023/04/13/MrwirFrMppGIcWVNzlGK.png",
+        'dtt_num'        => 102,
+        'group'          => "antena",
+        'group_id'       => ChannelGroup::where("slug", "antena")->first()->id,
+      ],
+      /*[
         'name'           => "Antena 3",
         'tvg_slug'       => "antena3",
         'tvg_name'       => "antena3",
@@ -50,7 +74,7 @@ class ExtraChannelsSeeder extends Seeder {
         'dtt_num'        => 99,
         'group'          => "antena",
         'group_id'       => ChannelGroup::where("slug", "antena")->first()->id,
-      ]
+      ]*/
     ];
     
     foreach ($list as $channel) {

@@ -17,8 +17,8 @@ class ChannelGroupSeeder extends Seeder {
       ["title" => "Mediaset", "scrapper" => "SuperGuidaTv"],
       ["title" => "Sky", "scrapper" => "SuperGuidaTv"],
       ["title" => "Discovery", "scrapper" => "SuperGuidaTv"],
-      ["title" => "Pro Tv", "scrapper" => "SuperGuidaTv"],
-      ["title" => "Antena", "scrapper" => "SuperGuidaTv"],
+      ["title" => "Pro Tv", "scrapper" => "ProTv"],
+      ["title" => "Antena", "scrapper" => "Antena"],
       ["title" => "La7", "scrapper" => "SuperGuidaTv"],
       ["title" => "Pluto Tv", "scrapper" => "PlutoTv"],
     ];

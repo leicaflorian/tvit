@@ -174,7 +174,7 @@ export default {
   transition: height .3s;
 
   &.expanded {
-    height: 100vh;
+    height: 100dvh;
 
     .the-player-header {
       position: absolute;

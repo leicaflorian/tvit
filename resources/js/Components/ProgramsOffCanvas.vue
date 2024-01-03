@@ -100,7 +100,7 @@ export default defineComponent({
   --bs-offcanvas-border-color: rgba(255, 255, 255, .3);
   --bs-offcanvas-width: 40vw;
 
-
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 
   .list-group {

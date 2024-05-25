@@ -54,7 +54,7 @@ class Channel extends Model {
   
   protected function m3u8Link(): Attribute {
     return Attribute::make(
-      get: fn($value) => env("APP_URL") . "/{$this->group}/{$this->tvg_slug}/stream.m3u8",
+      get: fn($value) => config("app.app_url") . "/{$this->group}/{$this->tvg_slug}/stream.m3u8",
     );
   }
   

@@ -24,7 +24,7 @@ Route::get("myip", function () {
   $userIp  = request()->ip();
   $details = GeoLocation::lookup($userIp);
 	
-  dump(env("APP_URL"));
+  dump(config("app.app_url"));
   dump($userIp, $details);
 });
 

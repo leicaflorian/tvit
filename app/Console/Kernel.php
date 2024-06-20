@@ -15,10 +15,10 @@ class Kernel extends ConsoleKernel {
    * @return void
    */
   protected function schedule(Schedule $schedule) {
-//    $schedule->command('inspire')->everyMinute();
     $schedule->job(new ScrapChannelsContent(), "default")
-      ->dailyAt('03:00')
+			->dailyAt('3:00')
       ->timezone('Europe/Rome')
+			// Update APP_ENV in .env file to production, otherwise will not work
       ->environments(['production']);
   }
   

@@ -40,8 +40,6 @@ class PlutoTvScrapper {
       
       $startFormatted = $start->format("Y-m-d\TH:i:s\Z");
       
-//      dump($startFormatted);
-      
       $link = "https://service-channels.clusters.pluto.tv/v2/guide/timelines?start=$startFormatted&channelIds=$channel->iptv_code&duration=240";
       $res = ProxiedHttp::get("it", $link, [
         "headers" => [
@@ -49,7 +47,10 @@ class PlutoTvScrapper {
         ]
       ]);
       
-      $programs = array_merge($programs, $res['data'][0]['timelines']);
+			$data = key_exists(0, $res['data']) ? $res['data'][0] : null;
+			$timelines = key_exists('timelines', $data) ? $data['timelines'] : [];
+			
+      $programs = array_merge($programs, $timelines);
       
       $minutesToAdd += 240;
     } while ($start->isBefore($startOfDay->clone()->addDay()));

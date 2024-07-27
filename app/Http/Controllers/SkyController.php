@@ -24,17 +24,18 @@ class SkyController extends Controller {
   }
   
   public function stream($channel) {
-    $link = $this->getChannelStreamLink($channel, false);
-    
-    try {
-      $data = ProxiedHttp::get("it", $link);
-      
-      return redirect($data["streaming_url"]);
-    } catch (\Exception $e) {
-      Log::error($e->getMessage());
-      
-      return abort(Response::HTTP_BAD_REQUEST);
-    }
-    
+		$link = "";
+		
+		switch ($channel) {
+			case "cielo":
+				$link = "https://hlslive-web-gcdn-skycdn-it.akamaized.net/TACT/11219/cieloweb/master.m3u8?hdnea=st=1701861650~exp=1765449000~acl=/*~hmac=84c9f3f71e57b13c3a67afa8b29a8591ea9ed84bf786524399545d94be1ec04d";
+				break;
+			case "tv8":
+				$link = "https://hlslive-web-gcdn-skycdn-it.akamaized.net/TACT/11223/tv8web/master.m3u8?hdnea=st=1701861650~exp=1765449000~acl=/*~hmac=84c9f3f71e57b13c3a67afa8b29a8591ea9ed84bf786524399545d94be1ec04d";
+				break;
+		}
+		
+		return redirect($link);
+  
   }
 }

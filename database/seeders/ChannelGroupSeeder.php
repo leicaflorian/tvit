@@ -21,17 +21,18 @@ class ChannelGroupSeeder extends Seeder {
       ["title" => "Antena", "scrapper" => "Antena"],
       ["title" => "La7", "scrapper" => "SuperGuidaTv"],
       ["title" => "Pluto Tv", "scrapper" => "PlutoTv"],
+      ["title" => "Regionali", "scrapper" => ""],
     ];
-    
+
     foreach ($groups as $group) {
       $slug = str_replace(" ", "", strtolower($group["title"]));
-      
+
       $data = [
-        "name"     => $group["title"],
-        "slug"     => strval($slug),
-        "scrapper" => $group["scrapper"],
+        "name"     => $group["title"] ?? '',
+        "slug"     => strval($slug) ?? '',
+        "scrapper" => $group["scrapper"] ?? '',
       ];
-      
+
       ChannelGroup::updateOrCreate([
         "slug" => $slug
       ], $data);

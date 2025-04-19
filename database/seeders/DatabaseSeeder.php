@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder {
    */
   public function run() {
     // \App\Models\User::factory(10)->create();
-    
+
     // \App\Models\User::factory()->create([
     //     'name' => 'Test User',
     //     'email' => 'test@example.com',
@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder {
       ChannelGroupSeeder::class,
       ChannelsSeeder::class,
       ExtraChannelsSeeder::class,
-      PlutoTvSeeder::class
+      PlutoTvSeeder::class,
+      RegionaliSeeder::class,
     ]);
   }
 }

@@ -8,4 +8,6 @@ enum ChannelGroup {
   const SKY = 'sky';
   const DISCOVERY = 'discovery';
   const LA_7 = 'la7';
+
+  const REGIONALI = 'regionali';
 }

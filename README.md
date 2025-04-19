@@ -53,7 +53,7 @@ visit [https://tvit.leicaflorianrobert.dev/channels](https://tvit.leicaflorianro
 - run `./vendor/bin/sail up -d`
 - run `cp .env.example .env`
 - run `./vendor/bin/sail artisan key:generate`
-- run `./vendor/bin/sail artisan db:migrate`
+- run `./vendor/bin/sail artisan migrate`
 - run `./vendor/bin/sail artisan db:seed`
 - the app should be reachable on http://localhost:8082
 

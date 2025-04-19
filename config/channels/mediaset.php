@@ -165,7 +165,7 @@ return [
   ],
   [
     "id"         => "r105",
-    "code"       => "EC",
+    "code"       => "ec",
     "name"       => "Radio 105",
     "tvgLogo"    => "460",
     "tvgName"    => "",

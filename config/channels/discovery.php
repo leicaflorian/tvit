@@ -31,5 +31,45 @@ return [
     "groupTitle" => ChannelGroup::DISCOVERY,
     "dvbNum"     => 31
   ],
+  [
+      "id"         => "warner-tv",
+      "code"       => "",
+      "name"       => "Warner TV",
+      "tvgLogo"    => "",
+      "tvgName"    => "",
+      "tvgId"      => "",
+      "groupTitle" => ChannelGroup::DISCOVERY,
+      "dvbNum"     => 37
+  ],
+  [
+      "id"         => "giallo",
+      "code"       => "",
+      "name"       => "Giallo",
+      "tvgLogo"    => "",
+      "tvgName"    => "",
+      "tvgId"      => "",
+      "groupTitle" => ChannelGroup::DISCOVERY,
+      "dvbNum"     => 38
+  ],
+  [
+      "id"         => "k2",
+      "code"       => "",
+      "name"       => "K2",
+      "tvgLogo"    => "",
+      "tvgName"    => "",
+      "tvgId"      => "",
+      "groupTitle" => ChannelGroup::DISCOVERY,
+      "dvbNum"     => 41
+  ],
+  [
+      "id"         => "frisbee",
+      "code"       => "",
+      "name"       => "Frisbee",
+      "tvgLogo"    => "",
+      "tvgName"    => "",
+      "tvgId"      => "",
+      "groupTitle" => ChannelGroup::DISCOVERY,
+      "dvbNum"     => 44
+  ],
 ];
 

@@ -54,7 +54,7 @@ return [
     "dvbNum"     => 24
   ],
   // da quì in giù non vanno
-  /*  [
+    [
       "id"      => "rai5",
       "code"    => "395276",
       "name"    => "Rai 5",
@@ -63,7 +63,7 @@ return [
       "tvgId"   => "",
       "groupTitle" => ChannelGroup::RAI,
       "dvbNum"=> 23
-    ],*/
+    ],
   /*[
     "id"      => "raiPremium",
     "code"    => "746992",

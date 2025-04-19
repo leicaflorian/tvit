@@ -137,8 +137,11 @@ class ChannelsSeeder extends Seeder {
         //    $channelsNumbers = $this->getChannelsDttNumbers();
 
         $finalList = collect([]);
-
         foreach ($channelsConfig as $channelConfig) {
+            // if ($channelConfig["id"] !== "warner-tv") {
+            //     continue;
+            // }
+
             $channelData = $channelsList->filter(function ($value) use ($channelConfig) {
                 $name = $channelConfig['tvgName'] ? $channelConfig['tvgName'] : $channelConfig['name'];
 
@@ -148,7 +151,6 @@ class ChannelsSeeder extends Seeder {
                 return $a == $b;
             })->first();
 
-            dump($channelConfig, $channelData);
 
             $newChannel = [
                 'name'           => $channelConfig["name"] ?? '',
@@ -156,12 +158,15 @@ class ChannelsSeeder extends Seeder {
                 'tvg_name'       => $channelData['name'] ?? '',
                 'tvg_code'       => $channelData['tvg_code'] ?? '',
                 'iptv_code'      => $channelConfig["code"] ?? '',
-                'logo_url_color' => $channelConfig["tvg_logo"] ?? $this->getLogoUrl($channelData, 'dark') ?? '',
-                'logo_url_light' => $channelConfig["tvg_logo"] ?? $this->getLogoUrl($channelData, 'light') ?? '',
+                'logo_url_color' => $this->getLogoUrl($channelData, 'dark') ?? '',
+                'logo_url_light' => $this->getLogoUrl($channelData, 'light') ?? '',
                 'dtt_num'        => $channelConfig["dvbNum"] ?? '',
                 'group'          => $channelConfig["groupTitle"] ?? '',
                 'group_id'       => ChannelGroup::where("slug", $channelConfig["groupTitle"])->first()->id
             ];
+
+            // dump($channelConfig, $channelData, $newChannel);
+            dump($newChannel);
 
             $finalList->push(Channel::updateOrCreate([
                 "tvg_slug" => $channelData['slug'] ?? ''

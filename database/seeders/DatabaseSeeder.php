@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder {
       ChannelGroupSeeder::class,
       ChannelsSeeder::class,
       ExtraChannelsSeeder::class,
-      PlutoTvSeeder::class,
+      // PlutoTvSeeder::class,
       RegionaliSeeder::class,
     ]);
   }

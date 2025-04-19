@@ -114,16 +114,15 @@ Route::name("regionali.")
         Route::get("/{channel}/stream.m3u8", [\App\Http\Controllers\RegionaliController::class, "stream"]);
     });
 
-
-function filterHeaders($headers) {
-    $allowedHeaders = ['accept', 'content-type'];
-
-    return array_filter($headers, function($key) use ($allowedHeaders) {
-        return in_array(strtolower($key), $allowedHeaders);
-    }, ARRAY_FILTER_USE_KEY);
-}
-
 Route::any('/proxy/{path}', function(\Illuminate\Http\Request $request, $path) {
+    function filterHeaders($headers): array {
+        $allowedHeaders = ['accept', 'content-type'];
+
+        return array_filter($headers, function($key) use ($allowedHeaders) {
+            return in_array(strtolower($key), $allowedHeaders);
+        }, ARRAY_FILTER_USE_KEY);
+    }
+
     $client = new GuzzleHttp\Client([
         // Base URI is used with relative requests
         'base_uri' => $request->query("base_uri"), // public dummy API for example

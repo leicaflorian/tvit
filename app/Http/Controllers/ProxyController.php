@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 class ProxyController extends Controller {
@@ -15,7 +16,8 @@ class ProxyController extends Controller {
     }
 
     public function proxy(Request $request, $path) {
-        $client = new GuzzleHttp\Client([
+
+        $client = new Client([
             // Base URI is used with relative requests
             'base_uri'    => $request->query("base_uri"), // public dummy API for example
             // You can set any number of default request options.

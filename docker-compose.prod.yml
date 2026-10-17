@@ -1,0 +1,73 @@
+# Coolify deployment (build pack "Docker Compose", file /docker-compose.prod.yml).
+# All services share the image built from the Dockerfile; the database is the
+# shared MySQL service in Coolify, reached through DB_HOST.
+
+x-laravel: &laravel
+  build:
+    context: .
+    dockerfile: Dockerfile
+  restart: unless-stopped
+  environment: &laravel-env
+    APP_NAME: TvIt
+    APP_ENV: production
+    APP_DEBUG: "false"
+    APP_KEY: ${APP_KEY}
+    APP_URL: ${SERVICE_FQDN_APP}
+    LOG_CHANNEL: stderr
+    LOG_LEVEL: ${LOG_LEVEL:-warning}
+    DB_CONNECTION: mysql
+    DB_HOST: ${DB_HOST}
+    DB_PORT: ${DB_PORT:-3306}
+    DB_DATABASE: ${DB_DATABASE:-tvit}
+    DB_USERNAME: ${DB_USERNAME:-tvit}
+    DB_PASSWORD: ${DB_PASSWORD}
+    QUEUE_CONNECTION: database
+    CACHE_DRIVER: file
+    SESSION_DRIVER: file
+    # Autorun (migrations, config/route/view cache) only runs in the app container
+    AUTORUN_ENABLED: "false"
+
+services:
+  app:
+    <<: *laravel
+    environment:
+      <<: *laravel-env
+      SERVICE_FQDN_APP_8080: ""
+      AUTORUN_ENABLED: "true"
+    volumes:
+      - storage-app:/var/www/html/storage/app
+
+  scheduler:
+    <<: *laravel
+    command: ["php", "/var/www/html/artisan", "schedule:work"]
+    stop_signal: SIGTERM
+    healthcheck:
+      test: ["CMD", "healthcheck-schedule"]
+      start_period: 10s
+
+  worker-default:
+    <<: *laravel
+    command: ["php", "/var/www/html/artisan", "queue:work", "database", "--queue=default", "--tries=3"]
+    stop_signal: SIGTERM
+    healthcheck:
+      test: ["CMD", "healthcheck-queue"]
+      start_period: 10s
+
+  worker-channels:
+    <<: *laravel
+    command: ["php", "/var/www/html/artisan", "queue:work", "database", "--queue=scrap-channels", "--tries=3"]
+    stop_signal: SIGTERM
+    healthcheck:
+      test: ["CMD", "healthcheck-queue"]
+      start_period: 10s
+
+  worker-program-details:
+    <<: *laravel
+    command: ["php", "/var/www/html/artisan", "queue:work", "database", "--queue=scrap-program-detail", "--tries=3"]
+    stop_signal: SIGTERM
+    healthcheck:
+      test: ["CMD", "healthcheck-queue"]
+      start_period: 10s
+
+volumes:
+  storage-app:

@@ -2,38 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Adrianorosa\GeoLocation\GeoLocation;
-use App\Traits\WebserverOneController;
-use Illuminate\Support\Facades\Log;
-use Jenssegers\Agent\Agent;
-
-
 class RaiController extends Controller {
-  use \App\Traits\ChannelController, WebserverOneController {
-    stream as public traitStream;
-  }
   
-  
-  private function channelName(): string {
-    return "rai";
-  }
-  
+  /**
+   * Rai channels are served from the official RaiPlay relinker.
+   *
+   * The previous source (a webserver.one / opposepresent.net restream) is gone,
+   * so every client now goes through RaiPlay. RaiPlay streams are geo-blocked
+   * outside Italy, so foreign users need an Italian connection.
+   *
+   * @param  string  $channel
+   *
+   * @return \Illuminate\Http\RedirectResponse
+   */
   public function stream($channel) {
-    $userIp  = request()->ip();
-    $details = GeoLocation::lookup($userIp);
-    $agent   = new Agent();
-    
-    $browser = $agent->browser();
-    
-//    Log::info("Browser: $browser");
-//    Log::info("Ip: {$details->getCountryCode()}");
-    
-    // show hd stream if from italy and NOT a browser
-    if ($details->getCountryCode() === "IT" && !$browser) {
-      return redirect()->action([RaiPlayController::class, 'stream'], ["channel" => $channel]);
-    }
-    
-    return $this->traitStream($channel);
+    return redirect()->action([RaiPlayController::class, 'stream'], ["channel" => $channel]);
   }
-  
 }

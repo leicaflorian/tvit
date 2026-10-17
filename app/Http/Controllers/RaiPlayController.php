@@ -5,9 +5,14 @@ namespace App\Http\Controllers;
 use App\Enums\ChannelGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
 
 class RaiPlayController extends Controller {
   use \App\Traits\ChannelController;
+  
+  // the relinker answers 403 to requests without a browser-like user agent
+  private const USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36";
   
   protected array $localMap = [
     [
@@ -35,6 +40,21 @@ class RaiPlayController extends Controller {
       "iptv_code"  => "747002",
       "name"       => "Rai Movie",
     ],
+    [
+      "id"         => "rai-5",
+      "iptv_code"  => "395276",
+      "name"       => "Rai 5",
+    ],
+    [
+      "id"         => "rai-gulp",
+      "iptv_code"  => "746953",
+      "name"       => "Rai Gulp",
+    ],
+    [
+      "id"         => "rai-yoyo",
+      "iptv_code"  => "746899",
+      "name"       => "Rai Yoyo",
+    ],
   ];
   
   private function baseUrl(): string {
@@ -47,36 +67,22 @@ class RaiPlayController extends Controller {
   
   public function stream($channel) {
     $link = $this->getChannelStreamLink($channel);
-    // $result = Http::get($link);
     
     /*
-     * I can't use the same logic as other programs due to geoBlocking.
-     * This route must be used only if the user is from italy
+     * The relinker answers with a redirect to the CDN playlist (with a short-lived token).
+     * It sends no CORS headers, so browsers can't follow it: resolve it here and redirect
+     * straight to the CDN, which does allow cross-origin requests.
+     * The relinker is geo-blocked: this works only from an Italian connection.
      */
+    $result = Http::withHeaders(["User-Agent" => self::USER_AGENT])->get($link);
     
-    return redirect($link);
-
-//    if ($result->ok()) {
-//      $data = $result->json();
-//
-//      dd($result);
-//      $m3u8Link   = $data["video"][0];
-//      $m3u8Result = Http::get($m3u8Link);
-//      $m3u8Data   = $m3u8Result->body();
-//
-//      $m3u8Data = str_replace("URI=\"", "URI=\"" . route("raiplay.chunk", [
-//          "channel" => $channel,
-//          "any"     => ""
-//        ]) . "/", $m3u8Data);
-//
-//      $pattern  = "/^[0-9a-z].*/
-//    m";
-//      $m3u8Data = preg_replace_callback($pattern, function ($match) use ($channel) {
-//        return route("raiplay . chunk", ["channel" => $channel, "any" => $match[0]]);
-//      }, $m3u8Data);
-//
-//      return response($m3u8Data)->header("Content - Type", "application / vnd . apple . mpegurl");
-//    }
+    if ( !$result->ok()) {
+      Log::error("RaiPlay relinker failed for {$channel}: HTTP {$result->status()}");
+      
+      abort(Response::HTTP_BAD_GATEWAY);
+    }
+    
+    return redirect((string) $result->effectiveUri());
   }
   
   public function chunks($channel, $page) {

@@ -45,8 +45,15 @@ class ScrapProgramDetail implements ShouldQueue {
     try {
       $dom = $httpClient->load($program->link);
 
-      $coverImg    = $dom->find(".sgtvdetails_imgBackdrop", 0)->getAttribute("src");
-      $description = $dom->find(".sgtvdetails_divContainer .sgtvdetails_divTableRow .sgtvdetails_divRowContent .sgtvdetails_divContentText", 0)->text();
+      if ( !$dom) {
+        throw new \Exception("Unable to load program detail page " . $program->link);
+      }
+      
+      $coverEl       = $dom->find(".sgtv-aspect-video img", 0) ?: $dom->find("meta[property=og:image]", 0);
+      $descriptionEl = $dom->find("p.sgtv-text-justify", 0);
+      
+      $coverImg    = $coverEl ? ($coverEl->getAttribute("src") ?: $coverEl->getAttribute("content")) : null;
+      $description = $descriptionEl ? html_entity_decode(trim($descriptionEl->text()), ENT_QUOTES | ENT_HTML5, "UTF-8") : null;
       
       $program->cover_img   = $coverImg;
       $program->description = $description;

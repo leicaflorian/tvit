@@ -6,96 +6,126 @@ use App\Jobs\ScrapProgramDetail;
 use App\Models\Channel;
 use App\Models\Program;
 use Carbon\Carbon;
-use PHPHtmlParser\Dom;
-use PHPHtmlParser\Exceptions\ChildNotFoundException;
-use PHPHtmlParser\Exceptions\CircularException;
-use PHPHtmlParser\Exceptions\ContentLengthException;
-use PHPHtmlParser\Exceptions\LogicalException;
-use PHPHtmlParser\Exceptions\NotLoadedException;
-use PHPHtmlParser\Exceptions\StrictException;
-use Psr\Http\Client\ClientExceptionInterface;
+use DOMDocument;
+use DOMElement;
+use DOMXPath;
+use Exception;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class SuperGuidaTvScrapper {
+  const BASE_URL = "https://www.superguidatv.it";
+
+  /**
+   * @throws Exception
+   */
   public static function scrap(Channel $channel) {
-    $dom = new Dom();
-    
-    $dom->loadFromUrl($channel->rawGuideLink);
-    
-    $timelineEntries = $dom->find(".sgtvchannelplan_divContainer .sgtvchannelplan_divTableRow");
-    // Set timezone to Rome because the website use that TZ
-    $todayDate = today()->setTimezone("Europe/Rome");
-    
+    $html = Http::withHeaders(["User-Agent" => "Mozilla/5.0"])
+      ->timeout(30)
+      ->get($channel->rawGuideLink)
+      ->throw()
+      ->body();
+
+    $dom = new DOMDocument();
+    libxml_use_internal_errors(true);
+    $dom->loadHTML('<?xml encoding="UTF-8">' . $html);
+    libxml_clear_errors();
+
+    $xpath = new DOMXPath($dom);
+
+    // Each program is a <li style="--category-color:..."> element
+    $timelineEntries = $xpath->query('//li[starts-with(@style, "--category-color")]');
+
+    // The website uses the Rome TZ
+    $currentDate   = Carbon::today("Europe/Rome");
+    $lastStartTime = null;
+    $saved         = 0;
+
     foreach ($timelineEntries as $timelineEntry) {
-      $hourEL = $timelineEntry->find(".sgtvchannelplan_hoursCell");
-      
-      if ($hourEL->count() === 0) {
+      $hourEl  = $xpath->query('.//p[' . self::hasClass("sgtv-w-20") . ']', $timelineEntry)->item(0);
+      $infoEls = $xpath->query('.//p[' . self::hasClass("sgtv-truncate") . ']', $timelineEntry);
+
+      if ( !$hourEl || $infoEls->length < 2) {
         continue;
       }
-      
-      $hour           = trim($hourEL->text());
-      $title          = $timelineEntry->find(".sgtvchannelplan_spanInfoNextSteps")->text();
-      $categoryString = $timelineEntry->find(".sgtvchannelplan_spanEventType")->text();
-      $link           = $timelineEntry->find(".sgtvchannelplan_aNextStep");
-      
-      if ($link->count() === 0) {
-        $link = $timelineEntry->find(".sgtvSpLink");
-        
-        if ($link->count() === 0) {
-          $link = null;
-        } else {
-          $link = str_replace(["sgtv_window_location_href", "(", ")", "'", ";"], "", $link->getAttribute("onclick"));
-        }
-      } elseif ($link->count() >= 1) {
-        $link = $link->getAttribute("href");
+
+      $hour           = trim($hourEl->textContent);
+      $title          = trim($infoEls->item(0)->textContent);
+      $categoryString = trim($infoEls->item(1)->textContent);
+
+      if ( !preg_match("/^(\d{1,2}):(\d{2})$/", $hour, $hourMatch)) {
+        continue;
+      }
+
+      // "Categoria (NN')"
+      if (preg_match("/^(.*?)\s*\((\d+)'\)$/u", $categoryString, $match)) {
+        $category = trim($match[1]);
+        $duration = (int) $match[2];
       } else {
-        $link = null;
+        $category = $categoryString;
+        $duration = 0;
       }
-      
-      preg_match_all("/(\w.*) (\(.*\))/", $categoryString, $match);
-      
-      $category = trim($match[1][0]);
-      $duration = (int) str_replace(["(", ")", "'"], "", trim($match[2][0]));
-      
-      $startTime = (new Carbon($todayDate))->setTime(...explode(":", $hour));
-      $endTime   = (new Carbon($startTime))->addMinutes($duration);
-      
-      if ($startTime->day > $todayDate->day) {
-        $todayDate->setDay($startTime->day);
-        
-      } elseif ($endTime->day > $todayDate->day) {
-        $todayDate->setDay($endTime->day);
+
+      $startTime = (new Carbon($currentDate))->setTime((int) $hourMatch[1], (int) $hourMatch[2]);
+
+      // The schedule crosses midnight: when a start time goes backwards, move to the next day
+      if ($lastStartTime && $startTime->lt($lastStartTime)) {
+        $currentDate->addDay();
+        $startTime->addDay();
       }
-      
-      // dump($startTime->setTimezone("utc")->toAtomString() . " -> " . $endTime->setTimezone("utc")->toAtomString());
-      
+
+      $lastStartTime = new Carbon($startTime);
+      $endTime       = (new Carbon($startTime))->addMinutes($duration);
+
       $newProgram = new Program([
         "channel_tvg_slug" => $channel->tvg_slug,
         "start"            => $startTime->setTimezone("utc"),
         "end"              => $endTime->setTimezone("utc"),
         "title"            => $title,
         "category"         => $category,
-        "link"             => $link,
+        "link"             => self::detailLink($xpath, $timelineEntry),
       ]);
-      
-      //        dump($newProgram->toArray());
-      
-      try {
-        $res = Program::updateOrCreate([
-          'start'            => $newProgram->start,
-          'end'              => $newProgram->end,
-          'channel_tvg_slug' => $channel->tvg_slug,
-        ], $newProgram->toArray());
-        
-        if ($newProgram->link) {
-          // if there is a link, scrap the program detail
-          ScrapProgramDetail::dispatch($res)->onQueue("scrap-program-detail")->delay(now()->addSeconds(rand(1, 100)));
-        }
-      } catch (Exception $e) {
-        dump($e->getMessage());
-        throw $e;
+
+      $res = Program::updateOrCreate([
+        'start'            => $newProgram->start,
+        'end'              => $newProgram->end,
+        'channel_tvg_slug' => $channel->tvg_slug,
+      ], $newProgram->toArray());
+
+      $saved++;
+
+      if ($newProgram->link) {
+        // if there is a link, scrap the program detail
+        ScrapProgramDetail::dispatch($res)->onQueue("scrap-program-detail")->delay(now()->addSeconds(rand(1, 100)));
       }
     }
-    
-    
+
+    if ($saved === 0) {
+      $message = "SuperGuidaTv: no programs found for channel \"" . $channel->name . "\" (" . $channel->rawGuideLink . "). The website markup may have changed.";
+
+      Log::error($message);
+      throw new Exception($message);
+    }
+
+    Log::info("SuperGuidaTv: saved " . $saved . " programs for channel \"" . $channel->name . "\"");
+  }
+
+  /**
+   * The detail link is not an <a>, it's built from the data-* attributes of the "hidden-link" span.
+   */
+  private static function detailLink(DOMXPath $xpath, DOMElement $timelineEntry): ?string {
+    $linkEl = $xpath->query('.//*[@data-epg-type="hidden-link"][@data-slug][@data-id]', $timelineEntry)->item(0);
+
+    if ( !$linkEl) {
+      return null;
+    }
+
+    $base = rtrim($linkEl->getAttribute("data-base") ?: "/dettaglio-programma", "/");
+
+    return self::BASE_URL . $base . "/" . $linkEl->getAttribute("data-slug") . "/" . $linkEl->getAttribute("data-id") . "/";
+  }
+
+  private static function hasClass(string $class): string {
+    return 'contains(concat(" ", normalize-space(@class), " "), " ' . $class . ' ")';
   }
 }

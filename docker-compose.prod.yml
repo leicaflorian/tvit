@@ -31,6 +31,9 @@ x-laravel: &laravel
 services:
   app:
     <<: *laravel
+    labels:
+      # The image exposes 8080, 8443 and 9000: pin the HTTP port so Traefik never guesses
+      - traefik.http.services.tvit-app.loadbalancer.server.port=8080
     environment:
       <<: *laravel-env
       SERVICE_FQDN_APP_8080: ""

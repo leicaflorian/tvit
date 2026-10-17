@@ -29,7 +29,7 @@ class RegionaliController extends Controller {
 			case "tele-norba":
 				// $link = "https://router.xdevel.com/video2s976570-2117/stream/playlist_dvr.m3u8";
 				// $link = "https://stream12.xdevel.com/video2s976570-2526/stream/playlist_dvr.m3u8";
-				$link = "/proxy/video2s976570-2526/stream/playlist_dvr.m3u8?base_uri=" . urlencode("https://stream12.xdevel.com");
+				$link = "https://live-telenorba.cdn.netrw.it/telenorba/hls/ccr/telenorba/master.m3u8";
 				break;
 		}
 

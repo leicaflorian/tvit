@@ -28,21 +28,17 @@ class AntenaController extends Controller {
   }
 
   public function stream($channel) {
-    if ($channel === "comedy-play") {
-      return redirect("https://stream1.antenaplay.ro/live/ComedyPlay/playlist.m3u8");
-    } elseif ($channel === "antena-monden") {
-      return redirect("https://stream1.antenaplay.ro/live/AntenaMonden/playlist.m3u8");
+    $links = [
+      "antena1"       => "https://live4dai.antenaplay.ro/live2_sdi14/live2_sdi14_600k.m3u8",
+      "comedy-play"   => "https://stream1.antenaplay.ro/live/ComedyPlay/playlist.m3u8",
+      "antena-monden" => "https://stream1.antenaplay.ro/live/AntenaMonden/playlist.m3u8",
+    ];
+
+    if ( !isset($links[$channel])) {
+      abort(404);
     }
 
-    $response = Http::withHeaders([
-      "Referer" => $this->referer
-    ])->get($this->url);
-
-    $list = $this->parseTsUrls($response->body(), "antena/" . $channel);
-
-    return response($list)->header(
-      "Content-Type", "application/vnd.apple.mpegurl"
-    );
+    return redirect($links[$channel]);
   }
 
   public function ts($channel, $url) {

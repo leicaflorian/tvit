@@ -26,22 +26,8 @@ class ProTvController extends Controller {
   }
 
   public function stream($channel) {
-    $m3u = Http::get($this->baseUrl() . "protvhd.m3u8");
-    
-//    // for each line that does not start with # replace the url
-//    $m3u = preg_replace_callback('/^(?!#)(.*)$/m', function ($matches) {
-//      $url = $matches[1];
-//
-//      if ( !$url) return $url;
-//
-//      $url = "part?url=" . urlencode($url);
-//
-//      return $url;
-//    }, $m3u);
-//
-//    return response($m3u)->header("Content-Type", "application/vnd.apple.mpegurl");
-
-     return redirect($this->getChannelStreamLink($channel) . "protvhd.m3u8");
+    // HbbTV feed: plain MPEG-TS over http (not HLS), so it plays in IPTV players like VLC but not in the browser
+    return redirect("http://rpprod.hbbtv.cdn.cra.cz:8080/hbbTV/cme-ro-protv/live_fullhd?offsetSeconds=0");
   }
 
   public function ts($channel, $url) {

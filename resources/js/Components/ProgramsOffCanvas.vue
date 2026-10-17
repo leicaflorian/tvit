@@ -1,9 +1,9 @@
 <template>
-  <button class="btn btn-link " type="button"
+  <button :class="buttonClass" type="button"
           data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
           aria-controls="offcanvasBottom"
           @click="onShowing">
-    Mostra altri programmi
+    <slot>Mostra altri programmi</slot>
   </button>
 
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel"
@@ -40,7 +40,11 @@ export default defineComponent({
   name: 'ProgramsOffCanvas',
   components: { SingleProgramCard },
   props: {
-    channel: Object as PropType<Channel>
+    channel: Object as PropType<Channel>,
+    buttonClass: {
+      type: String,
+      default: 'btn btn-link'
+    }
   },
   setup (props) {
     const offCanvas: Ref<HTMLElement> = ref()

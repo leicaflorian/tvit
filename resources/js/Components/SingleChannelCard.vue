@@ -43,7 +43,7 @@
 <script lang="ts" setup>
 import { computed, PropType, Ref, ref, watch } from 'vue'
 import { Channel } from '../@types/Channel'
-import { formatTime, programProgress } from '../composables/dates'
+import { formatTime, programProgress, useNow } from '../composables/dates'
 import { useChannelsStore } from '../store/channels.js'
 
 const channelsStore = useChannelsStore()
@@ -55,7 +55,8 @@ const props = defineProps({
 const el: Ref<HTMLElement> = ref()
 
 const nowPlaying = computed(() => channelsStore.channelPlaying?.id === props.channel.id)
-const progress = computed(() => programProgress(props.channel.now_on_air))
+const now = useNow()
+const progress = computed(() => programProgress(props.channel.now_on_air, now.value))
 
 function onClick () {
   if (channelsStore.highlightedChannel?.id === props.channel.id) {

@@ -73,7 +73,7 @@ return [
     "tvgId"   => "",
   "groupTitle" => ChannelGroup::RAI,
   "dvbNum"=> 25
-  ],
+  ],*/
   [
     "id"      => "raiGulp",
     "code"    => "746953",
@@ -94,7 +94,7 @@ return [
   "groupTitle" => ChannelGroup::RAI,
   "dvbNum"=>43
   ],
-  [
+  /*[
     "id"      => "raiNews24",
     "code"    => "1",
     "name"    => "Rai News 24",

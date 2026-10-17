@@ -63,24 +63,29 @@ class ChannelsSeeder extends Seeder {
 
         try {
             $dom->loadFromUrl("https://www.superguidatv.it/canali/");
-            $channelsContainer   = $dom->find(".sgtvchannellist_mainContainer");
-            $channelsDOMElements = $channelsContainer->find('.sgtvchannel_divCell');
 
-            dump("Scanning channels... Found " . count($channelsDOMElements) . " elements");
+            // Each channel is a link to its guide (".../guida-programmi-tv-rai-1/217/") wrapping the logo
+            foreach ($dom->find('a') as $domLink) {
+                $guideLink = $domLink->getAttribute('href') ?? '';
 
-            foreach ($channelsDOMElements as $channel) {
-                $domLink   = $channel->find('.spanFullPlanA');
-                $domImg    = $channel->find('.imgchannellogo');
-                $guideLink = $domLink->getAttribute('href');
+                if ( !preg_match("/programmi-tv-(.*)\/(\d+)/", $guideLink, $match)) {
+                    continue;
+                }
 
-                preg_match_all("/(programmi-tv-)(.*)(\/)(\d+)/", $guideLink, $match);
+                $domImg = $domLink->find('img');
+
+                if ( !count($domImg) || $channelsList->contains("tvg_code", (int)$match[2])) {
+                    continue;
+                }
 
                 $channelsList->push([
-                    'name'     => trim($domImg->getAttribute("alt")),
-                    'slug'     => trim($match[2][0]),
-                    "tvg_code" => (int)$match[4][0]
+                    'name'     => trim($domImg[0]->getAttribute("alt")),
+                    'slug'     => trim($match[1]),
+                    "tvg_code" => (int)$match[2]
                 ]);
             }
+
+            dump("Scanning channels... Found " . $channelsList->count() . " elements");
         } catch (ChildNotFoundException|CircularException|ContentLengthException|LogicalException|StrictException|ClientExceptionInterface|NotLoadedException $e) {
             dump($e);
         }
@@ -169,7 +174,7 @@ class ChannelsSeeder extends Seeder {
             dump($newChannel);
 
             $finalList->push(Channel::updateOrCreate([
-                "tvg_slug" => $channelData['slug'] ?? ''
+                "tvg_slug" => $newChannel['tvg_slug']
             ], $newChannel));
         }
 

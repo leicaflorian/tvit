@@ -74,7 +74,7 @@ trait WebserverOneController {
     ])->get($link);
     
     if ($result->ok()) {
-      // la risposta contiene una cosa del genere.
+      // the response contains the playlist
       $html = $result->body();
       
       $domOptions = new Options();
@@ -134,11 +134,11 @@ trait WebserverOneController {
     Log::debug($result->body());
     
     
-    // si sostituisce l'ultima parte dell'url con il ts
+    // the last part of the url is replaced with the ts segment
     if ($result->ok()) {
       $data = $result->body();
       
-      // devo sostituire i vari link con un mio link che poi farà il proxy delle chiamate
+      // replace each link with one of ours, which proxies the request
       $pattern      = "/^[0-9].*/m";
       $finalContent = preg_replace_callback($pattern, function ($match) use ($channel) {
         $tsString = str_replace("\r", "", $match[0]);

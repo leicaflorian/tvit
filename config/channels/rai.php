@@ -53,7 +53,7 @@ return [
     "groupTitle" => ChannelGroup::RAI,
     "dvbNum"     => 24
   ],
-  // da quì in giù non vanno
+  // the channels from here down do not work
     [
       "id"      => "rai5",
       "code"    => "395276",

@@ -25,11 +25,11 @@ class PlutoTvController extends Controller {
     
     $result = Http::get($link);
     
-    // si sostituisce l'ultima parte dell'url con il ts
+    // the last part of the url is replaced with the ts segment
     if ($result->ok()) {
       $data = $result->body();
       
-      // devo sostituire i vari link con un mio link che poi farà il proxy delle chiamate
+      // replace each link with one of ours, which proxies the request
       $pattern      = "/^[0-9].*/m";
       $finalContent = preg_replace_callback($pattern, function ($match) use ($channelCode) {
         $tsString = str_replace("\r", "", $match[0]);

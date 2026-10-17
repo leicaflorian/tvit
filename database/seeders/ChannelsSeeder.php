@@ -138,7 +138,7 @@ class ChannelsSeeder extends Seeder {
     public function run(): void {
         $channelsConfig = $this->getChannelsConfig();
         $channelsList   = $this->getChannelsList();
-        // Numerazione vecchia. Meglio usare quella manuale
+        // Outdated numbering: the manual one in config/channels is better
         //    $channelsNumbers = $this->getChannelsDttNumbers();
 
         $finalList = collect([]);

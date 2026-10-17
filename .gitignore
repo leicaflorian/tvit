@@ -15,3 +15,5 @@ yarn-error.log
 /.idea
 /.vscode
 .DS_store
+/.worktrees
+/.claude/settings.local.json

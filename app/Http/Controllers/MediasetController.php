@@ -28,18 +28,18 @@ class MediasetController extends Controller {
         // Download m3u8 file
         $link = $this->getChannelStreamLink($channel);
 
-        // se faccio il download lato server, ho il problema della geolocalizzazione
-        // faccio solo il redirect al link
+        // downloading it server side hits the geo-block
+        // so just redirect to the link
         return redirect($link);
 
         $result = Http::get($link);
 
         //    dd($link);
         if ($result->ok()) {
-            // la risposta contiene una cosa del genere.
+            // the response contains the playlist
             $data = $result->body();
 
-            // devo sostituire i vari link con un mio link che poi farà il proxy delle chiamate
+            // replace each link with one of ours, which proxies the request
             $pattern      = "/stream.*.m3u8/m";
             $finalContent = preg_replace_callback($pattern, function ($match) use ($channel) {
                 $stream = explode("/", $match[0])[0];
@@ -63,7 +63,7 @@ class MediasetController extends Controller {
         if ($result->ok()) {
             $data = $result->body();
 
-            // devo sostituire i vari link con un mio link che poi farà il proxy delle chiamate
+            // replace each link with one of ours, which proxies the request
             $pattern      = "/^[0-9].*\\r/m";
             $finalContent = preg_replace_callback($pattern, function ($match) use ($channel, $stream) {
                 $tsString = str_replace("\r", "", $match[0]);

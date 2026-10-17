@@ -41,7 +41,7 @@ class ScrapSingleChannel implements ShouldQueue {
   public function handle(): void {
     $channel = $this->channel;
     
-    // programmi di oggi
+    // today's programs
     dump("Starting programs from " . $channel->name . " channel");
     
     try {

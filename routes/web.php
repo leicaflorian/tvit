@@ -36,6 +36,12 @@ Route::name("channels.")
 
 Route::get('/guida', [\App\Http\Controllers\GuideController::class, 'index'])->name('guide.index');
 
+Route::get('/sitemap.xml', function () {
+  $urls = [route('channels.index'), route('guide.index')];
+  
+  return response()->view('sitemap', compact('urls'))->header('Content-Type', 'application/xml');
+});
+
 Route::get('/iptv/list.m3u', [\App\Http\Controllers\IptvController::class, 'm3uList']);
 Route::get('/iptv/list.json', [\App\Http\Controllers\IptvController::class, 'jsonList']);
 

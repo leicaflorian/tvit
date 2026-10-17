@@ -1,5 +1,7 @@
 # Tvit
 
+![TvIt, TV italiana in diretta e guida programmi](public/og-image.png)
+
 Italian TV EPG scraper and IPTV list generator.
 
 The project is made of two parts:

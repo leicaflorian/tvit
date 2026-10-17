@@ -1,5 +1,8 @@
 <template>
-  <Head title="Guida TV"/>
+  <Head title="Guida TV">
+    <meta head-key="description" name="description"
+          content="Guida TV di oggi e dei prossimi giorni: la programmazione di tutti i canali italiani in una griglia oraria.">
+  </Head>
 
   <div class="guide-page">
     <div class="guide-toolbar">

@@ -1,5 +1,8 @@
 <template>
-  <Head title="Canali"/>
+  <Head title="Canali TV in diretta">
+    <meta head-key="description" name="description"
+          content="Canali TV italiani in diretta streaming: Rai, Mediaset, La7, Discovery e altri, con il programma in onda e quello successivo.">
+  </Head>
 
   <div class="main-container">
     <div class="left-column">

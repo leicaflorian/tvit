@@ -25,7 +25,13 @@
       </div>
 
       <div class="d-flex">
-        <button type="button" class="btn btn-link" @click="expanded = false">
+        <button type="button" class="btn btn-link" title="Canale precedente (PagSu)" @click="zap(-1)">
+          <i class="mdi mdi-skip-previous text-white fs-3"></i>
+        </button>
+        <button type="button" class="btn btn-link" title="Canale successivo (PagGiù)" @click="zap(1)">
+          <i class="mdi mdi-skip-next text-white fs-3"></i>
+        </button>
+        <button type="button" class="btn btn-link" title="Riduci (Esc)" @click="expanded = false">
           <i class="mdi mdi-chevron-down text-white fs-3"></i>
         </button>
         <button type="button" class="btn btn-link" @click="closePlayer">
@@ -54,7 +60,13 @@
         </div>
 
         <div class="d-flex">
-          <button type="button" class="btn btn-link" @click="expanded = true">
+          <button type="button" class="btn btn-link d-none d-sm-flex" title="Canale precedente (PagSu)" @click="zap(-1)">
+            <i class="mdi mdi-skip-previous text-white fs-3"></i>
+          </button>
+          <button type="button" class="btn btn-link d-none d-sm-flex" title="Canale successivo (PagGiù)" @click="zap(1)">
+            <i class="mdi mdi-skip-next text-white fs-3"></i>
+          </button>
+          <button type="button" class="btn btn-link" title="Espandi" @click="expanded = true">
             <i class="mdi mdi-chevron-up text-white fs-3"></i>
           </button>
           <button type="button" class="btn btn-link" @click="closePlayer">
@@ -67,7 +79,7 @@
 </template>
 
 <script>
-import { onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useChannelsStore } from '../store/channels'
 import { storeToRefs } from 'pinia'
 import HLS from 'hls.js'
@@ -133,6 +145,19 @@ export default {
       expanded.value = true
     }
 
+    function zap (increment) {
+      channelsStore.zapChannel(increment)
+    }
+
+    function onKeyup (e) {
+      if (e.key === 'Escape' && expanded.value) {
+        expanded.value = false
+      }
+    }
+
+    onMounted(() => window.addEventListener('keyup', onKeyup))
+    onBeforeUnmount(() => window.removeEventListener('keyup', onKeyup))
+
     watch(channelPlaying, (channel) => {
       if (!channel) {
         return
@@ -150,6 +175,7 @@ export default {
       expanded,
       channelPlaying,
       closePlayer,
+      zap,
       formatTime
     }
   }
@@ -215,7 +241,9 @@ export default {
     video {
       background-color: black;
       height: 60px;
-      width: unset;
+      // 16:9 thumbnail, otherwise the video keeps its 300px default width
+      width: 107px;
+      flex-shrink: 0;
     }
 
     .tvg-logo {

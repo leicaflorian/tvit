@@ -18,37 +18,40 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto gap-2 gap-sm-3 flex-row">
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+               data-bs-auto-close="outside" aria-expanded="false">
               <i class="mdi mdi-playlist-play"></i>
-              <span class="d-none d-sm-inline">Lista IPTV</span>
+              <span class="d-none d-md-inline">Usa in un player IPTV</span>
+              <span class="d-none d-sm-inline d-md-none">Player IPTV</span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="/iptv/list.m3u" target="_blank" title="Lista .m3u">
-                <JsonIcon class="me-2"/>
-                Lista .m3u8
-              </a></li>
-              <li><a class="dropdown-item" href="/iptv/list.json" target="_blank" title="Lista .json">
-                <JsonIcon class="me-2"/>
-                Lista .json
-              </a></li>
-            </ul>
-          </li>
 
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="mdi mdi-calendar-clock"></i>
-              <span class="d-none d-sm-inline">Lista EPG</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="/epg/list.xml" target="_blank" title="Lista .m3u">
-                <JsonIcon class="me-2"/>
-                Lista .xml
-              </a></li>
-              <li><a class="dropdown-item" href="/epg/list.json" target="_blank" title="Lista .json">
-                <JsonIcon class="me-2"/>
-                Lista .json
-              </a></li>
-            </ul>
+            <div class="dropdown-menu dropdown-menu-dark dropdown-menu-end iptv-menu">
+              <p class="iptv-hint">Copia questi link nel tuo player (VLC, Kodi, TiviMate…)</p>
+
+              <div class="iptv-link" v-for="link in links" :key="link.path">
+                <div class="iptv-link-label">
+                  <strong>{{ link.label }}</strong>
+                  <input type="text" readonly class="form-control form-control-sm"
+                         :ref="el => inputs[link.path] = el"
+                         :value="origin + link.path"
+                         :aria-label="link.label"
+                         @focus="$event.target.select()">
+                  <small class="copy-fallback" v-if="failed === link.path">Premi Ctrl+C (⌘C) per copiare</small>
+                </div>
+
+                <button type="button" class="btn btn-sm btn-outline-light" @click="copy(link.path)"
+                        :title="`Copia link ${link.label}`">
+                  <i class="mdi" :class="copied === link.path ? 'mdi-check' : 'mdi-content-copy'"></i>
+                  {{ copied === link.path ? 'Copiato' : 'Copia' }}
+                </button>
+              </div>
+
+              <div class="iptv-json">
+                Formato JSON:
+                <a href="/iptv/list.json" target="_blank">canali</a> ·
+                <a href="/epg/list.json" target="_blank">guida</a>
+              </div>
+            </div>
           </li>
 
           <li class="nav-item d-none d-sm-block">
@@ -64,16 +67,51 @@
 
 <script>
 import { Link } from '@inertiajs/inertia-vue3'
+import { ref } from 'vue'
 import GhIcon from '../../assets/github.svg'
-import ListIcon from '../../assets/file-lines-solid.svg'
-import JsonIcon from '../../assets/file-code-solid.svg'
 
 export default {
   name: 'TheHeader',
   components: {
-    GhIcon, ListIcon, JsonIcon, Link
+    GhIcon, Link
   },
   setup () {
+    const links = [
+      { label: 'Playlist M3U', path: '/iptv/list.m3u' },
+      { label: 'Guida EPG (XMLTV)', path: '/epg/list.xml' }
+    ]
+    const copied = ref(null)
+    const failed = ref(null)
+    const inputs = {}
+    const origin = window.location.origin
+
+    async function copy (path) {
+      try {
+        await navigator.clipboard.writeText(origin + path)
+        copied.value = path
+        failed.value = null
+
+        setTimeout(() => {
+          if (copied.value === path) {
+            copied.value = null
+          }
+        }, 2000)
+      } catch (e) {
+        // clipboard not allowed: select the URL so it can be copied by hand
+        failed.value = path
+        inputs[path]?.focus()
+        inputs[path]?.select()
+      }
+    }
+
+    return {
+      links,
+      copied,
+      failed,
+      inputs,
+      origin,
+      copy
+    }
   }
 }
 </script>
@@ -128,6 +166,60 @@ export default {
   @include media-breakpoint-down("sm") {
     .dropdown-toggle:after {
       display: none;
+    }
+  }
+
+  .iptv-menu {
+    width: min(360px, calc(100vw - 2rem));
+    padding: .75rem;
+    font-size: .85rem;
+
+    .iptv-hint {
+      margin-bottom: .5rem;
+      color: rgba(255, 255, 255, .6);
+    }
+
+    .iptv-link {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .5rem 0;
+      border-top: 1px solid rgba(255, 255, 255, .1);
+
+      .btn {
+        flex-shrink: 0;
+        display: inline-flex;
+        gap: .25rem;
+      }
+    }
+
+    .iptv-link-label {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: .25rem;
+
+      .form-control {
+        background: rgba(255, 255, 255, .08);
+        border-color: transparent;
+        color: rgba(255, 255, 255, .8);
+        font-size: .75rem;
+      }
+
+      .copy-fallback {
+        color: var(--bs-warning);
+      }
+    }
+
+    .iptv-json {
+      padding-top: .5rem;
+      border-top: 1px solid rgba(255, 255, 255, .1);
+      color: rgba(255, 255, 255, .6);
+
+      a {
+        color: white;
+      }
     }
   }
 

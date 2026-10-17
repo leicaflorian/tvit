@@ -34,6 +34,13 @@
           Nessun canale trovato
         </p>
       </div>
+
+      <div class="keys-legend">
+        <span><kbd>↑</kbd><kbd>↓</kbd> scegli</span>
+        <span><kbd>Invio</kbd> guarda</span>
+        <span><kbd>PagSu</kbd><kbd>PagGiù</kbd> cambia canale</span>
+        <span><kbd>Esc</kbd> riduci</span>
+      </div>
     </div>
 
     <div class="right-channels-preview">
@@ -193,6 +200,32 @@ export default {
   overflow: auto;
   padding: .5rem 1rem 1rem;
   gap: .5rem;
+}
+
+.keys-legend {
+  display: none;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: .25rem .9rem;
+  padding: .6rem 1rem;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+  font-size: .72rem;
+  color: rgba(255, 255, 255, .55);
+
+  kbd {
+    margin-right: .2rem;
+    padding: .05rem .3rem;
+    font-size: .68rem;
+    background: rgba(255, 255, 255, .12);
+    color: rgba(255, 255, 255, .85);
+  }
+}
+
+// only where a physical keyboard is likely
+@media (hover: hover) and (pointer: fine) and (min-width: 992px) {
+  .keys-legend {
+    display: flex;
+  }
 }
 
 .right-channels-preview {

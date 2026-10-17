@@ -222,7 +222,14 @@ function scrollToNow (smooth = false) {
   })
 }
 
-onMounted(() => nextTick(() => scrollToNow()))
+onMounted(() => {
+  // landing directly on the guide: the store needs the channels for zapping in the player
+  if (!channelsStore.list.length) {
+    channelsStore.$patch({ list: props.channels, highlightedChannel: props.channels[0] })
+  }
+
+  nextTick(() => scrollToNow())
+})
 
 watchProp(() => props.day, () => nextTick(() => scrollToNow()))
 </script>

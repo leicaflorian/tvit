@@ -34,6 +34,8 @@ Route::name("channels.")
     Route::get('/', [\App\Http\Controllers\ChannelController::class, 'index'])->name('index');
   });
 
+Route::get('/guida', [\App\Http\Controllers\GuideController::class, 'index'])->name('guide.index');
+
 Route::get('/iptv/list.m3u', [\App\Http\Controllers\IptvController::class, 'm3uList']);
 Route::get('/iptv/list.json', [\App\Http\Controllers\IptvController::class, 'jsonList']);
 

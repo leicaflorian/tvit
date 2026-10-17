@@ -41,7 +41,6 @@
       <div class="player-error" v-if="expanded && errorMessage">
         <i class="mdi mdi-alert-circle-outline"></i>
         <p>{{ errorMessage }}</p>
-        <small v-if="isGeoError">I canali Rai sono trasmessi in streaming solo verso connessioni italiane.</small>
       </div>
 
       <div class="d-flex align-items-center flex-fill px-3 overflow-hidden" v-if="!expanded">
@@ -93,7 +92,6 @@ export default {
     const videoEl = ref()
     const expanded = ref(false)
     const errorMessage = ref(null)
-    const isGeoError = ref(false)
     const channelsStore = useChannelsStore()
     const { channelPlaying } = storeToRefs(channelsStore)
     let player = null
@@ -112,13 +110,9 @@ export default {
       destroyPlayer()
     }
 
-    function showError (data) {
-      const code = data.response?.code
-      // 451 comes from our relinker check; the CDN answers 403 abroad, often without CORS (code 0)
-      isGeoError.value = code === 451 || code === 403 || (code === 0 && !!channelPlaying.value?.geo_blocked)
-      errorMessage.value = isGeoError.value
-        ? 'Questo canale è disponibile solo dall\'Italia'
-        : 'Impossibile caricare il canale, riprova più tardi'
+    function showError () {
+      // Sources fail for many reasons (expired links, CDN changes, geo-blocks): show one generic message
+      errorMessage.value = 'Canale non disponibile al momento'
 
       destroyPlayer()
     }
@@ -176,7 +170,6 @@ export default {
 
     watch(channelPlaying, (channel) => {
       errorMessage.value = null
-      isGeoError.value = false
 
       if (!channel) {
         return
@@ -195,7 +188,6 @@ export default {
       channelPlaying,
       closePlayer,
       errorMessage,
-      isGeoError,
       formatTime
     }
   }

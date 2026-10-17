@@ -16,7 +16,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
 import { Channel } from '../@types/Channel'
-import { formatTime } from '../composables/dates'
+import { formatTime, programProgress } from '../composables/dates'
 
 export default defineComponent({
   name: 'ChannelProgress',
@@ -26,21 +26,7 @@ export default defineComponent({
   setup (props) {
     const hasProgram = computed(() => !!(props.channel?.now_on_air?.start_tz && props.channel?.now_on_air?.end_tz))
 
-    function toDate (date: string) {
-      return new Date(date.endsWith('Z') ? date : date + 'Z')
-    }
-
-    const percent = computed(() => {
-      if (!hasProgram.value) {
-        return 0
-      }
-
-      const start = toDate(props.channel.now_on_air.start_tz).getTime()
-      const end = toDate(props.channel.now_on_air.end_tz).getTime()
-      const current = (Date.now() - start) / (end - start) * 100
-
-      return Math.min(100, Math.max(0, current))
-    })
+    const percent = computed(() => programProgress(props.channel?.now_on_air))
 
     return {
       hasProgram,

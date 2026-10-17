@@ -4,6 +4,7 @@ export const useChannelsStore = defineStore('channels', {
   state: () => ({
     list: [],
     filterGroup: '',
+    search: '',
     channelPlaying: null,
     activeChannel: null,
     highlightedChannel: null,
@@ -12,40 +13,41 @@ export const useChannelsStore = defineStore('channels', {
   }),
   getters: {
     groups (state) {
-      const toReturn = {}
-      
-      state.list.forEach(element => {
-        if (!toReturn[element.groupTitle]) {
-          toReturn[element.groupTitle] = ''
-        }
-      })
-      
-      return Object.keys(toReturn)
+      return [...new Set(state.list.map(channel => channel.group))]
     },
-    groupedChannels (state) {
-      const groups = {}
-      const filteredChannels = state.list.filter((item) => {
-        if (state.filterGroup) {
-          return item.groupTitle === state.filterGroup
+    filteredList (state) {
+      const search = state.search.trim().toLowerCase()
+
+      return state.list.filter((channel) => {
+        if (state.filterGroup && channel.group !== state.filterGroup) {
+          return false
         }
-        return true
-      })
-      
-      filteredChannels.forEach(element => {
-        if (!groups[element.groupTitle]) {
-          groups[element.groupTitle] = []
+
+        if (!search) {
+          return true
         }
-        
-        groups[element.groupTitle].push(element)
+
+        return channel.name.toLowerCase().includes(search)
+          || String(channel.dtt_num) === search
+          || channel.now_on_air?.title?.toLowerCase().includes(search)
       })
-      
-      return groups
     }
   },
   actions: {
     filterBy (group) {
       this.filterGroup = group
-      window.location.href = '#' + group
+      this.highlightFirstIfHidden()
+    },
+    searchBy (text) {
+      this.search = text
+      this.highlightFirstIfHidden()
+    },
+    highlightFirstIfHidden () {
+      const list = this.filteredList
+
+      if (list.length && !list.some(channel => channel.id === this.highlightedChannel?.id)) {
+        this.highlightedChannel = list[0]
+      }
     },
     setChannelPlaying (channel) {
       this.channelPlaying = channel
@@ -54,20 +56,22 @@ export const useChannelsStore = defineStore('channels', {
       this.activeChannel = channel
     },
     setHighlightedChannel (increment, channel = null) {
-      const currentIndex = this.list.findIndex((item) => item.id === this.highlightedChannel.id)
-      
-      if(channel) {
+      if (channel) {
         this.highlightedChannel = channel
         return
       }
-      
-      if (currentIndex === 0 && increment === -1) {
-        this.highlightedChannel = this.list[this.list.length - 1]
-      } else if (currentIndex === this.list.length - 1 && increment === 1) {
-        this.highlightedChannel = this.list[0]
-      } else {
-        this.highlightedChannel = this.list[currentIndex + increment]
+
+      const list = this.filteredList
+
+      if (!list.length) {
+        return
       }
+
+      const currentIndex = list.findIndex((item) => item.id === this.highlightedChannel?.id)
+      // wrap around both ends of the visible list
+      const nextIndex = currentIndex === -1 ? 0 : (currentIndex + increment + list.length) % list.length
+
+      this.highlightedChannel = list[nextIndex]
     }
   }
 })

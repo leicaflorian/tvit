@@ -1,13 +1,19 @@
 <template>
   <nav class="navbar navbar-dark navbar-expand">
     <div class="container-fluid">
+      <div class="navbar-brand d-flex align-items-center gap-2">
+        <i class="mdi mdi-television-classic"></i>
+        TvIt
+      </div>
+
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto me-3 gap-3 flex-row">
+        <ul class="navbar-nav ms-auto gap-2 gap-sm-3 flex-row">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Lista IPTV
+              <i class="mdi mdi-playlist-play"></i>
+              <span class="d-none d-sm-inline">Lista IPTV</span>
             </a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" href="/iptv/list.m3u" target="_blank" title="Lista .m3u">
                 <JsonIcon class="me-2"/>
                 Lista .m3u8
@@ -21,9 +27,10 @@
 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Lista EPG
+              <i class="mdi mdi-calendar-clock"></i>
+              <span class="d-none d-sm-inline">Lista EPG</span>
             </a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" href="/epg/list.xml" target="_blank" title="Lista .m3u">
                 <JsonIcon class="me-2"/>
                 Lista .xml
@@ -42,9 +49,6 @@
           </li>
         </ul>
       </div>
-
-      <div class="navbar-brand">Tv Italy</div>
-
     </div>
   </nav>
 </template>
@@ -66,13 +70,25 @@ export default {
 
 <style scoped lang="scss">
 .navbar {
-
-  position: absolute;
-  top: 0;
+  position: relative;
   z-index: 99;
-  left: 0;
-  right: 0;
-  background: rgb(0, 0, 0);
-  background: linear-gradient(0deg, rgba(var(--bs-dark-rgb), 0) 0%, rgba(var(--bs-dark-rgb), 1) 100%);
+  flex-shrink: 0;
+  background: var(--bs-dark);
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+
+  .navbar-brand {
+    font-weight: 700;
+    letter-spacing: .02em;
+
+    .mdi {
+      font-size: 1.5rem;
+    }
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+  }
 }
 </style>

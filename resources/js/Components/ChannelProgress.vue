@@ -1,21 +1,22 @@
 <template>
-  <div class="d-flex align-items-center">
-    {{ formatTime(startAt) }}
+  <div class="d-flex align-items-center" v-if="hasProgram">
+    {{ formatTime(channel.now_on_air.start_tz) }}
 
     <div class="progress flex-fill mx-3">
       <div class="progress-bar" role="progressbar"
-           aria-label="Success example"
+           aria-label="Avanzamento programma"
            :style="`width: ${percent}%`"
            :aria-valuenow="percent" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
 
-    {{ formatTime(endAt) }}
+    {{ formatTime(channel.now_on_air.end_tz) }}
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
 import { Channel } from '../@types/Channel'
+import { formatTime } from '../composables/dates'
 
 export default defineComponent({
   name: 'ChannelProgress',
@@ -23,26 +24,26 @@ export default defineComponent({
     channel: Object as PropType<Channel>
   },
   setup (props) {
-    const startAt = computed(() => new Date(props.channel?.now_on_air?.start_tz))
-    const endAt = computed(() => new Date(props.channel?.now_on_air?.end_tz))
-    const percent = computed(() => {
-      const now = new Date()
-      const total = endAt.value.getTime() - startAt.value.getTime()
-      const current = now.getTime() - startAt.value.getTime()
-      return (current / total) * 100
-    })
+    const hasProgram = computed(() => !!(props.channel?.now_on_air?.start_tz && props.channel?.now_on_air?.end_tz))
 
-    function formatTime (date: Date) {
-      return date.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: false
-      })
+    function toDate (date: string) {
+      return new Date(date.endsWith('Z') ? date : date + 'Z')
     }
 
+    const percent = computed(() => {
+      if (!hasProgram.value) {
+        return 0
+      }
+
+      const start = toDate(props.channel.now_on_air.start_tz).getTime()
+      const end = toDate(props.channel.now_on_air.end_tz).getTime()
+      const current = (Date.now() - start) / (end - start) * 100
+
+      return Math.min(100, Math.max(0, current))
+    })
+
     return {
-      startAt,
-      endAt,
+      hasProgram,
       formatTime,
       percent
     }

@@ -2,7 +2,7 @@
   <Head title="Canali"/>
 
   <div class="main-container">
-    <div class="left-channels-list h-100 overflow-auto">
+    <div class="left-channels-list overflow-auto">
       <SingleChannelCard v-for="channel in channels" :key="channel.id"
                          :channel="channel"
                          :active="channelsStore.highlightedChannel.id === channel.id"/>
@@ -68,22 +68,14 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: auto;
-  min-width: 400px;
-  max-width: 50vh;
-  flex-basis: 100%;
-  padding: 1rem;
+  flex-basis: clamp(320px, 30vw, 460px);
+  padding: 1rem 1.25rem;
   gap: 1rem;
 }
 
 .right-channels-preview {
   flex: 1;
-}
-
-
-@include media-breakpoint-down("lg") {
-  .left-channels-list {
-    min-width: 300px;
-  }
+  min-width: 0;
 }
 
 @include media-breakpoint-down("md") {
@@ -91,9 +83,16 @@ export default {
     flex-direction: column;
   }
 
+  // On mobile the preview goes on top, compact, and the list scrolls below it
+  .right-channels-preview {
+    order: -1;
+    flex: 0 0 auto;
+  }
+
   .left-channels-list {
-    min-width: 100%;
-    max-width: 100%;
+    flex: 1 1 0;
+    min-height: 0;
+    padding: 1rem;
   }
 }
 </style>

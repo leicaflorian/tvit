@@ -2,17 +2,21 @@
   <div :style="`background-image: url(${bgImage})`" class="channel-preview">
 
     <div class="content-container">
-      <div class="text-light d-flex align-items-center justify-content-between">
+      <div class="text-light d-flex align-items-center justify-content-between" v-if="channel.now_on_air">
 
         Ora in onda
         <ProgramsOffCanvas :channel="channel"/>
       </div>
 
-      <h2 class="mb-md-4">{{ channel.now_on_air?.title }}</h2>
+      <template v-if="channel.now_on_air">
+        <h2 class="mb-md-4">{{ channel.now_on_air.title }}</h2>
 
-      <p class="lead text-light mb-md-5">{{ channel.now_on_air?.description }}</p>
+        <p class="lead text-light mb-md-5" v-if="channel.now_on_air.description">{{ channel.now_on_air.description }}</p>
 
-      <ChannelProgress :channel="channel" class="mb-md-3"/>
+        <ChannelProgress :channel="channel" class="mb-md-3"/>
+      </template>
+
+      <p class="lead text-light mb-0" v-else>Guida programmi non disponibile per {{ channel.name }}</p>
 
       <div class="position-static">
       </div>
@@ -98,10 +102,13 @@ export default defineComponent({
   }
 
   .content-container {
-    height: 100%;
+    h2 {
+      font-size: 1.4rem;
+    }
 
     .lead {
-      max-height: 100px;
+      font-size: 1rem;
+      max-height: 4.5em;
     }
   }
 }

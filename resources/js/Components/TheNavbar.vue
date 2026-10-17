@@ -20,7 +20,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                data-bs-auto-close="outside" aria-expanded="false">
-              <i class="mdi mdi-playlist-play"></i>
+              <i class="mdi mdi-link-variant"></i>
               <span class="d-none d-md-inline">Usa in un player IPTV</span>
               <span class="d-none d-sm-inline d-md-none">Player IPTV</span>
             </a>

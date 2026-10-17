@@ -34,7 +34,8 @@
 
       <div class="actions">
         <button type="button" class="btn btn-light btn-watch" @click="watch" :disabled="isPlaying">
-          <i class="mdi" :class="isPlaying ? 'mdi-volume-high' : 'mdi-play'"></i>
+          <NowPlayingBars v-if="isPlaying"/>
+          <i class="mdi mdi-play" v-else></i>
           {{ isPlaying ? 'In riproduzione' : 'Guarda' }}
         </button>
 
@@ -60,11 +61,12 @@ import { useChannelsStore } from '../store/channels.js'
 import { Channel } from '../@types/Channel'
 import ChannelProgress from './ChannelProgress.vue'
 import ProgramsOffCanvas from './ProgramsOffCanvas.vue'
+import NowPlayingBars from './NowPlayingBars.vue'
 import { formatTime, toUtcDate, useNow } from '../composables/dates'
 
 export default defineComponent({
   name: 'ChannelPreview',
-  components: { ProgramsOffCanvas, ChannelProgress },
+  components: { ProgramsOffCanvas, ChannelProgress, NowPlayingBars },
   setup () {
     const channelsStore = useChannelsStore()
     const now = useNow()

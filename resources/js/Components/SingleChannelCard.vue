@@ -29,10 +29,11 @@
     </div>
 
     <div class="actions-container">
-      <i class="mdi mdi-volume-high" v-if="nowPlaying" title="In riproduzione"></i>
+      <!-- out-in: the play button must be gone before the playing icon shows up -->
+      <Transition name="fade" mode="out-in">
+        <NowPlayingBars class="playing-icon" v-if="nowPlaying" key="playing" title="In riproduzione"/>
 
-      <Transition name="fade">
-        <button class="btn btn-light btn-sm rounded-circle" v-if="!nowPlaying && active" title="Guarda">
+        <button type="button" class="play-btn" v-else-if="active" key="play" title="Guarda (Invio)" aria-label="Guarda">
           <i class="mdi mdi-play"></i>
         </button>
       </Transition>
@@ -45,6 +46,7 @@ import { computed, PropType, Ref, ref, watch } from 'vue'
 import { Channel } from '../@types/Channel'
 import { formatTime, programProgress, useNow } from '../composables/dates'
 import { useChannelsStore } from '../store/channels.js'
+import NowPlayingBars from './NowPlayingBars.vue'
 
 const channelsStore = useChannelsStore()
 
@@ -185,14 +187,34 @@ watch(() => props.active, (active) => {
   display: flex;
   justify-content: center;
 
-  .btn {
+  // Outlined like the CH pill in the player, lighter than a filled circle
+  .play-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 32px;
     height: 32px;
     padding: 0;
+    border: 1px solid rgba(255, 255, 255, .5);
+    border-radius: 50%;
+    background: transparent;
+    color: white;
+    transition: background .15s, border-color .15s;
+
+    &:hover {
+      background: rgba(255, 255, 255, .15);
+      border-color: white;
+    }
+
+    .mdi {
+      font-size: 1.1rem;
+      line-height: 1;
+      // optical centering of the triangle
+      margin-left: 2px;
+    }
   }
 
-  .mdi-volume-high {
-    font-size: 1.25rem;
+  .playing-icon {
     color: var(--bs-primary);
   }
 }

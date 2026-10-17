@@ -25,12 +25,7 @@
       </div>
 
       <div class="d-flex">
-        <button type="button" class="btn btn-link" title="Canale precedente (PagSu)" @click="zap(-1)">
-          <i class="mdi mdi-skip-previous text-white fs-3"></i>
-        </button>
-        <button type="button" class="btn btn-link" title="Canale successivo (PagGiù)" @click="zap(1)">
-          <i class="mdi mdi-skip-next text-white fs-3"></i>
-        </button>
+        <ChannelZapper class="me-2"/>
         <button type="button" class="btn btn-link" title="Riduci (Esc)" @click="expanded = false">
           <i class="mdi mdi-chevron-down text-white fs-3"></i>
         </button>
@@ -46,26 +41,20 @@
       <div class="d-flex align-items-center flex-fill px-3 overflow-hidden" v-if="!expanded">
         <img :src="channelPlaying && channelPlaying.logo_url_color" alt="" class="tvg-logo d-none d-md-block">
 
-        <div class="flex-fill overflow-hidden">
-          <h5 class="mb-0">{{ channelPlaying && channelPlaying.name }}
-            <small class="mb-0 d-none d-md-inline-block">({{ channelPlaying && channelPlaying.group }})</small>
+        <div class="mini-info flex-fill overflow-hidden">
+          <h5 class="mb-0 text-truncate">{{ channelPlaying && channelPlaying.name }}
+            <small class="d-none d-md-inline">({{ channelPlaying && channelPlaying.group }})</small>
           </h5>
-          <div class="mb-0 w-100 overflow-hidden" v-if="channelPlaying && channelPlaying.now_on_air">
-            <span class="d-none d-md-inline-block">
-              <strong>{{ formatTime(channelPlaying.now_on_air.start_tz) }}</strong> -
-              <strong>{{ formatTime(channelPlaying.now_on_air.end_tz) }}</strong>
-            - </span>
-            <span class="text-truncate d-block">{{ channelPlaying.now_on_air.title }}</span>
+          <div class="mini-program" v-if="channelPlaying && channelPlaying.now_on_air">
+            <strong class="d-none d-md-inline">
+              {{ formatTime(channelPlaying.now_on_air.start_tz) }} - {{ formatTime(channelPlaying.now_on_air.end_tz) }}
+            </strong>
+            <span class="text-truncate">{{ channelPlaying.now_on_air.title }}</span>
           </div>
         </div>
 
         <div class="d-flex">
-          <button type="button" class="btn btn-link d-none d-sm-flex" title="Canale precedente (PagSu)" @click="zap(-1)">
-            <i class="mdi mdi-skip-previous text-white fs-3"></i>
-          </button>
-          <button type="button" class="btn btn-link d-none d-sm-flex" title="Canale successivo (PagGiù)" @click="zap(1)">
-            <i class="mdi mdi-skip-next text-white fs-3"></i>
-          </button>
+          <ChannelZapper class="me-2 d-none d-sm-inline-flex"/>
           <button type="button" class="btn btn-link" title="Espandi" @click="expanded = true">
             <i class="mdi mdi-chevron-up text-white fs-3"></i>
           </button>
@@ -85,9 +74,11 @@ import { storeToRefs } from 'pinia'
 import HLS from 'hls.js'
 import dashjs from 'dashjs'
 import { formatTime } from '../composables/dates'
+import ChannelZapper from './ChannelZapper.vue'
 
 export default {
   name: 'ThePlayer',
+  components: { ChannelZapper },
   setup () {
     const videoEl = ref()
     const expanded = ref(false)
@@ -145,10 +136,6 @@ export default {
       expanded.value = true
     }
 
-    function zap (increment) {
-      channelsStore.zapChannel(increment)
-    }
-
     function onKeyup (e) {
       if (e.key === 'Escape' && expanded.value) {
         expanded.value = false
@@ -175,7 +162,6 @@ export default {
       expanded,
       channelPlaying,
       closePlayer,
-      zap,
       formatTime
     }
   }
@@ -252,6 +238,28 @@ export default {
       object-fit: contain;
       margin-right: 1rem;
       filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
+    }
+  }
+}
+
+// Minimized bar is 60px tall: name and "times + title" must stay on one line each
+.mini-info {
+  min-width: 0;
+  line-height: 1.3;
+
+  h5 {
+    font-size: 1rem;
+  }
+
+  .mini-program {
+    display: flex;
+    gap: .5rem;
+    min-width: 0;
+    font-size: .85rem;
+    white-space: nowrap;
+
+    strong {
+      flex-shrink: 0;
     }
   }
 }

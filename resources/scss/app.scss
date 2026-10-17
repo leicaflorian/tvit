@@ -47,3 +47,33 @@
     overflow: hidden;
   }
 }
+
+// Thin translucent scrollbars matching the dark glass UI
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, .25) transparent;
+}
+
+// Safari (Chrome/Firefox use the standard properties above)
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .25) padding-box;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, .45);
+  }
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}

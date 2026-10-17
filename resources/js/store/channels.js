@@ -49,6 +49,18 @@ export const useChannelsStore = defineStore('channels', {
         this.highlightedChannel = list[0]
       }
     },
+    // Replace the channels with fresh data (e.g. new "now on air") keeping the current selection
+    refreshList (channels) {
+      this.list = channels
+      this.highlightedChannel = channels.find(item => item.id === this.highlightedChannel?.id) ?? channels[0]
+
+      const playing = channels.find(item => item.id === this.channelPlaying?.id)
+
+      if (playing) {
+        // update in place: replacing the object would restart the stream
+        Object.assign(this.channelPlaying, { now_on_air: playing.now_on_air, next_on_air: playing.next_on_air })
+      }
+    },
     setChannelPlaying (channel) {
       this.channelPlaying = channel
     },

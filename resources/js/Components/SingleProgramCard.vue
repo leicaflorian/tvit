@@ -1,143 +1,170 @@
 <template>
-  <li class="list-group-item px-0 py-0" :class="{'on-air': program.on_air, 'no-img': !program.cover_img}"
-      :style="liStyle">
-    <!--    <div class="row g-0">-->
-    <!--      <div class="col-12 col-md-3 border-end text-center position-relative">
-            <img :src="coverImg" alt="" :style="coverImgStyle" class="img-fluid cover-img">
-
-            <div class="category">{{ program.category }}</div>
-          </div>-->
-
-    <!--      <div class="col-12 col-md-9">-->
-    <div class="p-3">
-      <div class="text-light">
-        {{ formatTime(program.start) }} - {{ formatTime(program.end) }} ({{ program.duration }}')
-      </div>
-      <div class="mb-2"><strong>{{ program.title }}</strong></div>
-      <div><small class="d-block text-light">{{ description }}</small></div>
+  <li class="program-item" :class="{'on-air': onAir, 'past': past}">
+    <div class="time-col">
+      <strong>{{ formatTime(program.start_tz) }}</strong>
+      <small>{{ program.duration }} min</small>
     </div>
-    <!--      </div>-->
-    <!--    </div>-->
+
+    <div class="content-col">
+      <div class="meta" v-if="onAir || program.category">
+        <span class="badge-live" v-if="onAir">In onda</span>
+        <span v-if="program.category">{{ program.category }}</span>
+      </div>
+
+      <h6 class="title">{{ program.title }}</h6>
+
+      <p class="description" v-if="program.description">{{ program.description }}</p>
+
+      <div class="progress-line" v-if="onAir">
+        <div :style="{ width: progress + '%' }"></div>
+      </div>
+    </div>
+
+    <img class="thumb" v-if="program.cover_img" :src="program.cover_img" alt="" loading="lazy">
   </li>
 </template>
 
 <script lang="ts" setup>
 import { computed, PropType } from 'vue'
 import { Program } from '../@types/Program'
-import { formatTime } from '../composables/dates'
-import { Channel } from '../@types/Channel'
+import { formatTime, programProgress, toUtcDate, useNow } from '../composables/dates'
 
 const props = defineProps({
-  program: Object as PropType<Program>,
-  channel: Object as PropType<Channel>
+  program: Object as PropType<Program>
 })
 
-const coverImg = computed(() => {
-  return props.program.cover_img || '' //props.channel.logo_url_light.replace('width=120', '')
-})
+const now = useNow()
 
-const coverImgStyle = computed(() => {
-  return {
-    objectFit: props.program.cover_img ? 'cover' : 'contain',
-    paddingBottom: props.program.cover_img ? '' : '24px'
-  }
-})
-
-const liStyle = computed(() => {
-  return {
-    backgroundImage: `url(${coverImg.value})`,
-    objectFit: props.program.cover_img ? 'cover' : 'contain'
-  }
-})
-
-const description = computed(() => {
-  if (!props.program.description) {
-    return
-  }
-
-  const length = props.program.description.length
-  const maxLen = 400
-  let toReturn = props.program.description
-
-  console.log('length', length)
-
-  if (length > maxLen) {
-    toReturn = props.program.description.substring(0, maxLen) + '...'
-  }
-
-  return toReturn
-})
-
+const onAir = computed(() => toUtcDate(props.program.start_tz).getTime() <= now.value && toUtcDate(props.program.end_tz).getTime() > now.value)
+const past = computed(() => toUtcDate(props.program.end_tz).getTime() <= now.value)
+const progress = computed(() => programProgress(props.program, now.value))
 </script>
 
 <style scoped lang="scss">
-.list-group-item {
-  --bs-list-group-border-color: #717274;
-  background-position: center;
-  background-repeat: no-repeat;
+.program-item {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  padding: .9rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, .07);
+  color: white;
 
-  &:not(.no-img):before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgb(0, 0, 0);
-    background: radial-gradient(circle, rgba(var(--bs-dark-rgb), .7) 0%, rgba(var(--bs-dark-rgb), 1) 100%);
+  &.past {
+    opacity: .5;
   }
 
-  & * {
-    position: relative;
-  }
-}
+  &.on-air {
+    background: rgba(255, 255, 255, .07);
 
-.list-group-item-dark {
-  background-color: lighten(#ccd7e0, 13);
-}
+    // accent bar on the left edge
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--bs-danger);
+    }
 
-.on-air {
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.2) 100%);
-  border-left-width: 8px !important;
-  border-left-color: #fff !important;
-
-  &:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-image: url("/assets/live.gif");
-    width: 100px;
-    height: 30px;
-    background-size: 90%;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: white;
-    border-bottom-left-radius: 1rem;
+    .description {
+      -webkit-line-clamp: 4;
+    }
   }
 }
 
-.category {
-  width: 100%;
-  font-weight: bold;
-  background-color: rgba(0, 0, 0, 0.4);
-  white-space: nowrap;
-  text-overflow: ellipsis;
+.time-col {
+  flex: 0 0 52px;
+  display: flex;
+  flex-direction: column;
+  font-variant-numeric: tabular-nums;
+
+  strong {
+    font-size: .95rem;
+  }
+
+  small {
+    font-size: .72rem;
+    color: rgba(255, 255, 255, .5);
+  }
+}
+
+.content-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-size: .75rem;
+  color: rgba(255, 255, 255, .6);
+
+  .badge-live {
+    background: var(--bs-danger);
+    color: white;
+    font-weight: 700;
+    font-size: .62rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    padding: .1rem .4rem;
+    border-radius: 4px;
+  }
+}
+
+.title {
+  margin: 0;
+  font-size: .95rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.description {
+  margin: 0;
+  font-size: .8rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, .7);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  position: absolute;
-  bottom: 0;
 }
 
-.cover-img {
-  height: 100%;
-  width: 100%;
+.progress-line {
+  height: 3px;
+  margin-top: .2rem;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, .15);
+  overflow: hidden;
+
+  div {
+    height: 100%;
+    background: white;
+  }
 }
 
-.text-light {
-  --bs-light-rgb: 180, 180, 180
+.thumb {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  width: 96px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, .05);
 }
 
-.border-end {
-  --bs-border-color: #717274
+@media (max-width: 575.98px) {
+  .program-item {
+    padding: .8rem 1rem;
+    gap: .75rem;
+  }
+
+  .thumb {
+    width: 72px;
+  }
 }
 </style>

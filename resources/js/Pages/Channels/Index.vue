@@ -53,7 +53,8 @@
 <script>
 import { Head } from '@inertiajs/inertia-vue3'
 import { useChannelsStore } from '../../store/channels'
-import { onMounted, onBeforeMount } from 'vue'
+import { Inertia } from '@inertiajs/inertia'
+import { onBeforeMount, onBeforeUnmount, onMounted, watch } from 'vue'
 import SingleChannelCard from '../../Components/SingleChannelCard.vue'
 import ChannelPreview from '../../Components/ChannelPreview.vue'
 
@@ -67,6 +68,9 @@ const groupLabels = {
   protv: 'ProTV',
   regionali: 'Regionali'
 }
+
+// how often the "now on air" data is refreshed while the page is open
+const REFRESH_MS = 60000
 
 function groupLabel (group) {
   return groupLabels[group] ?? group.charAt(0).toUpperCase() + group.slice(1)
@@ -91,6 +95,26 @@ export default {
       })
 
       channelsStore.setActiveChannel(props.channels[0])
+    })
+
+    watch(() => props.channels, channels => channelsStore.refreshList(channels))
+
+    function refresh () {
+      if (document.visibilityState === 'visible') {
+        Inertia.reload({ only: ['channels'], preserveState: true, preserveScroll: true })
+      }
+    }
+
+    let timer = null
+
+    onMounted(() => {
+      timer = window.setInterval(refresh, REFRESH_MS)
+      document.addEventListener('visibilitychange', refresh)
+    })
+
+    onBeforeUnmount(() => {
+      window.clearInterval(timer)
+      document.removeEventListener('visibilitychange', refresh)
     })
 
     return {

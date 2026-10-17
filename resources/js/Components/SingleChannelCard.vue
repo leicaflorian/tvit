@@ -13,6 +13,7 @@
     <div class="content-container">
       <div class="d-flex align-items-baseline gap-2">
         <h5 class="channel-name">{{ channel.name }}</h5>
+        <GeoBadge v-if="channel.geo_blocked" class="align-self-center"/>
 
         <small class="channel-time ms-auto" v-if="channel.now_on_air">
           {{ formatTime(channel.now_on_air.start_tz) }} - {{ formatTime(channel.now_on_air.end_tz) }}
@@ -47,6 +48,7 @@ import { Channel } from '../@types/Channel'
 import { formatTime, programProgress, useNow } from '../composables/dates'
 import { useChannelsStore } from '../store/channels.js'
 import NowPlayingBars from './NowPlayingBars.vue'
+import GeoBadge from './GeoBadge.vue'
 
 const channelsStore = useChannelsStore()
 

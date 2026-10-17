@@ -8,6 +8,7 @@
         <img :src="channel.logo_url_color" :alt="channel.name">
         <span>{{ channel.name }}</span>
         <span class="dtt-num" v-if="channel.dtt_num">CH {{ channel.dtt_num }}</span>
+        <GeoBadge v-if="channel.geo_blocked"/>
       </div>
 
       <template v-if="program">
@@ -62,11 +63,12 @@ import { Channel } from '../@types/Channel'
 import ChannelProgress from './ChannelProgress.vue'
 import ProgramsOffCanvas from './ProgramsOffCanvas.vue'
 import NowPlayingBars from './NowPlayingBars.vue'
+import GeoBadge from './GeoBadge.vue'
 import { formatTime, toUtcDate, useNow } from '../composables/dates'
 
 export default defineComponent({
   name: 'ChannelPreview',
-  components: { ProgramsOffCanvas, ChannelProgress, NowPlayingBars },
+  components: { ProgramsOffCanvas, ChannelProgress, NowPlayingBars, GeoBadge },
   setup () {
     const channelsStore = useChannelsStore()
     const now = useNow()

@@ -38,6 +38,12 @@
     <div class="the-player-body">
       <video ref="videoEl" src="" :controls="expanded" @click="!expanded ? (expanded = true) : null"></video>
 
+      <div class="player-error" v-if="expanded && errorMessage">
+        <i class="mdi mdi-alert-circle-outline"></i>
+        <p>{{ errorMessage }}</p>
+        <small v-if="isGeoError">I canali Rai sono trasmessi in streaming solo verso connessioni italiane.</small>
+      </div>
+
       <div class="d-flex align-items-center flex-fill px-3 overflow-hidden" v-if="!expanded">
         <img :src="channelPlaying && channelPlaying.logo_url_color" alt="" class="tvg-logo d-none d-md-block">
 
@@ -45,7 +51,11 @@
           <h5 class="mb-0 text-truncate">{{ channelPlaying && channelPlaying.name }}
             <small class="d-none d-md-inline">({{ channelPlaying && channelPlaying.group }})</small>
           </h5>
-          <div class="mini-program" v-if="channelPlaying && channelPlaying.now_on_air">
+          <div class="mini-program mini-error" v-if="errorMessage">
+            <i class="mdi mdi-alert-circle-outline"></i>
+            <span class="text-truncate">{{ errorMessage }}</span>
+          </div>
+          <div class="mini-program" v-else-if="channelPlaying && channelPlaying.now_on_air">
             <strong class="d-none d-md-inline">
               {{ formatTime(channelPlaying.now_on_air.start_tz) }} - {{ formatTime(channelPlaying.now_on_air.end_tz) }}
             </strong>
@@ -82,6 +92,8 @@ export default {
   setup () {
     const videoEl = ref()
     const expanded = ref(false)
+    const errorMessage = ref(null)
+    const isGeoError = ref(false)
     const channelsStore = useChannelsStore()
     const { channelPlaying } = storeToRefs(channelsStore)
     let player = null
@@ -100,6 +112,17 @@ export default {
       destroyPlayer()
     }
 
+    function showError (data) {
+      const code = data.response?.code
+      // 451 comes from our relinker check; the CDN answers 403 abroad, often without CORS (code 0)
+      isGeoError.value = code === 451 || code === 403 || (code === 0 && !!channelPlaying.value?.geo_blocked)
+      errorMessage.value = isGeoError.value
+        ? 'Questo canale è disponibile solo dall\'Italia'
+        : 'Impossibile caricare il canale, riprova più tardi'
+
+      destroyPlayer()
+    }
+
     function playHls () {
       destroyPlayer()
 
@@ -113,6 +136,12 @@ export default {
         player.on(HLS.Events.MEDIA_ATTACHED, function () {
           console.log('channelPlaying changed', channelPlaying)
           player.loadSource(channelPlaying.value.m3u8_link)
+
+          player.on(HLS.Events.ERROR, function (event, data) {
+            if (data.fatal) {
+              showError(data)
+            }
+          })
 
           player.on(HLS.Events.MANIFEST_PARSED, function (event, data) {
             console.log('manifest loaded, found ' + data.levels.length + ' quality level')
@@ -146,6 +175,9 @@ export default {
     onBeforeUnmount(() => window.removeEventListener('keyup', onKeyup))
 
     watch(channelPlaying, (channel) => {
+      errorMessage.value = null
+      isGeoError.value = false
+
       if (!channel) {
         return
       }
@@ -162,6 +194,8 @@ export default {
       expanded,
       channelPlaying,
       closePlayer,
+      errorMessage,
+      isGeoError,
       formatTime
     }
   }
@@ -240,6 +274,41 @@ export default {
       margin-right: 1rem;
       filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
     }
+  }
+}
+
+.mini-error {
+  align-items: center;
+  gap: .3rem;
+  color: var(--bs-warning);
+}
+
+.player-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: 2rem;
+  text-align: center;
+  background: rgba(0, 0, 0, .75);
+  pointer-events: none;
+
+  .mdi {
+    font-size: 3rem;
+    color: var(--bs-warning);
+  }
+
+  p {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  small {
+    color: rgba(255, 255, 255, .7);
   }
 }
 

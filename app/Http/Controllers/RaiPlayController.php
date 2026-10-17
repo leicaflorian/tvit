@@ -70,19 +70,27 @@ class RaiPlayController extends Controller {
     
     /*
      * The relinker answers with a redirect to the CDN playlist (with a short-lived token).
-     * It sends no CORS headers, so browsers can't follow it: resolve it here and redirect
-     * straight to the CDN, which does allow cross-origin requests.
-     * The relinker is geo-blocked: this works only from an Italian connection.
+     * It sends no CORS headers, so browsers can't follow it: read the redirect here and send
+     * the client straight to the CDN, which does allow cross-origin requests.
      */
-    $result = Http::withHeaders(["User-Agent" => self::USER_AGENT])->get($link);
+    $result   = Http::withHeaders(["User-Agent" => self::USER_AGENT])->withoutRedirecting()->get($link);
+    $location = $result->header("Location");
     
-    if ( !$result->ok()) {
+    if ( !$result->redirect() || !$location) {
       Log::error("RaiPlay relinker failed for {$channel}: HTTP {$result->status()}");
       
       abort(Response::HTTP_BAD_GATEWAY);
     }
     
-    return redirect((string) $result->effectiveUri());
+    // Outside Italy the relinker points to a "content not available" clip instead of a playlist
+    if ( !str_contains(parse_url($location, PHP_URL_PATH) ?? "", ".m3u8")) {
+      return response()->json([
+        "error"   => "geo_blocked",
+        "message" => "Questo canale è disponibile solo dall'Italia",
+      ], Response::HTTP_UNAVAILABLE_FOR_LEGAL_REASONS);
+    }
+    
+    return redirect($location);
   }
   
   public function chunks($channel, $page) {

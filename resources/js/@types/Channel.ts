@@ -13,6 +13,7 @@ export interface Channel {
   group: string;
   m3u8_ink: string;
   raw_guide_link: string;
+  geo_blocked: boolean;
   now_on_air: Program | null;
   next_on_air: Program | null;
   programs: Program[];

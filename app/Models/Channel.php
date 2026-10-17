@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Log;
  * @property string      $group
  * @property-read string $m3u8Link
  * @property-read string $rawGuideLink
+ * @property-read bool   $geoBlocked
  *
  * @mixin Builder
  */
@@ -49,12 +50,23 @@ class Channel extends Model {
    *
    * @var array
    */
-  protected $appends = ['m3u8_link', 'raw_guide_link', 'now_on_air', 'next_on_air'];
+  protected $appends = ['m3u8_link', 'raw_guide_link', 'now_on_air', 'next_on_air', 'geo_blocked'];
+  
+  /**
+   * Groups whose streams are only reachable from an Italian connection.
+   */
+  public const GEO_BLOCKED_GROUPS = ['rai'];
   
   
   protected function m3u8Link(): Attribute {
     return Attribute::make(
       get: fn($value) => config("app.app_url") . "/{$this->group}/{$this->tvg_slug}/stream.m3u8",
+    );
+  }
+  
+  protected function geoBlocked(): Attribute {
+    return Attribute::make(
+      get: fn($value) => in_array($this->group, self::GEO_BLOCKED_GROUPS),
     );
   }
   

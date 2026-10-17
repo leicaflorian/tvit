@@ -9,7 +9,7 @@ class La7Controller extends Controller {
 
 
     private function baseUrl(): string {
-        return "https://d15umi5iaezxgx.cloudfront.net/#channel/CLN/HLS-B/Live_1280x720_.m3u8";
+        return "https://d3k8wzt41aflvx.cloudfront.net/#channelHD/Live.m3u8";
     }
 
     private function channelName(): string {

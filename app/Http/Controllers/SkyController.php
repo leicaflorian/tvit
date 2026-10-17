@@ -24,18 +24,26 @@ class SkyController extends Controller {
   }
   
   public function stream($channel) {
-		$link = "";
-		
-		switch ($channel) {
-			case "cielo":
-				$link = "https://hlslive-web-gcdn-skycdn-it.akamaized.net/TACT/11219/cieloweb/master.m3u8?hdnea=st=1701861650~exp=1765449000~acl=/*~hmac=84c9f3f71e57b13c3a67afa8b29a8591ea9ed84bf786524399545d94be1ec04d";
-				break;
-			case "tv8":
-				$link = "https://hlslive-web-gcdn-skycdn-it.akamaized.net/TACT/11223/tv8web/master.m3u8?hdnea=st=1701861650~exp=1765449000~acl=/*~hmac=84c9f3f71e57b13c3a67afa8b29a8591ea9ed84bf786524399545d94be1ec04d";
-				break;
+		// Sky video platform livestream ids. The returned url carries a token valid for ~5 minutes,
+		// so it must be requested on every play instead of being hardcoded.
+		$liveIds = [
+			"tv8"   => 7,
+			"cielo" => 2,
+		];
+
+		if ( !isset($liveIds[$channel])) {
+			abort(404);
 		}
-		
+
+		$link = Http::get("https://video.sky.it/api/v1/getLivestream", [
+			"id"       => $liveIds[$channel],
+			"isMobile" => "false",
+		])->json("streaming_url");
+
+		if ( !$link) {
+			abort(502);
+		}
+
 		return redirect($link);
-  
   }
 }

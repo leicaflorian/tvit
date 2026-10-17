@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\CleanOldPrograms;
 use App\Jobs\ScrapChannelsContent;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -15,6 +16,12 @@ class Kernel extends ConsoleKernel {
    * @return void
    */
   protected function schedule(Schedule $schedule) {
+    // Without this the programs table grows forever: the guide only shows programs from today on
+    $schedule->job(new CleanOldPrograms(), "default")
+      ->dailyAt('2:30')
+      ->timezone('Europe/Rome')
+      ->environments(['production']);
+    
     $schedule->job(new ScrapChannelsContent(), "default")
 			->dailyAt('3:00')
       ->timezone('Europe/Rome')

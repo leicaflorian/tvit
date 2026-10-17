@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class CleanOldPrograms implements ShouldQueue {
   use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -31,8 +32,8 @@ class CleanOldPrograms implements ShouldQueue {
   public function handle() {
     $twoDaysAgo = Carbon::now()->subDays(2);
     
-    $programs = Program::where('end', '<', $twoDaysAgo)->delete();
+    $deleted = Program::where('end', '<', $twoDaysAgo)->delete();
     
-    dump($programs);
+    Log::info("CleanOldPrograms: deleted {$deleted} programs ended before {$twoDaysAgo}");
   }
 }

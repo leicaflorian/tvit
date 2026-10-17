@@ -80,7 +80,15 @@ The app is then available at http://localhost:8082.
 ./vendor/bin/sail artisan queue:work --queue scrap-program-detail
 ```
 
-The daily scheduled scraping only runs when `APP_ENV=production`.
+The daily scheduled scraping only runs when `APP_ENV=production`. So does the cleanup of programs that ended more than two days ago (`CleanOldPrograms`, daily at 02:30).
+
+### Tests
+
+```bash
+./vendor/bin/sail test
+```
+
+Run them inside Sail (PHP 8.1): with PHP 8.2+ on the host the locked Carbon version fails with `Carbon::setLastErrors()` type errors.
 
 ## UI references
 

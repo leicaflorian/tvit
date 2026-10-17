@@ -49,13 +49,13 @@ To let Claude Code read the vault without prompts, add the `Projects/TvIt`, `Inf
 ./vendor/bin/sail artisan queue:work --queue scrap-program-detail
 ```
 
-Run PHP through Sail (PHP 8.1): the locked Carbon version breaks on PHP 8.3, so `php artisan test` on the host fails with `Carbon::setLastErrors()` type errors.
+Run PHP through Sail (PHP 8.1): the locked Carbon (2.59) breaks on PHP 8.2+, so `php artisan test` on the host fails with `Carbon::setLastErrors()` type errors. Tests use the `testing` database of the Sail MySQL; tests that touch the database use `RefreshDatabase`.
 
 ## Architecture in short
 
 - **Channels** (`channels`) are seeded from `config/channels/*.php` (one file per group, with SuperGuidaTV id, stream code and DTT number) matched to the SuperGuidaTV channel list, plus `ExtraChannelsSeeder` and `RegionaliSeeder`. `tvg_slug` is the key: programs reference it (`channel_tvg_slug`) and stream URLs use it.
 - **Streams**: `Channel::m3u8Link` is `APP_URL/{group}/{tvg_slug}/stream.m3u8`, served by the group's controller (`RaiPlayController`, `MediasetController`, …) using the `App\Traits\ChannelController` trait. Most controllers redirect to the broadcaster's playlist (proxying from the server would hit geo-blocks); a few rewrite the playlist and proxy the segments. Rai goes through the RaiPlay relinker and answers 451 `geo_blocked` from abroad.
-- **EPG**: the scheduler dispatches `ScrapChannelsContent` daily at 03:00 Europe/Rome (production only), which queues `ScrapSingleChannel` per channel on `scrap-channels`; the group's `scrapper` picks the class in `app/Jobs/Scrappers` (default `SuperGuidaTv`). Each program with a detail link queues `ScrapProgramDetail` on `scrap-program-detail`. **Program times are stored in UTC**; the site's times are Europe/Rome.
+- **EPG**: the scheduler dispatches `ScrapChannelsContent` daily at 03:00 Europe/Rome (production only), which queues `ScrapSingleChannel` per channel on `scrap-channels`; the group's `scrapper` picks the class in `app/Jobs/Scrappers` (default `SuperGuidaTv`). Each program with a detail link queues `ScrapProgramDetail` on `scrap-program-detail`. `CleanOldPrograms` deletes programs that ended more than two days ago, daily at 02:30 (production only). **Program times are stored in UTC**; the site's times are Europe/Rome.
 - **Outputs**: `/iptv/list.m3u|json` (`IptvController`), `/epg/list.xml|json` (`EpgController`), pages `/channels` and `/guida` (Inertia, `resources/js/Pages`).
 - **Production**: `Dockerfile` + `docker-compose.prod.yml` on Coolify: `app`, `scheduler` and one worker per queue, sharing one image; DB on the shared MySQL. Details in the vault.
 

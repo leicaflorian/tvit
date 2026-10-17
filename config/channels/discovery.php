@@ -35,7 +35,8 @@ return [
       "id"         => "warner-tv",
       "code"       => "",
       "name"       => "Warner TV",
-      "tvgLogo"    => "",
+      // Not in the SuperGuidaTV channel list anymore, but its guide page still exists
+      "tvgLogo"    => "1344181813",
       "tvgName"    => "",
       "tvgId"      => "",
       "groupTitle" => ChannelGroup::DISCOVERY,

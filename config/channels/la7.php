@@ -17,7 +17,8 @@ return [
         "id"         => "la7d",
         "code"       => "LA7D",
         "name"       => "La7d",
-        "tvgLogo"    => "",
+        // Listed as "La7 Cinema" on SuperGuidaTV
+        "tvgLogo"    => "254",
         "tvgName"    => "",
         "tvgId"      => "",
         "groupTitle" => ChannelGroup::LA_7,

@@ -156,6 +156,15 @@ class ChannelsSeeder extends Seeder {
                 return $a == $b;
             })->first();
 
+            // Not found by name: fall back to the SuperGuidaTV id stored in the config
+            if ( !$channelData && is_numeric($channelConfig['tvgLogo'] ?? null)) {
+                $channelData = [
+                    'name'     => $channelConfig['name'],
+                    'slug'     => $channelConfig['id'],
+                    'tvg_code' => (int)$channelConfig['tvgLogo'],
+                ];
+            }
+
 
             $newChannel = [
                 'name'           => $channelConfig["name"] ?? '',

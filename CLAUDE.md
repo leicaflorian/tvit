@@ -42,14 +42,14 @@ To let Claude Code read the vault without prompts, add the `Projects/TvIt`, `Inf
 ```bash
 ./vendor/bin/sail up -d                 # app on http://localhost:8082
 ./vendor/bin/sail npm run dev           # Vite
-./vendor/bin/sail test                  # PHPUnit
+./vendor/bin/sail test                  # PHPUnit (php artisan test works on the host too)
 ./vendor/bin/sail artisan db:seed       # channel groups and channels (reads superguidatv.it)
 ./vendor/bin/sail artisan job:dispatch ScrapChannelsContent
 ./vendor/bin/sail artisan queue:work --queue scrap-channels
 ./vendor/bin/sail artisan queue:work --queue scrap-program-detail
 ```
 
-Run PHP through Sail (PHP 8.1): the locked Carbon (2.59) breaks on PHP 8.2+, so `php artisan test` on the host fails with `Carbon::setLastErrors()` type errors. Tests use the `testing` database of the Sail MySQL; tests that touch the database use `RefreshDatabase`.
+Production runs PHP 8.1: when updating dependencies run `composer` inside Sail (`./vendor/bin/sail composer …`) so the lock stays installable on 8.1. Tests run on an in-memory SQLite database (`phpunit.xml`); tests that touch the database use `RefreshDatabase`. The migrations must keep working on both MySQL and SQLite.
 
 ## Architecture in short
 

@@ -85,10 +85,10 @@ The daily scheduled scraping only runs when `APP_ENV=production`. So does the cl
 ### Tests
 
 ```bash
-./vendor/bin/sail test
+./vendor/bin/sail test   # or `php artisan test` on the host
 ```
 
-Run them inside Sail (PHP 8.1): with PHP 8.2+ on the host the locked Carbon version fails with `Carbon::setLastErrors()` type errors.
+Tests run on an in-memory SQLite database (`phpunit.xml`), so they need neither Docker nor MySQL.
 
 ## UI references
 

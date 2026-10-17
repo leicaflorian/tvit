@@ -12,7 +12,8 @@ x-laravel: &laravel
     APP_ENV: production
     APP_DEBUG: "false"
     APP_KEY: ${APP_KEY}
-    APP_URL: ${SERVICE_FQDN_APP}
+    # SERVICE_URL_* carries the scheme, SERVICE_FQDN_* only the host
+    APP_URL: ${SERVICE_URL_APP}
     LOG_CHANNEL: stderr
     LOG_LEVEL: ${LOG_LEVEL:-warning}
     DB_CONNECTION: mysql

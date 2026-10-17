@@ -35,11 +35,11 @@
         </p>
       </div>
 
-      <div class="keys-legend">
-        <span><kbd>↑</kbd><kbd>↓</kbd> scegli</span>
-        <span><kbd>Invio</kbd> guarda</span>
-        <span><kbd>PagSu</kbd><kbd>PagGiù</kbd> cambia canale</span>
-        <span><kbd>Esc</kbd> riduci</span>
+      <div class="keys-legend" aria-label="Scorciatoie da tastiera">
+        <div><span class="keys"><kbd>↑</kbd><kbd>↓</kbd></span> Scegli canale</div>
+        <div><span class="keys"><kbd>Invio</kbd></span> Guarda</div>
+        <div><span class="keys"><kbd>PagSu</kbd><kbd>PagGiù</kbd></span> Cambia canale</div>
+        <div><span class="keys"><kbd>Esc</kbd></span> Riduci player</div>
       </div>
     </div>
 
@@ -205,26 +205,49 @@ export default {
 .keys-legend {
   display: none;
   flex-shrink: 0;
-  flex-wrap: wrap;
-  gap: .25rem .9rem;
-  padding: .6rem 1rem;
-  border-top: 1px solid rgba(255, 255, 255, .08);
-  font-size: .72rem;
-  color: rgba(255, 255, 255, .55);
+  // two aligned columns instead of free wrapping
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  gap: .5rem .75rem;
+  padding: .75rem;
+  border-top: 1px solid rgba(255, 255, 255, .1);
+  background: rgba(255, 255, 255, .04);
+  font-size: .78rem;
+  color: rgba(255, 255, 255, .75);
 
+  > div {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    white-space: nowrap;
+  }
+
+  .keys {
+    display: inline-flex;
+    gap: .2rem;
+  }
+
+  // keycap look
   kbd {
-    margin-right: .2rem;
-    padding: .05rem .3rem;
-    font-size: .68rem;
-    background: rgba(255, 255, 255, .12);
-    color: rgba(255, 255, 255, .85);
+    min-width: 1.5rem;
+    padding: .1rem .35rem;
+    border: 1px solid rgba(255, 255, 255, .25);
+    border-bottom-width: 2px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, .1);
+    color: white;
+    font-family: inherit;
+    font-size: .72rem;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: none;
   }
 }
 
 // only where a physical keyboard is likely
 @media (hover: hover) and (pointer: fine) and (min-width: 992px) {
   .keys-legend {
-    display: flex;
+    display: grid;
   }
 }
 

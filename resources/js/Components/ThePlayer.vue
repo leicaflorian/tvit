@@ -24,13 +24,13 @@
         </div>
       </div>
 
-      <div class="d-flex">
-        <ChannelZapper class="me-2"/>
-        <button type="button" class="btn btn-link" title="Riduci (Esc)" @click="expanded = false">
-          <i class="mdi mdi-chevron-down text-white fs-3"></i>
+      <div class="player-controls">
+        <ChannelZapper/>
+        <button type="button" class="player-ctrl" title="Riduci (Esc)" aria-label="Riduci player" @click="expanded = false">
+          <i class="mdi mdi-arrow-collapse"></i>
         </button>
-        <button type="button" class="btn btn-link" @click="closePlayer">
-          <i class="mdi mdi-close text-white fs-3"></i>
+        <button type="button" class="player-ctrl" title="Chiudi" aria-label="Chiudi player" @click="closePlayer">
+          <i class="mdi mdi-close"></i>
         </button>
       </div>
     </div>
@@ -53,13 +53,13 @@
           </div>
         </div>
 
-        <div class="d-flex">
-          <ChannelZapper class="me-2 d-none d-sm-inline-flex"/>
-          <button type="button" class="btn btn-link" title="Espandi" @click="expanded = true">
-            <i class="mdi mdi-chevron-up text-white fs-3"></i>
+        <div class="player-controls">
+          <ChannelZapper class="d-none d-sm-inline-flex"/>
+          <button type="button" class="player-ctrl" title="Espandi" aria-label="Espandi player" @click="expanded = true">
+            <i class="mdi mdi-arrow-expand"></i>
           </button>
-          <button type="button" class="btn btn-link" @click="closePlayer">
-            <i class="mdi mdi-close text-white fs-3"></i>
+          <button type="button" class="player-ctrl" title="Chiudi" aria-label="Chiudi player" @click="closePlayer">
+            <i class="mdi mdi-close"></i>
           </button>
         </div>
       </div>
@@ -182,7 +182,8 @@ export default {
   left: 0;
   width: 100%;
   z-index: 99;
-  box-shadow: 0 -20px 20px 5px rgba(var(--bs-dark-rgb), 1);
+  border-top: 1px solid rgba(255, 255, 255, .1);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, .35);
   transition: height .3s;
 
   &.expanded {
@@ -239,6 +240,39 @@ export default {
       margin-right: 1rem;
       filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
     }
+  }
+}
+
+// Controls share the outlined 36px style of the CH pill
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: 0 .75rem;
+  flex-shrink: 0;
+}
+
+.player-ctrl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, .35);
+  border-radius: 50%;
+  background: transparent;
+  color: white;
+  transition: background .15s, border-color .15s;
+
+  &:hover {
+    background: rgba(255, 255, 255, .15);
+    border-color: white;
+  }
+
+  .mdi {
+    font-size: 1.15rem;
+    line-height: 1;
   }
 }
 

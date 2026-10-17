@@ -2,7 +2,7 @@
   <nav class="navbar navbar-dark navbar-expand">
     <div class="container-fluid">
       <div class="navbar-brand d-flex align-items-center gap-2">
-        <i class="mdi mdi-television-classic"></i>
+        <img src="/favicon.svg" alt="" class="brand-logo" width="30" height="30">
         <span class="d-none d-sm-inline">TvIt</span>
       </div>
 
@@ -130,8 +130,12 @@ export default {
     font-weight: 700;
     letter-spacing: .02em;
 
-    .mdi {
-      font-size: 1.5rem;
+    .brand-logo {
+      width: 30px;
+      height: 30px;
+      // separates the logo's dark tile from the navbar background
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, .12);
+      border-radius: 7px;
     }
   }
 

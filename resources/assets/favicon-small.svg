@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Simplified variant of public/favicon.svg, readable at 16-32px (used for favicon.ico) -->
+  <rect width="512" height="512" rx="112" fill="#1f1e2c"/>
+
+  <rect x="64" y="96" width="384" height="264" rx="56" fill="none" stroke="#fff" stroke-width="48"/>
+
+  <path d="M212 168 L330 228 L212 288 Z" fill="#fff" stroke="#fff" stroke-width="20" stroke-linejoin="round"/>
+
+  <rect x="112" y="400" width="96" height="48" fill="#009246"/>
+  <rect x="208" y="400" width="96" height="48" fill="#ffffff"/>
+  <rect x="304" y="400" width="96" height="48" fill="#ce2b37"/>
+</svg>

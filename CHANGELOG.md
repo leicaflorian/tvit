@@ -4,6 +4,8 @@ Notable changes to TvIt, newest first. The format follows [Keep a Changelog](htt
 
 ## [Unreleased]
 
+## [2026.10.18.1] - 2026-10-18
+
 ### Fixed
 
 - Rai channels play again from Italy: the server calls the RaiPlay relinker through an Italian proxy (`RAI_RELINKER_PROXY`). From abroad they still need a VPN located in Italy.
@@ -115,5 +117,6 @@ Notable changes to TvIt, newest first. The format follows [Keep a Changelog](htt
 
 - Rai channels for the Italy region, Mediaset and DMAX EPG links, tvg ids and names, timezone bugs.
 
-[Unreleased]: https://github.com/leicaflorian/tvit/compare/2026.10.18...HEAD
+[Unreleased]: https://github.com/leicaflorian/tvit/compare/2026.10.18.1...HEAD
+[2026.10.18.1]: https://github.com/leicaflorian/tvit/releases/tag/2026.10.18.1
 [2026.10.18]: https://github.com/leicaflorian/tvit/releases/tag/2026.10.18

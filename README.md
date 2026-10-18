@@ -101,6 +101,10 @@ cp .env.example .env
 
 The app is then available at http://localhost:8082.
 
+The RaiPlay relinker only answers to Italian IP addresses. When the app runs outside Italy, as production does, set
+`RAI_RELINKER_PROXY` in `.env` to an Italian HTTP proxy (`http://user:password@host:port`): only the relinker call goes
+through it, the players still fetch the video from the CDN. Leave it empty to call the relinker directly.
+
 ### EPG scraping
 
 ```bash

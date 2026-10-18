@@ -4,6 +4,10 @@ Notable changes to TvIt, newest first. The format follows [Keep a Changelog](htt
 
 ## [Unreleased]
 
+### Fixed
+
+- Rai channels play again from Italy: the server calls the RaiPlay relinker through an Italian proxy (`RAI_RELINKER_PROXY`). From abroad they still need a VPN located in Italy.
+
 ## [2026.10.18] - 2026-10-18
 
 ### Added

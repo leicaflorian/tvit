@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ChannelGroup;
+use GuzzleHttp\Exception\TransferException;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -85,8 +86,9 @@ class RaiPlayController extends Controller {
 
     try {
       $result = $request->get($link);
-    } catch (ConnectionException $e) {
-      // The exception message may name the proxy, whose URL carries the password: log only its class
+    } catch (ConnectionException | TransferException $e) {
+      // Guzzle reports a 407 from the proxy or an unresolvable proxy host as a RequestException, not a
+      // ConnectionException. The message may name the proxy, whose URL carries the password: log only the class
       Log::error("RaiPlay relinker unreachable for {$channel}: " . get_class($e));
 
       abort(Response::HTTP_BAD_GATEWAY);

@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request as Psr7Request;
+use GuzzleHttp\Psr7\Response as Psr7Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -72,13 +74,34 @@ class RaiPlayStreamTest extends TestCase {
     Log::spy();
 
     Http::fake(function ($request) {
-      throw new ConnectException("CONNECT tunnel failed, response 407", new Psr7Request("GET", $request->url()));
+      throw new ConnectException("cURL error 7: Failed to connect to proxy.test port 7277", new Psr7Request("GET", $request->url()));
     });
 
     $this->get("/raiplay/rai-1/stream.m3u8")
       ->assertStatus(502);
 
-    // The proxy URL carries the password: it must never reach the logs
+    $this->assertProxyNotLogged();
+  }
+
+  public function test_answers_502_when_the_proxy_rejects_the_credentials(): void {
+    // Guzzle reports a 407 on the CONNECT tunnel as a RequestException, not a ConnectException
+    config(["services.rai.relinker_proxy" => self::PROXY]);
+    Log::spy();
+
+    Http::fake(function ($request) {
+      throw new RequestException("cURL error 56: CONNECT tunnel failed, response 407", new Psr7Request("GET", $request->url()), new Psr7Response(407));
+    });
+
+    $this->get("/raiplay/rai-1/stream.m3u8")
+      ->assertStatus(502);
+
+    $this->assertProxyNotLogged();
+  }
+
+  /**
+   * The proxy URL carries the password: it must never reach the logs.
+   */
+  private function assertProxyNotLogged(): void {
     Log::shouldHaveReceived("error")->once()->withArgs(function ($message) {
       return !str_contains($message, "secret") && !str_contains($message, "proxy.test");
     });

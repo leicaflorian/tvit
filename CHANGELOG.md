@@ -8,6 +8,10 @@ Notable changes to TvIt, newest first. The format follows [Keep a Changelog](htt
 
 - The M3U playlist header carries `url-tvg` pointing to `/epg/list.xml`, so most players load the guide without the user adding it by hand.
 
+### Fixed
+
+- The XMLTV guide uses the playlist's `tvg-id` (e.g. `rai-1`) as channel id, so players that match by `tvg-id` show the guide; programme times carry an explicit `+0000` offset. Players where the guide was mapped by hand to the old ids (e.g. `Rai 1`) need to map it again.
+
 ## 2026-10-17
 
 ### Added

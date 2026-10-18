@@ -52,8 +52,11 @@ on; programs that ended more than two days ago are deleted.
 | JSON   | [`https://tvit.leicaflorianrobert.dev/epg/list.json`](https://tvit.leicaflorianrobert.dev/epg/list.json) |
 
 > [!IMPORTANT]
-> All program times are in **UTC**. In the XMLTV file they have no offset, which the format reads as UTC, so players
-> show them in your local time. If you read the JSON yourself, convert them (Italy is UTC+1, UTC+2 in summer).
+> All program times are in **UTC**. In the XMLTV file they carry an explicit `+0000` offset, so players show them in
+> your local time. If you read the JSON yourself, convert them (Italy is UTC+1, UTC+2 in summer).
+
+Each XMLTV channel `id` is the channel's `tvg-id` in the M3U playlist (e.g. `rai-1`), so players pair every channel
+with its guide; the playlist's `tvg-name` is also listed as a `display-name`, for players that match by name.
 
 ## How to use
 

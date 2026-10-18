@@ -53,8 +53,13 @@ class EpgController extends Controller {
     $channels = Channel::orderBy('dtt_num')->get();
     
     $channels->each(function (Channel $channel) use (&$xml) {
-      $channelXml   = ['<channel id="' . $this->escapeString($channel->tvg_name) . '">'];
+      // The id is the playlist's tvg-id, so players pair channel and guide; tvg_name stays as a
+      // second display-name for players that match by tvg-name
+      $channelXml   = ['<channel id="' . $this->escapeString($channel->tvg_slug) . '">'];
       $channelXml[] = '<display-name lang="it">' . $this->escapeString($channel->name) . '</display-name>';
+      if ($channel->tvg_name !== $channel->name) {
+        $channelXml[] = '<display-name lang="it">' . $this->escapeString($channel->tvg_name) . '</display-name>';
+      }
       $channelXml[] = '<icon src="' . $this->escapeString($channel->logo_url_color) . '"/>';
       $channelXml[] = '<url>' . $this->escapeString($channel->m3u8Link) . '</url>';
       
@@ -65,7 +70,8 @@ class EpgController extends Controller {
       $programs = $channel->programs()->where("start", ">=", today())->get();
       
       $programs->each(function (Program $program) use (&$xml, $channel) {
-        $programXml   = ['<programme start="' . $program->start->format("YmdHis") . '" stop="' . $program->end->format("YmdHis") . '" channel="' . $this->escapeString($channel->tvg_name) . '">'];
+        // Times are stored in UTC: the explicit offset stops players reading them as local time
+        $programXml   = ['<programme start="' . $program->start->utc()->format("YmdHis O") . '" stop="' . $program->end->utc()->format("YmdHis O") . '" channel="' . $this->escapeString($channel->tvg_slug) . '">'];
         $programXml[] = '<title lang="it">' . $this->escapeString($program->title) . '</title>';
         $programXml[] = '<desc lang="it">' . ($program->description ? $this->escapeString($program->description) : "-") . '</desc>';
         $programXml[] = '<category lang="it">' . $this->escapeString($program->category) . '</category>';

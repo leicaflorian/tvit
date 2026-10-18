@@ -31,4 +31,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'rai' => [
+        // http://user:password@host:port; empty means calling the RaiPlay relinker directly
+        'relinker_proxy' => env('RAI_RELINKER_PROXY'),
+    ],
+
 ];

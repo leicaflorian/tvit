@@ -25,6 +25,8 @@ x-laravel: &laravel
     QUEUE_CONNECTION: database
     CACHE_DRIVER: file
     SESSION_DRIVER: file
+    # Italian proxy for the RaiPlay relinker (the server is outside Italy)
+    RAI_RELINKER_PROXY: ${RAI_RELINKER_PROXY:-}
     # Autorun (migrations, config/route/view cache) only runs in the app container
     AUTORUN_ENABLED: "false"
 

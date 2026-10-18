@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ChannelGroup;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -73,7 +74,24 @@ class RaiPlayController extends Controller {
      * It sends no CORS headers, so browsers can't follow it: read the redirect here and send
      * the client straight to the CDN, which does allow cross-origin requests.
      */
-    $result   = Http::withHeaders(["User-Agent" => self::USER_AGENT])->withoutRedirecting()->get($link);
+    $request = Http::withHeaders(["User-Agent" => self::USER_AGENT])->withoutRedirecting()->timeout(8);
+
+    // The relinker checks the caller's IP and the server is outside Italy: go through an Italian proxy
+    $proxy = config("services.rai.relinker_proxy");
+
+    if (filled($proxy)) {
+      $request->withOptions(["proxy" => $proxy]);
+    }
+
+    try {
+      $result = $request->get($link);
+    } catch (ConnectionException $e) {
+      // The exception message may name the proxy, whose URL carries the password: log only its class
+      Log::error("RaiPlay relinker unreachable for {$channel}: " . get_class($e));
+
+      abort(Response::HTTP_BAD_GATEWAY);
+    }
+
     $location = $result->header("Location");
     
     if ( !$result->redirect() || !$location) {

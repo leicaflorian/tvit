@@ -1,8 +1,10 @@
 # Changelog
 
-Notable changes to TvIt, newest first. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). TvIt has no version numbers: every push to `main` deploys to production, so entries are grouped by date. New changes go under *Unreleased* and get a date when they reach `main`.
+Notable changes to TvIt, newest first. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Releases are numbered by date (`YYYY.MM.DD`, with `.N` for a second release on the same day) and tagged in git, with a GitHub release; sections before 2026.10.18 predate the releases and are grouped by date. New changes go under *Unreleased* and move to a new release section when it is tagged.
 
 ## [Unreleased]
+
+## [2026.10.18] - 2026-10-18
 
 ### Added
 
@@ -108,3 +110,6 @@ Notable changes to TvIt, newest first. The format follows [Keep a Changelog](htt
 ### Fixed
 
 - Rai channels for the Italy region, Mediaset and DMAX EPG links, tvg ids and names, timezone bugs.
+
+[Unreleased]: https://github.com/leicaflorian/tvit/compare/2026.10.18...HEAD
+[2026.10.18]: https://github.com/leicaflorian/tvit/releases/tag/2026.10.18

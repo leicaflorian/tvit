@@ -27,7 +27,8 @@ class IptvController extends Controller {
   public function m3uList(Request $request): Response {
     $logoVersion = $request->input('logoVersion', 'dark');
     $channels    = Channel::orderBy('dtt_num')->get();
-    $content     = ['#EXTM3U'];
+    // url-tvg lets most players load the EPG without the user adding it by hand
+    $content     = ['#EXTM3U url-tvg="' . config('app.app_url') . '/epg/list.xml"'];
     
     $channels->each(function (Channel $channel) use (&$content, $logoVersion) {
       $logoUrl = $logoVersion === "light" ? $channel->logo_url_light : $channel->logo_url_color;

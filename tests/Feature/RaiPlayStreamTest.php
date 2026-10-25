@@ -28,6 +28,34 @@ class RaiPlayStreamTest extends TestCase {
       ->assertRedirect($playlist);
   }
 
+  public static function relinkerCodes(): array {
+    return [
+      "Italiana"    => ["italiana", "747011"],
+      "Rai Premium" => ["rai-premium", "746992"],
+      "Rai Storia"  => ["rai-storia", "746990"],
+      "Rai News 24" => ["rainews24", "1"],
+      "Rai Sport"   => ["rai-sport-hd", "358025"],
+    ];
+  }
+
+  /**
+   * @dataProvider relinkerCodes
+   */
+  public function test_resolves_each_channel_with_its_relinker_code(string $slug, string $code): void {
+    $urls = collect();
+
+    Http::fake(function ($request) use ($urls) {
+      $urls->push($request->url());
+
+      return Http::response("", 302, ["Location" => self::PLAYLIST]);
+    });
+
+    $this->get("/raiplay/{$slug}/stream.m3u8")
+      ->assertRedirect(self::PLAYLIST);
+
+    $this->assertStringContainsString("cont={$code}&", $urls->first());
+  }
+
   public function test_answers_451_when_the_relinker_geo_blocks_the_request(): void {
     // From abroad the relinker points to a "not available" clip instead of an HLS playlist
     Http::fake([

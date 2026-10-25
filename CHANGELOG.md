@@ -4,6 +4,10 @@ Notable changes to TvIt, newest first. The format follows [Keep a Changelog](htt
 
 ## [Unreleased]
 
+### Added
+
+- Five Rai channels, with their guide: Rai Premium (25), Rai News 24 (48), Rai Storia (54), Italiana (57, formerly Rai Scuola) and Rai Sport (58). Like the other Rai channels, they play only from Italy.
+
 ## [2026.10.18.1] - 2026-10-18
 
 ### Fixed

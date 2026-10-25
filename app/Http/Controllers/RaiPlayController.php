@@ -57,6 +57,31 @@ class RaiPlayController extends Controller {
       "iptv_code"  => "746899",
       "name"       => "Rai Yoyo",
     ],
+    [
+      "id"         => "italiana",
+      "iptv_code"  => "747011",
+      "name"       => "Italiana",
+    ],
+    [
+      "id"         => "rai-premium",
+      "iptv_code"  => "746992",
+      "name"       => "Rai Premium",
+    ],
+    [
+      "id"         => "rai-storia",
+      "iptv_code"  => "746990",
+      "name"       => "Rai Storia",
+    ],
+    [
+      "id"         => "rainews24",
+      "iptv_code"  => "1",
+      "name"       => "Rai News 24",
+    ],
+    [
+      "id"         => "rai-sport-hd",
+      "iptv_code"  => "358025",
+      "name"       => "Rai Sport",
+    ],
   ];
   
   private function baseUrl(): string {

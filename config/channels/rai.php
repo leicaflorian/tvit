@@ -53,105 +53,97 @@ return [
     "groupTitle" => ChannelGroup::RAI,
     "dvbNum"     => 24
   ],
-  // the channels from here down do not work
-    [
-      "id"      => "rai5",
-      "code"    => "395276",
-      "name"    => "Rai 5",
-      "tvgLogo" => "221",
-      "tvgName" => "",
-      "tvgId"   => "",
-      "groupTitle" => ChannelGroup::RAI,
-      "dvbNum"=> 23
-    ],
+  [
+    "id"         => "rai5",
+    "code"       => "395276",
+    "name"       => "Rai 5",
+    "tvgLogo"    => "221",
+    "tvgName"    => "",
+    "tvgId"      => "",
+    "groupTitle" => ChannelGroup::RAI,
+    "dvbNum"     => 23
+  ],
+  [
+    "id"         => "raiPremium",
+    "code"       => "746992",
+    "name"       => "Rai Premium",
+    "tvgLogo"    => "225",
+    "tvgName"    => "",
+    "tvgId"      => "",
+    "groupTitle" => ChannelGroup::RAI,
+    "dvbNum"     => 25
+  ],
+  [
+    "id"         => "raiGulp",
+    "code"       => "746953",
+    "name"       => "Rai Gulp",
+    "tvgLogo"    => "228",
+    "tvgName"    => "",
+    "tvgId"      => "",
+    "groupTitle" => ChannelGroup::RAI,
+    "dvbNum"     => 42
+  ],
+  [
+    "id"         => "raiYoyo",
+    "code"       => "746899",
+    "name"       => "Rai Yoyo",
+    "tvgLogo"    => "227",
+    "tvgName"    => "",
+    "tvgId"      => "",
+    "groupTitle" => ChannelGroup::RAI,
+    "dvbNum"     => 43
+  ],
+  [
+    "id"         => "raiNews24",
+    "code"       => "1",
+    "name"       => "Rai News 24",
+    "tvgLogo"    => "222",
+    "tvgName"    => "",
+    "tvgId"      => "",
+    "groupTitle" => ChannelGroup::RAI,
+    "dvbNum"     => 48
+  ],
+  [
+    "id"         => "raiStoria",
+    "code"       => "746990",
+    "name"       => "Rai Storia",
+    "tvgLogo"    => "226",
+    "tvgName"    => "",
+    "tvgId"      => "",
+    "groupTitle" => ChannelGroup::RAI,
+    "dvbNum"     => 54
+  ],
+  // formerly Rai Scuola: the relinker code didn't change
+  [
+    "id"         => "italiana",
+    "code"       => "747011",
+    "name"       => "Italiana",
+    "tvgLogo"    => "230",
+    "tvgName"    => "",
+    "tvgId"      => "",
+    "groupTitle" => ChannelGroup::RAI,
+    "dvbNum"     => 57
+  ],
+  // SuperGuidaTV calls it "Rai Sport + HD"
+  [
+    "id"         => "raiSport",
+    "code"       => "358025",
+    "name"       => "Rai Sport",
+    "tvgLogo"    => "223",
+    "tvgName"    => "Rai Sport + HD",
+    "tvgId"      => "",
+    "groupTitle" => ChannelGroup::RAI,
+    "dvbNum"     => 58
+  ],
+  // no stream: the relinker code is Italiana's
   /*[
-    "id"      => "raiPremium",
-    "code"    => "746992",
-    "name"    => "Rai Premium",
-    "tvgLogo" => "225",
-    "tvgName" => "",
-    "tvgId"   => "",
-  "groupTitle" => ChannelGroup::RAI,
-  "dvbNum"=> 25
+    "id"         => "raiRadio2",
+    "code"       => "747011",
+    "name"       => "Rai Radio 2",
+    "tvgLogo"    => "https://upload.wikimedia.org/wikipedia/commons/b/bd/Rai_Radio_2_logo_%282010%29.svg",
+    "tvgName"    => "",
+    "tvgId"      => "",
+    "groupTitle" => ChannelGroup::RAI,
+    "dvbNum"     => 9999
   ],*/
-  [
-    "id"      => "raiGulp",
-    "code"    => "746953",
-    "name"    => "Rai Gulp",
-    "tvgLogo" => "228",
-    "tvgName" => "",
-    "tvgId"   => "",
-  "groupTitle" => ChannelGroup::RAI,
-  "dvbNum"=> 42
-  ],
-  [
-    "id"      => "raiYoyo",
-    "code"    => "746899",
-    "name"    => "Rai Yoyo",
-    "tvgLogo" => "227",
-    "tvgName" => "",
-    "tvgId"   => "",
-  "groupTitle" => ChannelGroup::RAI,
-  "dvbNum"=>43
-  ],
-  /*[
-    "id"      => "raiNews24",
-    "code"    => "1",
-    "name"    => "Rai News 24",
-    "tvgLogo" => "222",
-    "tvgName" => "",
-    "tvgId"   => "",
-  "groupTitle" => ChannelGroup::RAI,
-  "dvbNum"=> 48
-  ],
-  [
-    "id"      => "raiStoria",
-    "code"    => "746990",
-    "name"    => "Rai Storia",
-    "tvgLogo" => "226",
-    "tvgName" => "",
-    "tvgId"   => "",
-  "groupTitle" => ChannelGroup::RAI,
-  "dvbNum"=> 54
-  ],
-  [
-    "id"      => "raiSport",
-    "code"    => "358071",
-    "name"    => "Rai Sport",
-    "tvgLogo" => "146",
-    "tvgName" => "",
-    "tvgId"   => "",
-  "groupTitle" => ChannelGroup::RAI,
-  "dvbNum"=>
-  ],
-  [
-    "id"      => "raiSportPiuHd",
-    "code"    => "358025",
-    "name"    => "Rai Sport +",
-    "tvgLogo" => "223",
-    "tvgName" => "",
-    "tvgId"   => "",
-  "groupTitle" => ChannelGroup::RAI,
-  "dvbNum"=> 58
-  ],
-  [
-    "id"      => "raiScuola",
-    "code"    => "747011",
-    "name"    => "Rai Scuola",
-    "tvgLogo" => "230",
-    "tvgName" => "",
-    "tvgId"   => "",
-  "groupTitle" => ChannelGroup::RAI,
-  "dvbNum"=> 57
-  ],
-  [
-    "id"      => "raiRadio2",
-    "code"    => "747011",
-    "name"    => "Rai Radio 2",
-    "tvgLogo" => "https://upload.wikimedia.org/wikipedia/commons/b/bd/Rai_Radio_2_logo_%282010%29.svg",
-    "tvgName" => "",
-    "tvgId"   => "",
-  "groupTitle" => ChannelGroup::RAI,
-  "dvbNum"=> 9999
-  ]*/
 ];

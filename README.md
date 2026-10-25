@@ -14,7 +14,7 @@ M3U playlist of Italian TV channels with an XMLTV EPG (electronic program guide)
 
 | Group     | Channels                                                                                                                                                         |
 |-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Rai       | Rai 1, Rai 2, Rai 3, Rai 4, Rai 5, Rai Movie, Rai Premium, Rai Gulp, Rai Yoyo, Rai News 24, Rai Storia, Rai Sport, Rai Sport +, Rai Scuola, Rai Radio 2          |
+| Rai       | Rai 1, Rai 2, Rai 3, Rai 4, Rai 5, Rai Movie, Rai Premium, Rai Gulp, Rai Yoyo, Rai News 24, Rai Storia, Italiana, Rai Sport                                      |
 | Mediaset  | Rete 4, Canale 5, Italia 1, Italia 2, Mediaset 20, La 5, Iris, Focus, Mediaset Extra, Top Crime, Boing, Cartoonito, Tgcom 24, Cine34, Twenty Seven, Radio 101, Radio 105 |
 | La7       | La7, La7d                                                                                                                                                        |
 | Sky       | TV8, Cielo                                                                                                                                                       |

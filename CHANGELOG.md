@@ -4,6 +4,8 @@ Notable changes to TvIt, newest first. The format follows [Keep a Changelog](htt
 
 ## [Unreleased]
 
+## [2026.10.25] - 2026-10-25
+
 ### Added
 
 - Five Rai channels, with their guide: Rai Premium (25), Rai News 24 (48), Rai Storia (54), Italiana (57, formerly Rai Scuola) and Rai Sport (58). Like the other Rai channels, they play only from Italy.
@@ -121,6 +123,7 @@ Notable changes to TvIt, newest first. The format follows [Keep a Changelog](htt
 
 - Rai channels for the Italy region, Mediaset and DMAX EPG links, tvg ids and names, timezone bugs.
 
-[Unreleased]: https://github.com/leicaflorian/tvit/compare/2026.10.18.1...HEAD
+[Unreleased]: https://github.com/leicaflorian/tvit/compare/2026.10.25...HEAD
+[2026.10.25]: https://github.com/leicaflorian/tvit/releases/tag/2026.10.25
 [2026.10.18.1]: https://github.com/leicaflorian/tvit/releases/tag/2026.10.18.1
 [2026.10.18]: https://github.com/leicaflorian/tvit/releases/tag/2026.10.18
